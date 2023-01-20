@@ -10,11 +10,11 @@
   },
   "scripts": {
     "init-typescript": "tsc --init",
-    "build": "npm clean && node build.js && tsc --emitDeclarationOnly --outDir dist",
+    "build": "npm run clean && node build.js && tsc --emitDeclarationOnly --outDir dist",
     "clean": "rimraf dist",
     "prettier:format": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --config .prettierrc --check .",
-    "prepublishOnly": "npm build",
+    "prepublishOnly": "npm run build",
     "test": "jest",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
