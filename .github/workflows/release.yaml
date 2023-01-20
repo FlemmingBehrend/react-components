@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: choice
+        description: 'Version (major, minor, patch)'
+        options:
+          - major
+          - minor
+          - patch
+        default: patch
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write
+    name: publish ${{ github.event.inputs.version }} version
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com
+          scope: '@flemmingbehrend'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Test
+        run: npm run test
+
+      - name: bump version & publish
+        run: |
+          git config user.email "norepl@githubaction.com"
+          git config --global user.name "Github Action"
+          npm version ${{ github.event.inputs.version }}
+          git push -f origin
+          git push --tags
+          npm publish
+          cat package.json
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
