@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { TableHeader } from '../types';
-import { Identible } from './cell-types/definition';
+import { TableHeader } from './header-definitions';
+import { Identible } from './cell-types/cell-definitions';
 import { TableRow } from '@mui/material';
 
 interface RowProps<DataDef> {

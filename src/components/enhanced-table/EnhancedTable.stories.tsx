@@ -1,8 +1,8 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import EnhancedTable, { NumberCell, NumberColDef, StringCell, StringColDef } from './';
-import { TableHeader } from './types';
-import { Identible } from './table/cell-types/definition';
+import { TableHeader } from './table/header-definitions';
+import { Identible } from './table/cell-types/cell-definitions';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { green } from '@mui/material/colors';
@@ -35,8 +35,13 @@ interface RowData1 extends Identible {
 const rows: RowData1[] = [
   {
     id: '1',
-    name: { id: '2', value: 'John' },
-    age: { id: '3', value: 37 }
+    name: { id: '11', value: 'John' },
+    age: { id: '12', value: 37 }
+  },
+  {
+    id: '2',
+    name: { id: '21', value: 'Max' },
+    age: { id: '22', value: 45 }
   }
 ];
 

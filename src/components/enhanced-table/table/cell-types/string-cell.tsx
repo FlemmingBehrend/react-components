@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { TableCell } from '@mui/material';
-import { ColDef, Cell, Identible } from './definition';
+import { ColDef, Valuable, Identible } from './cell-definitions';
 
-export interface StringCell extends Cell<string>, Identible {}
+export interface StringCell extends Valuable<string>, Identible {}
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   console.log(cell);

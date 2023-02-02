@@ -40,6 +40,6 @@ export interface Identible extends Object {
   id: string;
 }
 
-export interface Cell<T> {
+export interface Valuable<T> {
   value: T;
 }

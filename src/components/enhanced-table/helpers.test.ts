@@ -7,7 +7,7 @@ import {
   DEFAULT_TABLE_HEADER_COLOR,
   getSeperatorColor
 } from './helpers';
-import { TableHeader } from './types';
+import { TableHeader } from './table/header-definitions';
 
 interface T {
   test: string;

@@ -8,7 +8,11 @@ The enhanced table is a wrapper around the [Material UI Table](https://material-
 
 ## Usage
 
-```jsx
+- theme
+
+Example:
+
+```typescript
 import React from 'react';
 import EnhancedTable, { NumberCell, NumberColDef, StringCell, StringColDef } from 'react-components';
 

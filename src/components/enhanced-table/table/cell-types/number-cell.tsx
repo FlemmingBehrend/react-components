@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { TableCell } from '@mui/material';
-import { ColDef, Cell, Identible } from './definition';
+import { ColDef, Valuable, Identible } from './cell-definitions';
 
-export interface NumberCell extends Cell<number>, Identible {}
+export interface NumberCell extends Valuable<number>, Identible {}
 
 function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
   console.log(cell);

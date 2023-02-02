@@ -1,17 +1,19 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
 import * as React from 'react';
-import { TableHeader } from '../types';
+import { SortDirection, TableHeader } from './header-definitions';
 import Row from './Row';
-import { Identible } from './cell-types/definition';
+import { Identible } from './cell-types/cell-definitions';
 import { getBackgroundColor, getSeperatorColor } from '../helpers';
 import HeaderCell from './HeaderCell';
 import { hash } from '../../../hashing';
 
 interface TableComponentProps<DataDef> {
-  rows: DataDef[];
-  tableSize: 'small' | 'medium';
   headers: TableHeader<DataDef>[];
+  rows: DataDef[];
+  orderBy: keyof DataDef;
+  order: SortDirection;
   showHeaders: boolean;
+  tableSize: 'small' | 'medium';
 }
 
 function TableComponent<DataDef extends Identible>(props: TableComponentProps<DataDef>) {
@@ -42,6 +44,8 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
           <HeaderCell
             key={hash(header.label + index).toString()}
             header={header}
+            order={props.order}
+            orderBy={props.orderBy}
             backgroundColor={backgroundColor}
             seperatorColor={seperatorColor}
           />

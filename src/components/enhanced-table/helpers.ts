@@ -1,5 +1,5 @@
 import { Theme } from '@mui/material';
-import { TableHeader } from './types';
+import { TableHeader } from './table/header-definitions';
 import { blueGrey } from '@mui/material/colors';
 
 export const DEFAULT_TABLE_HEADER_COLOR = blueGrey[400];

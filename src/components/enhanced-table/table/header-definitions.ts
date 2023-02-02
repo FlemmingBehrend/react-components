@@ -1,4 +1,4 @@
-import { ColDef } from './table/cell-types/definition';
+import { ColDef } from './cell-types/cell-definitions';
 
 type CommonHeaderOptions = {
   /**
@@ -31,3 +31,5 @@ type HeaderGroup<DataDef> = {
 };
 
 export type TableHeader<DataDef> = CommonHeaderOptions & (Header<DataDef> | HeaderGroup<DataDef>);
+
+export type SortDirection = 'asc' | 'desc';
