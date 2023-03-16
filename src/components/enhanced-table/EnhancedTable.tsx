@@ -38,7 +38,6 @@ function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<Enhan
   props.headers?.map((header) => {
     calculateHeaderColspan(header);
   });
-
   return (
     <Box sx={{ mt: 2 }}>
       <FilterComponent />

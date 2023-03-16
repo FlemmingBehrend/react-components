@@ -45,35 +45,44 @@ const rows: RowData1[] = [
   }
 ];
 
-const headers: TableHeader<RowData1>[] = [
-  {
-    label: 'Name',
-    tooltip: 'This is a tooltip',
-    dataType: 'name',
-    definition: StringColDef
-  },
-  {
-    label: 'Age',
-    dataType: 'age',
-    definition: NumberColDef
-  }
-];
-export const NoArgs = () => <EnhancedTable headers={headers} rows={rows} />;
-NoArgs.storyName = 'Table component with all default values';
+// const headers: TableHeader<RowData1>[] = [
+//   {
+//     label: 'Persons',
+//     tooltip: 'This is a tooltip for header',
+//     subHeaders: [
+//       {
+//         label: 'Name',
+//         tooltip: 'This is a tooltip',
+//         dataType: 'name',
+//         definition: StringColDef
+//       },
+//       {
+//         label: 'Age',
+//         dataType: 'age',
+//         definition: NumberColDef
+//       }
+//     ]
+//   }
+// ];
+// export const NoArgs = () => <EnhancedTable headers={headers} rows={rows} />;
+// NoArgs.storyName = 'Table component with all default values';
 
-// export const OneLevelHeader = Template.bind({});
+// export const OneLevelHeader = TemplateWithTheme.bind({});
 // interface OneLevelHeaderRowDef extends Identible {
 //   name: string;
 //   address: string;
 // }
-// const oneLevelHeaders: TableHeaders<OneLevelHeaderRowDef>[] = [
+// const oneLevelHeaders: TableHeader<OneLevelHeaderRowDef>[] = [
 //   {
 //     label: 'Name',
-//     tooltip: 'This is a tooltip'
+//     tooltip: 'This is a tooltip',
+//     definition: StringColDef,
+//     dataType: 'name'
 //   },
 //   {
 //     label: 'Address',
-//     sortable: true
+//     definition: StringColDef,
+//     dataType: 'address'
 //   }
 // ];
 // OneLevelHeader.args = {
@@ -81,53 +90,112 @@ NoArgs.storyName = 'Table component with all default values';
 // };
 // OneLevelHeader.storyName = 'Table component with single level headers';
 
-// export const HeaderGrouping = Template.bind({});
-// const withSubheaders: TableHeaders[] = [
-//   {
-//     label: 'Header 1',
-//     align: 'center',
-//     subHeaders: [
-//       {
-//         label: 'Header 1.1',
-//         align: 'center',
-//         subHeaders: [
-//           {
-//             label: 'Header 1.1.1'
-//           },
-//           {
-//             label: 'Header 1.1.2'
-//           },
-//           {
-//             label: 'Header 1.1.3'
-//           }
-//         ]
-//       },
-//       {
-//         label: 'Header 1.2',
-//         align: 'center',
-//         subHeaders: [
-//           {
-//             label: 'Header 1.2.1'
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// ];
-// HeaderGrouping.args = {
-//   headers: withSubheaders
-// };
-// HeaderGrouping.storyName = 'Table component showing header grouping';
+//**************************************************** Multiple Sub headers *******************************************************/
+export const HeaderGrouping = TemplateWithTheme.bind({});
+const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
+  {
+    label: 'Header 1',
+    tooltip: 'This is a tooltip for header',
+    subHeaders: [
+      {
+        label: 'Header 1.1',
+        subHeaders: [
+          {
+            label: 'Header 1.1.1',
+            dataType: 'cell1',
+            definition: StringColDef
+          },
+          {
+            label: 'Header 1.1.2',
+            dataType: 'cell2',
+            definition: NumberColDef
+          },
+          {
+            label: 'Header 1.1.3',
+            dataType: 'cell3',
+            definition: StringColDef
+          }
+        ]
+      },
+      {
+        label: 'Header 1.2',
+        subHeaders: [
+          {
+            label: 'Header 1.2.1',
+            dataType: 'cell4',
+            definition: StringColDef
+          }
+        ]
+      }
+    ]
+  }
+];
 
-// export const CustomTheme = TemplateWithTheme.bind({});
-// CustomTheme.args = {
-//   headers: withSubheaders
-// };
-// CustomTheme.storyName = 'Table component with custom theme';
+interface HeaderGroupingRowData extends Identible {
+  cell1: StringCell;
+  cell2: NumberCell;
+  cell3: StringCell;
+  cell4: StringCell;
+}
 
-// export const MediumSizeTable = Template.bind({});
-// MediumSizeTable.args = {
-//   headers: withSubheaders,
-//   tableSize: 'medium'
-// };
-// MediumSizeTable.storyName = 'Table component with medium size';
+const headerGroupingRows: HeaderGroupingRowData[] = [
+  {
+    id: '1',
+    cell1: { id: '11', value: 'Cell 1/1' },
+    cell2: { id: '12', value: 37 },
+    cell3: { id: '13', value: 'Cell 2/1' },
+    cell4: { id: '14', value: 'Cell 3/1' }
+  },
+  {
+    id: '2',
+    cell1: { id: '11', value: 'Cell 1/2' },
+    cell2: { id: '12', value: 38 },
+    cell3: { id: '13', value: 'Cell 2/2' },
+    cell4: { id: '14', value: 'Cell 3/2' }
+  }
+];
+
+HeaderGrouping.args = {
+  headers: withSubheaders,
+  rows: headerGroupingRows
+};
+HeaderGrouping.storyName = 'Table component showing header grouping';
+//**************************************************** Multiple Sub headers *******************************************************/
+
+//**************************************************** Medium table *******************************************************/
+export const mediumTableTheme = TemplateWithTheme.bind({});
+interface MediumTableRowData extends Identible {
+  cell1: StringCell;
+  cell2: NumberCell;
+}
+const mediumTable: TableHeader<MediumTableRowData>[] = [
+  {
+    label: 'Header 1',
+    tooltip: 'This is a tooltip for header',
+    dataType: 'cell1',
+    definition: StringColDef
+  },
+  {
+    label: 'Header 2',
+    dataType: 'cell2',
+    definition: NumberColDef
+  }
+];
+const mediumTableRows: MediumTableRowData[] = [
+  {
+    id: '1',
+    cell1: { id: '11', value: 'Cell 1/1' },
+    cell2: { id: '12', value: 37 }
+  },
+  {
+    id: '2',
+    cell1: { id: '11', value: 'Cell 1/2' },
+    cell2: { id: '12', value: 38 }
+  }
+];
+mediumTableTheme.args = {
+  headers: mediumTable,
+  rows: mediumTableRows
+};
+mediumTableTheme.storyName = 'Medium size table';
+//**************************************************** Medium table *******************************************************/

@@ -14,12 +14,52 @@ function LabelCell<DataDef>(props: HeaderCellProps<DataDef>) {
   return <span style={{ whiteSpace: 'nowrap' }}>{props.header.label}</span>;
 }
 
+function SortCell<DataDef>(props: HeaderCellProps<DataDef>) {
+  function render() {
+    if (!props.header.definition?.sortable) return <LabelCell {...props} />;
+    return (
+      <TableSortLabel active={props.orderBy === props.header.dataType} direction={props.order}>
+        <LabelCell {...props} />
+      </TableSortLabel>
+    );
+  }
+  return render();
+}
+
 function TooltipCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  return (
-    <Tooltip title={props.header.tooltip}>
-      <LabelCell {...props} />
-    </Tooltip>
-  );
+  function render() {
+    if (!props.header.tooltip) {
+      return (
+        <TableCell
+          // @ts-ignore: colspan is used internally to calculate the width of the header
+          colSpan={props.header.colspan}
+          align={props.header.definition?.align ?? 'left'}
+          sx={{
+            backgroundColor: props.backgroundColor,
+            borderRight: `1px solid ${props.seperatorColor}`
+          }}
+        >
+          <SortCell {...props} />
+        </TableCell>
+      );
+    }
+    return (
+      <Tooltip title={props.header.tooltip} followCursor>
+        <TableCell
+          // @ts-ignore: colspan is used internally to calculate the width of the header
+          colSpan={props.header.colspan}
+          align={props.header.definition?.align ?? 'left'}
+          sx={{
+            backgroundColor: props.backgroundColor,
+            borderRight: `1px solid ${props.seperatorColor}`
+          }}
+        >
+          <SortCell {...props} />
+        </TableCell>
+      </Tooltip>
+    );
+  }
+  return render();
 }
 
 function HeaderCell<DataDef>(props: HeaderCellProps<DataDef>) {
@@ -32,26 +72,7 @@ function HeaderCell<DataDef>(props: HeaderCellProps<DataDef>) {
     setSortBy(dataType);
   }
 
-  return (
-    <TableCell
-      colSpan={props.header.colspan}
-      align={props.header.definition?.align ?? 'left'}
-      sx={{
-        backgroundColor: props.backgroundColor,
-        borderRight: `1px solid ${props.seperatorColor}`
-      }}
-    >
-      {props.header.definition?.sortable && (
-        <TableSortLabel
-          active={sortBy === props.header.dataType}
-          direction={sortDirection}
-          onClick={() => handleSort(props.header.dataType!)}
-        >
-          {props.header.tooltip ? <TooltipCell {...props} /> : <LabelCell {...props} />}
-        </TableSortLabel>
-      )}
-    </TableCell>
-  );
+  return <TooltipCell {...props} />;
 }
 
 export default HeaderCell;

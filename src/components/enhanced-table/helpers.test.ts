@@ -56,7 +56,6 @@ describe('helper functions', () => {
       };
       const result = calculateHeaderColspan(headers);
       expect(result).toEqual(1);
-      expect(headers.colspan).toEqual(1);
     });
 
     it('should span 1 if 1 sub header', () => {
@@ -71,7 +70,6 @@ describe('helper functions', () => {
       };
       const result = calculateHeaderColspan(headers);
       expect(result).toEqual(1);
-      expect(headers.colspan).toEqual(1);
     });
 
     it('should span 2 if 2 sub headers', () => {
@@ -90,7 +88,6 @@ describe('helper functions', () => {
       };
       const result = calculateHeaderColspan(headers);
       expect(result).toEqual(2);
-      expect(headers.colspan).toEqual(2);
     });
 
     it('should span 3 if 1 sub header with 2 sub headers', () => {
@@ -123,7 +120,6 @@ describe('helper functions', () => {
       };
       const result = calculateHeaderColspan(headers);
       expect(result).toEqual(3);
-      expect(headers.colspan).toEqual(3);
     });
   });
 

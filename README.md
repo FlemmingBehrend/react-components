@@ -12,4 +12,5 @@ TBD
 
 ## Components
 
-- EnhancedTable
+- [EnhancedTable](./src/components/enhanced-table/README.md)
+-

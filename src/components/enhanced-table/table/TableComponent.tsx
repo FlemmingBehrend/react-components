@@ -3,7 +3,7 @@ import * as React from 'react';
 import { SortDirection, TableHeader } from './header-definitions';
 import Row from './Row';
 import { Identible } from './cell-types/cell-definitions';
-import { getBackgroundColor, getSeperatorColor } from '../helpers';
+import { getBackgroundColor, getHeaderCells, getSeperatorColor } from '../helpers';
 import HeaderCell from './HeaderCell';
 import { hash } from '../../../hashing';
 
@@ -21,7 +21,6 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
   const [headers, setHeaders] = React.useState<Map<number, JSX.Element[]>>(new Map());
 
   React.useEffect(() => {
-    console.log('useEffect');
     setHeaders(generateHeadersRecursively(props.headers));
   }, [props.headers]);
 
@@ -62,14 +61,15 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
       <Table size={props.tableSize}>
         {props.showHeaders && (
           <TableHead>
-            {[...headers.keys()].map((level) => (
-              <TableRow>{headers.get(level)}</TableRow>
-            ))}
+            {[...headers.keys()].map((level) => {
+              return <TableRow key={level}>{headers.get(level)}</TableRow>;
+            })}
           </TableHead>
         )}
         <TableBody>
           {props.rows.map((row) => {
-            return <Row key={row.id} row={row} headers={props.headers} />;
+            const headers = getHeaderCells<DataDef>(props.headers);
+            return <Row key={row.id} row={row} headers={headers} />;
           })}
         </TableBody>
       </Table>

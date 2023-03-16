@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material';
 import { TableHeader } from './table/header-definitions';
 import { blueGrey } from '@mui/material/colors';
+import HeaderCell from './table/HeaderCell';
 
 export const DEFAULT_TABLE_HEADER_COLOR = blueGrey[400];
 
@@ -39,8 +40,21 @@ export function calculateHeaderColspan<DataDef>(headers: TableHeader<DataDef>): 
   } else {
     count++;
   }
+  // @ts-ignore: colspan is used internally to calculate the width of the header
   headers['colspan'] = count;
   return count;
+}
+
+export function getHeaderCells<DataDef>(headers: TableHeader<DataDef>[]): TableHeader<DataDef>[] {
+  const headerCells: TableHeader<DataDef>[] = [];
+  headers.forEach((header) => {
+    if (header.subHeaders) {
+      headerCells.push(...getHeaderCells(header.subHeaders));
+    } else {
+      headerCells.push(header);
+    }
+  });
+  return headerCells;
 }
 
 export function getBackgroundColor(theme: Theme, level: number) {

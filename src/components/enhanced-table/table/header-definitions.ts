@@ -7,12 +7,10 @@ type CommonHeaderOptions = {
   label: string;
 
   /**
-   * The colspan of the header.
-   */
-  colspan?: number;
-
-  /**
    * The tooltip of the header.
+   * The tooltip will be displayed when the
+   * user hovers over the header and follow the
+   * mouse cursor.
    * @default undefined, no tooltip
    */
   tooltip?: string;
