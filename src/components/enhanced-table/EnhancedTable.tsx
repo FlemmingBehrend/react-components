@@ -28,8 +28,8 @@ export interface EnhancedTableProps<DataDef> {
   rows: DataDef[];
   headers: TableHeader<DataDef>[];
   rowHeight?: number;
-  orderBy?: keyof DataDef;
-  order?: SortDirection;
+  initialSortColumn?: keyof DataDef;
+  initialSortDirection?: SortDirection;
   showHeaders?: boolean;
   tableSize?: 'small' | 'medium';
 }
@@ -45,8 +45,8 @@ function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<Enhan
         <TableComponent
           headers={props.headers}
           rows={props.rows}
-          orderBy={props.orderBy ?? 'id'}
-          order={props.order ?? 'desc'}
+          initialSortColumn={props.initialSortColumn ?? 'id'}
+          initialSortOrder={props.initialSortDirection ?? 'desc'}
           tableSize={props.tableSize ?? 'small'}
           showHeaders={props.showHeaders ?? true}
         />

@@ -10,8 +10,8 @@ import { hash } from '../../../hashing';
 interface TableComponentProps<DataDef> {
   headers: TableHeader<DataDef>[];
   rows: DataDef[];
-  orderBy: keyof DataDef;
-  order: SortDirection;
+  initialSortColumn: keyof DataDef;
+  initialSortOrder: SortDirection;
   showHeaders: boolean;
   tableSize: 'small' | 'medium';
 }
@@ -19,10 +19,18 @@ interface TableComponentProps<DataDef> {
 function TableComponent<DataDef extends Identible>(props: TableComponentProps<DataDef>) {
   const theme = useTheme();
   const [headers, setHeaders] = React.useState<Map<number, JSX.Element[]>>(new Map());
+  const [sortColumn, setSortColumn] = React.useState<keyof DataDef>(props.initialSortColumn);
+  const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.initialSortOrder);
 
   React.useEffect(() => {
     setHeaders(generateHeadersRecursively(props.headers));
-  }, [props.headers]);
+    const headerCells = getHeaderCells<DataDef>(props.headers);
+    const sortHeader = headerCells.find((header) => header.dataType === sortColumn);
+    if (sortHeader && sortHeader.definition && sortHeader.definition.comparator) {
+      const comparator = sortHeader.definition.comparator(sortColumn);
+      sortDirection === 'asc' ? props.rows.sort(comparator) : props.rows.sort((a, b) => comparator(b, a));
+    }
+  }, [props.headers, props.rows, sortColumn, sortDirection]);
 
   function generateHeadersRecursively(
     headers: TableHeader<DataDef>[],
@@ -37,14 +45,17 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
       }
       const backgroundColor = getBackgroundColor(theme, level);
       const seperatorColor = getSeperatorColor(theme);
+
       headerRows
         .get(level)
         ?.push(
           <HeaderCell
             key={hash(header.label + index).toString()}
             header={header}
-            order={props.order}
-            orderBy={props.orderBy}
+            sortDirection={sortDirection}
+            sortColumn={sortColumn}
+            setSortColumn={setSortColumn}
+            setSortDirection={setSortDirection}
             backgroundColor={backgroundColor}
             seperatorColor={seperatorColor}
           />

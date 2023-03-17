@@ -4,8 +4,10 @@ import { SortDirection, TableHeader } from './header-definitions';
 
 export interface HeaderCellProps<DataDef> {
   header: TableHeader<DataDef>;
-  orderBy: keyof DataDef;
-  order: SortDirection;
+  sortColumn: keyof DataDef;
+  sortDirection: SortDirection;
+  setSortColumn: React.Dispatch<React.SetStateAction<keyof DataDef>>;
+  setSortDirection: React.Dispatch<React.SetStateAction<SortDirection>>;
   backgroundColor: string;
   seperatorColor: string;
 }
@@ -15,10 +17,21 @@ function LabelCell<DataDef>(props: HeaderCellProps<DataDef>) {
 }
 
 function SortCell<DataDef>(props: HeaderCellProps<DataDef>) {
+  function handleSort(row: keyof DataDef) {
+    const isAsc = props.sortColumn === props.header.dataType && props.sortDirection === 'asc';
+    props.setSortDirection(isAsc ? 'desc' : 'asc');
+    props.setSortColumn(row);
+  }
+
   function render() {
     if (!props.header.definition?.sortable) return <LabelCell {...props} />;
+    const row = props.header.dataType;
     return (
-      <TableSortLabel active={props.orderBy === props.header.dataType} direction={props.order}>
+      <TableSortLabel
+        active={props.header.dataType === props.sortColumn}
+        direction={props.sortDirection}
+        onClick={() => handleSort(row)}
+      >
         <LabelCell {...props} />
       </TableSortLabel>
     );
@@ -63,15 +76,6 @@ function TooltipCell<DataDef>(props: HeaderCellProps<DataDef>) {
 }
 
 function HeaderCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  const [sortBy, setSortBy] = React.useState<keyof DataDef>(props.orderBy);
-  const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.order || 'desc');
-
-  function handleSort(dataType: keyof DataDef) {
-    const isAsc = sortBy === dataType && sortDirection === 'asc';
-    setSortDirection(isAsc ? 'desc' : 'asc');
-    setSortBy(dataType);
-  }
-
   return <TooltipCell {...props} />;
 }
 
