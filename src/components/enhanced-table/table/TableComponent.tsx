@@ -6,6 +6,7 @@ import { Identible } from './cell-types/cell-definitions';
 import { getBackgroundColor, getHeaderCells, getSeperatorColor } from '../helpers';
 import HeaderCell from './HeaderCell';
 import { hash } from '../../../hashing';
+import { common } from '@mui/material/colors';
 
 interface TableComponentProps<DataDef> {
   headers: TableHeader<DataDef>[];
@@ -45,6 +46,8 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
         headerRows.set(level, []);
       }
       const backgroundColor = getBackgroundColor(theme, level);
+      const fontColor = theme.enhancedTable?.headers?.fontColor || common.black;
+      const fontWeight = theme.enhancedTable?.headers?.fontWeight || 'normal';
       const seperatorColor = getSeperatorColor(theme);
 
       headerRows
@@ -58,6 +61,8 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
             setSortColumn={setSortColumn}
             setSortDirection={setSortDirection}
             backgroundColor={backgroundColor}
+            fontColor={fontColor}
+            fontWeight={fontWeight}
             seperatorColor={seperatorColor}
           />
         );

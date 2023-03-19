@@ -10,7 +10,9 @@ declare module '@mui/material/styles' {
   interface Theme {
     enhancedTable: {
       stripedRowsColor: string;
-      tableHeader: {
+      headers: {
+        fontWeight: 'bold' | 'normal';
+        fontColor: string;
         backgroundColor: string;
       };
     };
@@ -18,9 +20,11 @@ declare module '@mui/material/styles' {
   // allow configuration using `createTheme`
   interface ThemeOptions {
     enhancedTable?: {
-      stripedRowsColor: string;
-      tableHeader?: {
-        backgroundColor: string;
+      stripedRowsColor?: string;
+      headers?: {
+        fontWeight?: 'bold' | 'normal';
+        fontColor?: string;
+        backgroundColor?: string;
       };
     };
   }
@@ -56,18 +60,19 @@ export interface EnhancedTableProps<DataDef> {
   initialSortDirection?: SortDirection;
 
   /**
-   * The size of the table
-   * @default 'small'
-   */
-  tableSize?: 'small' | 'medium';
-
-  /**
    * If 'true' every other row will render in another color
    * Will not work as expected if `expandable` is set to `true`
    * the expanded rows will always be rendered in the same color
    * @default false
    */
   stripedRows?: boolean;
+
+  /**
+   * The size of the table
+   * @default 'small'
+   * @see https://mui.com/components/tables/#sizes
+   */
+  tableSize?: 'small' | 'medium';
 }
 
 function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<EnhancedTableProps<DataDef>>) {

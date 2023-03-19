@@ -57,7 +57,7 @@ export function getHeaderCells<DataDef>(headers: TableHeader<DataDef>[]): TableH
 }
 
 export function getBackgroundColor(theme: Theme, level: number) {
-  const baseBackgroundColor = theme?.enhancedTable?.tableHeader?.backgroundColor ?? DEFAULT_TABLE_HEADER_COLOR;
+  const baseBackgroundColor = theme?.enhancedTable?.headers?.backgroundColor ?? DEFAULT_TABLE_HEADER_COLOR;
   if (level === 0) {
     return baseBackgroundColor;
   } else {
@@ -66,7 +66,7 @@ export function getBackgroundColor(theme: Theme, level: number) {
 }
 
 export function getSeperatorColor(theme: Theme) {
-  const definedTheme = theme?.enhancedTable?.tableHeader?.backgroundColor;
+  const definedTheme = theme?.enhancedTable?.headers?.backgroundColor;
   const verticalSeperatorColor = definedTheme
     ? getLighterColor(definedTheme, 70)
     : getLighterColor(DEFAULT_TABLE_HEADER_COLOR, 70);

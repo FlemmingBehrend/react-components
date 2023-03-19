@@ -141,7 +141,7 @@ describe('helper functions', () => {
     it('should use theme color if specified', () => {
       const theme = {
         enhancedTable: {
-          tableHeader: {
+          headers: {
             backgroundColor: '#000000'
           }
         }
@@ -153,7 +153,7 @@ describe('helper functions', () => {
     it('should make every level of sub headers 10% lighther', () => {
       const theme = {
         enhancedTable: {
-          tableHeader: {
+          headers: {
             backgroundColor: '#000000'
           }
         }
@@ -177,7 +177,7 @@ describe('helper functions', () => {
     it('should use theme if specified and make it 70% lighter', () => {
       const theme = {
         enhancedTable: {
-          tableHeader: {
+          headers: {
             backgroundColor: '#000000'
           }
         }

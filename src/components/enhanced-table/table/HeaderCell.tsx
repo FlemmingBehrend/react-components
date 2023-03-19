@@ -9,6 +9,8 @@ export interface HeaderCellProps<DataDef> {
   setSortColumn: React.Dispatch<React.SetStateAction<keyof DataDef>>;
   setSortDirection: React.Dispatch<React.SetStateAction<SortDirection>>;
   backgroundColor: string;
+  fontColor: string;
+  fontWeight: string;
   seperatorColor: string;
 }
 
@@ -40,39 +42,33 @@ function SortCell<DataDef>(props: HeaderCellProps<DataDef>) {
 }
 
 function TooltipCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  function render() {
-    if (!props.header.tooltip) {
-      return (
-        <TableCell
-          // @ts-ignore: colspan is used internally to calculate the width of the header
-          colSpan={props.header.colspan}
-          align={props.header.definition?.align ?? 'left'}
-          sx={{
-            backgroundColor: props.backgroundColor,
-            borderRight: `1px solid ${props.seperatorColor}`
-          }}
-        >
-          <SortCell {...props} />
-        </TableCell>
-      );
-    }
-    return (
-      <Tooltip title={props.header.tooltip} followCursor>
-        <TableCell
-          // @ts-ignore: colspan is used internally to calculate the width of the header
-          colSpan={props.header.colspan}
-          align={props.header.definition?.align ?? 'left'}
-          sx={{
-            backgroundColor: props.backgroundColor,
-            borderRight: `1px solid ${props.seperatorColor}`
-          }}
-        >
-          <SortCell {...props} />
-        </TableCell>
-      </Tooltip>
-    );
-  }
-  return render();
+  const sx = {
+    backgroundColor: props.backgroundColor,
+    borderRight: `1px solid ${props.seperatorColor}`,
+    color: props.fontColor,
+    fontWeight: props.fontWeight
+  };
+  return props.header.tooltip ? (
+    <Tooltip title={props.header.tooltip} followCursor>
+      <TableCell
+        // @ts-ignore: colspan is used internally to calculate the width of the header
+        colSpan={props.header.colspan}
+        align={props.header.definition?.align ?? 'left'}
+        sx={sx}
+      >
+        <SortCell {...props} />
+      </TableCell>
+    </Tooltip>
+  ) : (
+    <TableCell
+      // @ts-ignore: colspan is used internally to calculate the width of the header
+      colSpan={props.header.colspan}
+      align={props.header.definition?.align ?? 'left'}
+      sx={sx}
+    >
+      <SortCell {...props} />
+    </TableCell>
+  );
 }
 
 function HeaderCell<DataDef>(props: HeaderCellProps<DataDef>) {

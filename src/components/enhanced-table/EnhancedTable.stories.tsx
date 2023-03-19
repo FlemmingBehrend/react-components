@@ -5,7 +5,7 @@ import { TableHeader } from './table/header-definitions';
 import { Identible } from './table/cell-types/cell-definitions';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
-import { green } from '@mui/material/colors';
+import { common, green } from '@mui/material/colors';
 import { Typography } from '@mui/material';
 
 export default {
@@ -15,9 +15,10 @@ export default {
 
 const customTheme = createTheme({
   enhancedTable: {
-    stripedRowsColor: green[50],
-    tableHeader: {
-      backgroundColor: green[400]
+    headers: {
+      backgroundColor: green[400],
+      fontWeight: 'bold',
+      fontColor: common.white
     }
   }
 });
@@ -74,13 +75,13 @@ const rows: SimpleRowData[] = [
 const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
   {
     label: 'Name',
-    tooltip: 'This is a header tooltip',
+    tooltip: 'This is a name header tooltip',
     dataType: 'name',
     definition: { ...StringColDef, sortable: true }
   },
   {
     label: 'Website',
-    tooltip: 'This is a header tooltip',
+    tooltip: 'This is a website header tooltip',
     dataType: 'website',
     definition: StringColDef
   },

@@ -2,10 +2,14 @@ import * as React from 'react';
 import { TableHeader } from './header-definitions';
 import { Identible } from './cell-types/cell-definitions';
 import { TableRow, styled } from '@mui/material';
+import { getLighterColor } from '../helpers';
 
 const StripedTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(even)': {
-    backgroundColor: theme.enhancedTable?.stripedRowsColor || theme.palette.action.hover
+    backgroundColor:
+      theme.enhancedTable?.stripedRowsColor || theme.enhancedTable?.headers?.backgroundColor
+        ? getLighterColor(theme.enhancedTable.headers.backgroundColor, 90)
+        : theme.palette.action.hover
   },
   // hide last border
   '&:last-child td, &:last-child th': {
