@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
+import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
 import * as React from 'react';
 import { SortDirection, TableHeader } from './header-definitions';
 import Row from './Row';
@@ -11,11 +11,13 @@ import { common } from '@mui/material/colors';
 interface TableComponentProps<DataDef> {
   headers: TableHeader<DataDef>[];
   rows: DataDef[];
+  setVisibleRows: (no: number) => void;
   initialSortColumn: keyof DataDef;
   initialSortOrder: SortDirection;
   showHeaders: boolean;
   tableSize: 'small' | 'medium';
   stripedRows: boolean;
+  filter: string;
 }
 
 function TableComponent<DataDef extends Identible>(props: TableComponentProps<DataDef>) {
@@ -23,16 +25,40 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
   const [headers, setHeaders] = React.useState<Map<number, JSX.Element[]>>(new Map());
   const [sortColumn, setSortColumn] = React.useState<keyof DataDef>(props.initialSortColumn);
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.initialSortOrder);
+  const [displayedRows, setDisplayedRows] = React.useState<DataDef[]>(props.rows);
 
   React.useEffect(() => {
-    setHeaders(generateHeadersRecursively(props.headers));
     const headerCells = getHeaderCells<DataDef>(props.headers);
-    const sortHeader = headerCells.find((header) => header.dataType === sortColumn);
-    if (sortHeader && sortHeader.definition && sortHeader.definition.comparator) {
-      const comparator = sortHeader.definition.comparator(sortColumn);
-      sortDirection === 'asc' ? props.rows.sort(comparator) : props.rows.sort((a, b) => comparator(b, a));
+
+    if (props.showHeaders) {
+      setHeaders(generateHeadersRecursively(props.headers));
+      const sortHeader = headerCells.find((header) => header.dataType === sortColumn);
+      if (sortHeader && sortHeader.definition && sortHeader.definition.comparator) {
+        const comparator = sortHeader.definition.comparator(sortColumn);
+        sortDirection === 'asc' ? displayedRows.sort(comparator) : displayedRows.sort((a, b) => comparator(b, a));
+      }
     }
-  }, [props.headers, props.rows, sortColumn, sortDirection]);
+
+    if (props.filter) {
+      const fValue = props.filter.toLowerCase();
+      const filteredRows = props.rows.filter((row) => {
+        let filters: Array<boolean> = [];
+        for (const [key, cell] of Object.entries(row)) {
+          const header = headerCells.find((header) => header.dataType === key);
+          if (header && header.definition && header.definition.filterFn) {
+            const filterFn = header.definition.filterFn(cell, header.definition);
+            filters.push(filterFn(fValue));
+          }
+        }
+        return !filters.every((element) => element === false);
+      });
+      setDisplayedRows(filteredRows);
+      props.setVisibleRows(filteredRows.length);
+    } else {
+      setDisplayedRows(props.rows);
+      props.setVisibleRows(props.rows.length);
+    }
+  }, [props.headers, props.rows, props.showHeaders, props.filter, sortColumn, sortDirection, setDisplayedRows]);
 
   function generateHeadersRecursively(
     headers: TableHeader<DataDef>[],
@@ -84,7 +110,7 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
           </TableHead>
         )}
         <TableBody>
-          {props.rows.map((row) => {
+          {displayedRows.map((row) => {
             const headers = getHeaderCells<DataDef>(props.headers);
             return <Row key={row.id} row={row} headers={headers} stripedRows={props.stripedRows} />;
           })}

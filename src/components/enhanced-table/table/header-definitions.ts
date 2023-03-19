@@ -19,7 +19,7 @@ type CommonHeaderOptions = {
 type Header<DataDef> = {
   subHeaders?: never;
   dataType: keyof DataDef;
-  definition: ColDef<unknown>;
+  definition: ColDef<string> | ColDef<number>;
 };
 
 type HeaderGroup<DataDef> = {

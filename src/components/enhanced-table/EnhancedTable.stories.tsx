@@ -2,7 +2,7 @@ import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import EnhancedTable, { NumberCell, NumberColDef, StringCell, StringColDef } from './';
 import { TableHeader } from './table/header-definitions';
-import { Identible } from './table/cell-types/cell-definitions';
+import { ColDef, Identible } from './table/cell-types/cell-definitions';
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { common, green } from '@mui/material/colors';
@@ -15,6 +15,7 @@ export default {
 
 const customTheme = createTheme({
   enhancedTable: {
+    numberOfRowColor: green[100],
     headers: {
       backgroundColor: green[400],
       fontWeight: 'bold',
@@ -77,7 +78,7 @@ const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
     label: 'Name',
     tooltip: 'This is a name header tooltip',
     dataType: 'name',
-    definition: { ...StringColDef, sortable: true }
+    definition: StringColDef
   },
   {
     label: 'Website',
@@ -92,7 +93,9 @@ const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
     definition: { ...NumberColDef, sortable: true, suffix: ' years old' }
   }
 ];
-export const SimpleTable = () => <EnhancedTable headers={simpleTableHeaders} rows={rows} stripedRows={true} />;
+export const SimpleTable = () => (
+  <EnhancedTable headers={simpleTableHeaders} rows={rows} stripedRows={true} filterable={false} showHeaders={false} />
+);
 SimpleTable.storyName = 'Simple table';
 //**************************************************** Simple table *******************************************************/
 

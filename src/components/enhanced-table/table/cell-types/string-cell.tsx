@@ -46,10 +46,20 @@ function stringComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
+function stringFilterFn(cell: Valuable<unknown>, columnDef: ColDef<unknown>) {
+  const stringCell = cell as unknown as Valuable<string>;
+  const stringColumnDef = columnDef as unknown as ColDef<string>;
+  return (filterValue: string): boolean => {
+    const searchString = stringColumnDef.suffix ? `${stringCell.value}${stringColumnDef.suffix}` : stringCell.value;
+    return searchString.toLowerCase().includes(filterValue.toLowerCase());
+  };
+}
+
 export const StringColDef: ColDef<string> = {
   align: 'left',
   sortable: true,
   suffix: '',
   render: renderStringCell,
-  comparator: stringComparator
+  comparator: stringComparator,
+  filterFn: stringFilterFn
 };

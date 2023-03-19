@@ -46,10 +46,22 @@ function numberComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
+function numberFilterFn(cell: Valuable<unknown>, columnDef: ColDef<unknown>) {
+  const numberCell = cell as unknown as Valuable<number>;
+  const numberColumnDef = columnDef as unknown as ColDef<number>;
+  return (filterValue: string): boolean => {
+    const searchString = numberColumnDef.suffix
+      ? `${numberCell.value}${numberColumnDef.suffix}`
+      : numberCell.value.toString();
+    return searchString.includes(filterValue);
+  };
+}
+
 export const NumberColDef: ColDef<number> = {
   align: 'right',
   sortable: true,
   suffix: '',
   render: renderNumberCell,
-  comparator: numberComparator
+  comparator: numberComparator,
+  filterFn: numberFilterFn
 };
