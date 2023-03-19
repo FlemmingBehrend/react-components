@@ -8,6 +8,7 @@ import {
   getSeperatorColor
 } from './helpers';
 import { TableHeader } from './table/header-definitions';
+import { StringColDef } from './table/cell-types/string-cell';
 
 interface T {
   test: string;
@@ -52,7 +53,8 @@ describe('helper functions', () => {
     it('should span 1 if no sub headers', () => {
       const headers: TableHeader<T> = {
         label: 'test',
-        dataType: 'test'
+        dataType: 'test',
+        definition: StringColDef
       };
       const result = calculateHeaderColspan(headers);
       expect(result).toEqual(1);
@@ -64,7 +66,8 @@ describe('helper functions', () => {
         subHeaders: [
           {
             label: 'test',
-            dataType: 'test'
+            dataType: 'test',
+            definition: StringColDef
           }
         ]
       };
@@ -78,11 +81,13 @@ describe('helper functions', () => {
         subHeaders: [
           {
             label: 'test',
-            dataType: 'test'
+            dataType: 'test',
+            definition: StringColDef
           },
           {
             label: 'test',
-            dataType: 'test'
+            dataType: 'test',
+            definition: StringColDef
           }
         ]
       };
@@ -99,11 +104,13 @@ describe('helper functions', () => {
             subHeaders: [
               {
                 label: 'test',
-                dataType: 'test'
+                dataType: 'test',
+                definition: StringColDef
               },
               {
                 label: 'test',
-                dataType: 'test'
+                dataType: 'test',
+                definition: StringColDef
               }
             ]
           },
@@ -112,7 +119,8 @@ describe('helper functions', () => {
             subHeaders: [
               {
                 label: 'test',
-                dataType: 'test'
+                dataType: 'test',
+                definition: StringColDef
               }
             ]
           }

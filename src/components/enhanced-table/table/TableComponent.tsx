@@ -14,6 +14,7 @@ interface TableComponentProps<DataDef> {
   initialSortOrder: SortDirection;
   showHeaders: boolean;
   tableSize: 'small' | 'medium';
+  stripedRows: boolean;
 }
 
 function TableComponent<DataDef extends Identible>(props: TableComponentProps<DataDef>) {
@@ -80,7 +81,7 @@ function TableComponent<DataDef extends Identible>(props: TableComponentProps<Da
         <TableBody>
           {props.rows.map((row) => {
             const headers = getHeaderCells<DataDef>(props.headers);
-            return <Row key={row.id} row={row} headers={headers} />;
+            return <Row key={row.id} row={row} headers={headers} stripedRows={props.stripedRows} />;
           })}
         </TableBody>
       </Table>

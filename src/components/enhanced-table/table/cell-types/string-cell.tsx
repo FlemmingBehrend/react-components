@@ -1,14 +1,22 @@
 import * as React from 'react';
 import { TableCell, Tooltip } from '@mui/material';
-import { ColDef, Valuable, Identible, Tooltipable } from './cell-definitions';
+import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 
-export interface StringCell extends Valuable<string>, Identible, Tooltipable {}
+export interface StringCell extends Identible, Valuable<string>, Tooltipable, Linkable {}
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
-  function renderCellContent() {
+  function renderLink() {
+    return cell.href ? (
+      <a href={cell.href} target={cell.target ?? '_blank'}>{`${cell.value}${columnDef.suffix}`}</a>
+    ) : (
+      `${cell.value}${columnDef.suffix}`
+    );
+  }
+
+  function renderTableCell() {
     return (
       <TableCell key={cell.id} align={columnDef.align}>
-        {cell.value as string}
+        {renderLink()}
       </TableCell>
     );
   }
@@ -16,12 +24,12 @@ function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   function renderWithTooltip() {
     return (
       <Tooltip title={cell.tooltip} followCursor>
-        {renderCellContent()}
+        {renderTableCell()}
       </Tooltip>
     );
   }
 
-  return cell.tooltip ? renderWithTooltip() : renderCellContent();
+  return cell.tooltip ? renderWithTooltip() : renderTableCell();
 }
 
 function stringComparator<DataDef>(sortColumn: keyof DataDef) {
@@ -41,6 +49,7 @@ function stringComparator<DataDef>(sortColumn: keyof DataDef) {
 export const StringColDef: ColDef<string> = {
   align: 'left',
   sortable: true,
+  suffix: '',
   render: renderStringCell,
   comparator: stringComparator
 };

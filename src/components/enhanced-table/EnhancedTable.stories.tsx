@@ -15,6 +15,7 @@ export default {
 
 const customTheme = createTheme({
   enhancedTable: {
+    stripedRowsColor: green[50],
     tableHeader: {
       backgroundColor: green[400]
     }
@@ -31,19 +32,22 @@ const TemplateWithTheme: ComponentStory<typeof EnhancedTable> = (args) => (
 //**************************************************** Simple table *******************************************************/
 interface SimpleRowData extends Identible {
   name: StringCell;
+  website: StringCell;
   age: NumberCell;
 }
 
 const rows: SimpleRowData[] = [
   {
     id: '1',
-    name: { id: '11', value: 'John', tooltip: 'This is Johns tooltip' },
+    name: { id: '11', value: 'John', tooltip: 'This is Johns name' },
+    website: { id: '12', value: 'dr', tooltip: 'This is Johns website', href: 'https://www.dr.dk', target: '_top' },
     age: { id: '12', value: 55 }
   },
   {
     id: '2',
-    name: { id: '21', value: 'Max', tooltip: 'This is Maxs tooltip' },
-    age: { id: '22', value: 44, tooltip: 'This is Maxs tooltip' }
+    name: { id: '21', value: 'Max', tooltip: 'This is Maxs name' },
+    website: { id: '12', value: 'tv2', tooltip: 'This is Max website', href: 'https://www.tv2.dk' },
+    age: { id: '22', value: 44, tooltip: 'This is Max age', href: 'https://www.tv2.dk' }
   },
   {
     id: '3',
@@ -55,6 +59,13 @@ const rows: SimpleRowData[] = [
           <Typography color="yellow">Tooltip with HTML</Typography>
         </React.Fragment>
       )
+    },
+    website: {
+      id: '12',
+      value: 'google',
+      tooltip: 'This is Olivers website',
+      href: 'https://www.google.com',
+      target: '_parent'
     },
     age: { id: '32', value: 33 }
   }
@@ -68,13 +79,19 @@ const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
     definition: { ...StringColDef, sortable: true }
   },
   {
+    label: 'Website',
+    tooltip: 'This is a header tooltip',
+    dataType: 'website',
+    definition: StringColDef
+  },
+  {
     label: 'Age',
     tooltip: 'Age of the person',
     dataType: 'age',
-    definition: { ...NumberColDef, sortable: true }
+    definition: { ...NumberColDef, sortable: true, suffix: ' years old' }
   }
 ];
-export const SimpleTable = () => <EnhancedTable headers={simpleTableHeaders} rows={rows} />;
+export const SimpleTable = () => <EnhancedTable headers={simpleTableHeaders} rows={rows} stripedRows={true} />;
 SimpleTable.storyName = 'Simple table';
 //**************************************************** Simple table *******************************************************/
 
@@ -101,77 +118,78 @@ SimpleTable.storyName = 'Simple table';
 // };
 // OneLevelHeader.storyName = 'Table component with single level headers';
 
-// //**************************************************** Multiple Sub headers *******************************************************/
-// export const HeaderGrouping = TemplateWithTheme.bind({});
-// const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
-//   {
-//     label: 'Header 1',
-//     tooltip: 'This is a tooltip for header',
-//     subHeaders: [
-//       {
-//         label: 'Header 1.1',
-//         subHeaders: [
-//           {
-//             label: 'Header 1.1.1',
-//             dataType: 'cell1',
-//             definition: StringColDef
-//           },
-//           {
-//             label: 'Header 1.1.2',
-//             dataType: 'cell2',
-//             definition: NumberColDef
-//           },
-//           {
-//             label: 'Header 1.1.3',
-//             dataType: 'cell3',
-//             definition: StringColDef
-//           }
-//         ]
-//       },
-//       {
-//         label: 'Header 1.2',
-//         subHeaders: [
-//           {
-//             label: 'Header 1.2.1',
-//             dataType: 'cell4',
-//             definition: StringColDef
-//           }
-//         ]
-//       }
-//     ]
-//   }
-// ];
+//**************************************************** Multiple Sub headers *******************************************************/
+export const HeaderGrouping = TemplateWithTheme.bind({});
+const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
+  {
+    label: 'Header 1',
+    tooltip: 'This is a tooltip for header',
+    subHeaders: [
+      {
+        label: 'Header 1.1',
+        subHeaders: [
+          {
+            label: 'Header 1.1.1',
+            dataType: 'cell1',
+            definition: StringColDef
+          },
+          {
+            label: 'Header 1.1.2',
+            dataType: 'cell2',
+            definition: NumberColDef
+          },
+          {
+            label: 'Header 1.1.3',
+            dataType: 'cell3',
+            definition: StringColDef
+          }
+        ]
+      },
+      {
+        label: 'Header 1.2',
+        subHeaders: [
+          {
+            label: 'Header 1.2.1',
+            dataType: 'cell4',
+            definition: StringColDef
+          }
+        ]
+      }
+    ]
+  }
+];
 
-// interface HeaderGroupingRowData extends Identible {
-//   cell1: StringCell;
-//   cell2: NumberCell;
-//   cell3: StringCell;
-//   cell4: StringCell;
-// }
+interface HeaderGroupingRowData extends Identible {
+  cell1: StringCell;
+  cell2: NumberCell;
+  cell3: StringCell;
+  cell4: StringCell;
+}
 
-// const headerGroupingRows: HeaderGroupingRowData[] = [
-//   {
-//     id: '1',
-//     cell1: { id: '11', value: 'Cell 1/1' },
-//     cell2: { id: '12', value: 37 },
-//     cell3: { id: '13', value: 'Cell 2/1' },
-//     cell4: { id: '14', value: 'Cell 3/1' }
-//   },
-//   {
-//     id: '2',
-//     cell1: { id: '11', value: 'Cell 1/2' },
-//     cell2: { id: '12', value: 38 },
-//     cell3: { id: '13', value: 'Cell 2/2' },
-//     cell4: { id: '14', value: 'Cell 3/2' }
-//   }
-// ];
+const headerGroupingRows: HeaderGroupingRowData[] = [
+  {
+    id: '1',
+    cell1: { id: '11', value: 'Cell 1/1' },
+    cell2: { id: '12', value: 37 },
+    cell3: { id: '13', value: 'Cell 2/1' },
+    cell4: { id: '14', value: 'Cell 3/1' }
+  },
+  {
+    id: '2',
+    cell1: { id: '11', value: 'Cell 1/2' },
+    cell2: { id: '12', value: 38 },
+    cell3: { id: '13', value: 'Cell 2/2' },
+    cell4: { id: '14', value: 'Cell 3/2' }
+  }
+];
 
-// HeaderGrouping.args = {
-//   headers: withSubheaders,
-//   rows: headerGroupingRows
-// };
-// HeaderGrouping.storyName = 'Table component showing header grouping';
-// //**************************************************** Multiple Sub headers *******************************************************/
+HeaderGrouping.args = {
+  headers: withSubheaders,
+  rows: headerGroupingRows,
+  stripedRows: true
+};
+HeaderGrouping.storyName = 'Table component showing header grouping';
+//**************************************************** Multiple Sub headers *******************************************************/
 
 // //**************************************************** Medium table *******************************************************/
 // export const mediumTableTheme = TemplateWithTheme.bind({});
