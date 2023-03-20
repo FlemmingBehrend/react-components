@@ -1,11 +1,11 @@
 import React, { PropsWithChildren } from 'react';
-import { Box, Grid, useTheme } from '@mui/material';
+import { Box, Grid, Paper, Table, TableContainer, useTheme } from '@mui/material';
 import FilterComponent from './table/FilterField';
-import TableComponent from './table/TableComponent';
 import { SortDirection, TableHeader } from './table/header-definitions';
-import { calculateHeaderColspan } from './helpers';
 import { Identible } from './table/cell-types/cell-definitions';
 import NumberOfRowsComponent from './table/NumberOfRows';
+import TableHeaders from './table/TableHeaders';
+import TableContent from './table/TableContent';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -93,36 +93,46 @@ export interface EnhancedTableProps<DataDef> {
 
 function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<EnhancedTableProps<DataDef>>) {
   const theme = useTheme();
+  const [sortColumn, setSortColumn] = React.useState<keyof DataDef | undefined>(props.initialSortColumn);
+  const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.initialSortDirection ?? 'desc');
+
   const [filter, setFilter] = React.useState('');
   const [visibleRows, setVisibleRows] = React.useState(props.rows.length);
 
-  props.headers?.map((header) => {
-    calculateHeaderColspan(header);
-  });
   const filterable = props.filterable ?? true;
+  const showHeaders = props.showHeaders ?? true;
 
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container justifyContent="space-between" alignItems="flex-end">
-        {filterable ? (
-          <FilterComponent setFilter={setFilter} filter={filter} />
-        ) : (
-          <React.Fragment>&nbsp;</React.Fragment>
-        )}
+        {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
         <NumberOfRowsComponent totalRows={visibleRows} color={theme.enhancedTable?.numberOfRowColor ?? 'DarkGray'} />
       </Grid>
       <Grid container justifyContent="space-between" alignItems="flex-end">
-        <TableComponent
-          headers={props.headers}
-          rows={props.rows}
-          setVisibleRows={setVisibleRows}
-          initialSortColumn={props.initialSortColumn ?? 'id'}
-          initialSortOrder={props.initialSortDirection ?? 'desc'}
-          tableSize={props.tableSize ?? 'small'}
-          showHeaders={props.showHeaders ?? true}
-          stripedRows={props.stripedRows ?? false}
-          filter={filter}
-        />
+        <TableContainer component={Paper}>
+          <Table size={props.tableSize}>
+            {showHeaders && (
+              <TableHeaders
+                headers={props.headers}
+                initialSortColumn={props.initialSortColumn}
+                initialSortOrder={props.initialSortDirection ?? 'desc'}
+                sortColumn={sortColumn}
+                setSortColumn={setSortColumn}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+              />
+            )}
+            <TableContent
+              rows={props.rows}
+              headers={props.headers}
+              stripedRows={props.stripedRows}
+              sortColumn={sortColumn}
+              sortDirection={sortDirection}
+              filter={filter}
+              setVisibleRows={setVisibleRows}
+            ></TableContent>
+          </Table>
+        </TableContainer>
       </Grid>
     </Box>
   );

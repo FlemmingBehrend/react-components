@@ -26,24 +26,6 @@ export function getLighterColor(hex: string, percent: number): string {
   return lighterHex;
 }
 
-export function calculateHeaderColspan<DataDef>(headers: TableHeader<DataDef>): number {
-  let count = 0;
-  if (headers.subHeaders) {
-    headers.subHeaders.map((header) => {
-      if (header.subHeaders) {
-        count += calculateHeaderColspan(header);
-      } else {
-        count++;
-      }
-    });
-  } else {
-    count++;
-  }
-  // @ts-ignore: colspan is used internally to calculate the width of the header
-  headers['colspan'] = count;
-  return count;
-}
-
 export function getHeaderCells<DataDef>(headers: TableHeader<DataDef>[]): TableHeader<DataDef>[] {
   const headerCells: TableHeader<DataDef>[] = [];
   headers.forEach((header) => {

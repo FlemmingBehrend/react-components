@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Typography } from '@mui/material';
 
 function getDisplayedRows(rows: number) {
@@ -12,8 +12,8 @@ function getDisplayedRows(rows: number) {
   }
 }
 
-function NumberOfRowsComponent(props: { totalRows: number; color: string }) {
+const NumberOfRowsComponent = memo(function NumberOfRowsComponent(props: { totalRows: number; color: string }) {
   return <Typography sx={{ fontWeight: 'bolder', color: props.color }}>{getDisplayedRows(props.totalRows)}</Typography>;
-}
+});
 
 export default NumberOfRowsComponent;

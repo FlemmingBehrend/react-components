@@ -1,78 +1,81 @@
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
-import * as React from 'react';
+import React, { memo, useContext } from 'react';
 import { SortDirection, TableHeader } from './header-definitions';
+import { HeaderCellContext } from './HeaderCellContextProvider';
 
-export interface HeaderCellProps<DataDef> {
-  header: TableHeader<DataDef>;
-  sortColumn: keyof DataDef;
+export interface HeaderCellProps {
+  key: string;
+  label: string;
+  dataType: string;
+  alignment: 'left' | 'center' | 'right';
+  tooltip?: string;
+  sortable: boolean;
+  colspan: number;
   sortDirection: SortDirection;
-  setSortColumn: React.Dispatch<React.SetStateAction<keyof DataDef>>;
-  setSortDirection: React.Dispatch<React.SetStateAction<SortDirection>>;
+  sortColumn: string;
+  setSortColumn: (column: string) => void;
+  setSortDirection: (direction: SortDirection) => void;
   backgroundColor: string;
   fontColor: string;
   fontWeight: string;
   seperatorColor: string;
 }
 
-function LabelCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  return <span style={{ whiteSpace: 'nowrap' }}>{props.header.label}</span>;
-}
+const LabelCell = function LabelCell() {
+  const { label } = useContext(HeaderCellContext);
+  return <span style={{ whiteSpace: 'nowrap' }}>{label}</span>;
+};
 
-function SortCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  function handleSort(row: keyof DataDef) {
-    const isAsc = props.sortColumn === props.header.dataType && props.sortDirection === 'asc';
-    props.setSortDirection(isAsc ? 'desc' : 'asc');
-    props.setSortColumn(row);
+function SortCell() {
+  const { dataType, sortable, sortDirection, sortColumn, setSortColumn, setSortDirection } =
+    useContext(HeaderCellContext);
+  function handleSort(row: string) {
+    const isAsc = sortColumn === dataType && sortDirection === 'asc';
+    setSortDirection(isAsc ? 'desc' : 'asc');
+    setSortColumn(row);
   }
 
   function render() {
-    if (!props.header.definition?.sortable) return <LabelCell {...props} />;
-    const row = props.header.dataType;
+    if (!sortable || !dataType) return <LabelCell />;
     return (
-      <TableSortLabel
-        active={props.header.dataType === props.sortColumn}
-        direction={props.sortDirection}
-        onClick={() => handleSort(row)}
-      >
-        <LabelCell {...props} />
+      <TableSortLabel active={dataType === sortColumn} direction={sortDirection} onClick={() => handleSort(dataType)}>
+        <LabelCell />
       </TableSortLabel>
     );
   }
   return render();
 }
 
-function TooltipCell<DataDef>(props: HeaderCellProps<DataDef>) {
+const TooltipCell = memo(function TooltipCell() {
+  const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment } =
+    useContext(HeaderCellContext);
   const sx = {
-    backgroundColor: props.backgroundColor,
-    borderRight: `1px solid ${props.seperatorColor}`,
-    color: props.fontColor,
-    fontWeight: props.fontWeight
+    backgroundColor,
+    borderRight: `1px solid ${seperatorColor}`,
+    color: fontColor,
+    fontWeight
   };
-  return props.header.tooltip ? (
-    <Tooltip title={props.header.tooltip} followCursor>
+  return tooltip ? (
+    <Tooltip title={tooltip} followCursor>
       <TableCell
         // @ts-ignore: colspan is used internally to calculate the width of the header
-        colSpan={props.header.colspan}
-        align={props.header.definition?.align ?? 'left'}
+        colSpan={colspan}
+        align={alignment}
         sx={sx}
       >
-        <SortCell {...props} />
+        <SortCell />
       </TableCell>
     </Tooltip>
   ) : (
     <TableCell
       // @ts-ignore: colspan is used internally to calculate the width of the header
-      colSpan={props.header.colspan}
-      align={props.header.definition?.align ?? 'left'}
+      colSpan={colspan}
+      align={alignment}
       sx={sx}
     >
-      <SortCell {...props} />
+      <SortCell />
     </TableCell>
   );
-}
+});
 
-function HeaderCell<DataDef>(props: HeaderCellProps<DataDef>) {
-  return <TooltipCell {...props} />;
-}
-
-export default HeaderCell;
+export default TooltipCell;

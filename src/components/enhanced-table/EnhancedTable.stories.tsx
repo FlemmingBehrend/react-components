@@ -7,6 +7,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from '@mui/material/styles';
 import { common, green } from '@mui/material/colors';
 import { Typography } from '@mui/material';
+import { faker } from '@faker-js/faker';
 
 export default {
   title: 'EnhancedTable',
@@ -123,38 +124,59 @@ SimpleTable.storyName = 'Simple table';
 // OneLevelHeader.storyName = 'Table component with single level headers';
 
 //**************************************************** Multiple Sub headers *******************************************************/
+interface User {
+  userId: string;
+  username: string;
+  email: string;
+  age: number;
+}
+
+export function createRandomUser(): User {
+  return {
+    username: faker.internet.userName(),
+    age: faker.datatype.number({ min: 18, max: 99 }),
+    email: faker.internet.email(),
+    userId: faker.datatype.uuid()
+  };
+}
+
+export const USERS: User[] = faker.helpers.arrayElements(
+  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => createRandomUser()),
+  10
+);
+
 export const HeaderGrouping = TemplateWithTheme.bind({});
 const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
   {
-    label: 'Header 1',
-    tooltip: 'This is a tooltip for header',
+    label: 'User info',
+    tooltip: 'Information about users',
     subHeaders: [
       {
-        label: 'Header 1.1',
+        label: 'Person details',
         subHeaders: [
           {
-            label: 'Header 1.1.1',
-            dataType: 'cell1',
-            definition: StringColDef
+            label: 'Username',
+            dataType: 'username',
+            definition: { ...StringColDef, align: 'center' }
           },
           {
-            label: 'Header 1.1.2',
-            dataType: 'cell2',
+            label: 'Age',
+            dataType: 'age',
             definition: NumberColDef
           },
           {
-            label: 'Header 1.1.3',
-            dataType: 'cell3',
+            label: 'Email',
+            dataType: 'email',
             definition: StringColDef
           }
         ]
       },
       {
-        label: 'Header 1.2',
+        label: 'System details',
         subHeaders: [
           {
-            label: 'Header 1.2.1',
-            dataType: 'cell4',
+            label: 'User id',
+            dataType: 'userId',
             definition: StringColDef
           }
         ]
@@ -164,33 +186,26 @@ const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
 ];
 
 interface HeaderGroupingRowData extends Identible {
-  cell1: StringCell;
-  cell2: NumberCell;
-  cell3: StringCell;
-  cell4: StringCell;
+  userId: StringCell;
+  username: StringCell;
+  email: StringCell;
+  age: NumberCell;
 }
 
-const headerGroupingRows: HeaderGroupingRowData[] = [
-  {
-    id: '1',
-    cell1: { id: '11', value: 'Cell 1/1' },
-    cell2: { id: '12', value: 37 },
-    cell3: { id: '13', value: 'Cell 2/1' },
-    cell4: { id: '14', value: 'Cell 3/1' }
-  },
-  {
-    id: '2',
-    cell1: { id: '11', value: 'Cell 1/2' },
-    cell2: { id: '12', value: 38 },
-    cell3: { id: '13', value: 'Cell 2/2' },
-    cell4: { id: '14', value: 'Cell 3/2' }
-  }
-];
+const headerGroupingRows: HeaderGroupingRowData[] = USERS.map((user) => ({
+  id: user.userId,
+  userId: { id: user.userId, value: user.userId },
+  username: { id: user.userId, value: user.username },
+  email: { id: user.userId, value: user.email },
+  age: { id: user.userId, value: user.age }
+}));
 
 HeaderGrouping.args = {
   headers: withSubheaders,
   rows: headerGroupingRows,
-  stripedRows: true
+  stripedRows: true,
+  filterable: false,
+  tableSize: 'small'
 };
 HeaderGrouping.storyName = 'Table component showing header grouping';
 //**************************************************** Multiple Sub headers *******************************************************/
