@@ -14,6 +14,11 @@ type CommonHeaderOptions = {
    * @default undefined, no tooltip
    */
   tooltip?: string;
+
+  /**
+   * Align the header text.
+   */
+  align?: 'left' | 'center' | 'right';
 };
 
 type Header<DataDef> = {

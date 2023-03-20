@@ -110,7 +110,7 @@ function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<Enhan
       </Grid>
       <Grid container justifyContent="space-between" alignItems="flex-end">
         <TableContainer component={Paper}>
-          <Table size={props.tableSize}>
+          <Table size={props.tableSize ?? 'small'}>
             {showHeaders && (
               <TableHeaders
                 headers={props.headers}

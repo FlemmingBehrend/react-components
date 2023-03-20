@@ -40,7 +40,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         key: hash(header.label + index).toString(),
         label: header.label,
         dataType: header.dataType as string,
-        alignment: header.definition?.align ?? 'left',
+        alignment: header.align ?? 'left',
         tooltip: header.tooltip,
         sortable: header.definition?.sortable ?? false,
         colspan: header.subHeaders?.length ?? 1,

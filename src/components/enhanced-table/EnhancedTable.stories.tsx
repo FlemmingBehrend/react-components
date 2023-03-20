@@ -25,6 +25,14 @@ const customTheme = createTheme({
   }
 });
 
+interface User {
+  userId?: string;
+  username?: string;
+  email?: string;
+  website?: string;
+  age?: number;
+}
+
 //👇 We create a “template” of how args map to rendering
 const TemplateWithTheme: ComponentStory<typeof EnhancedTable> = (args) => (
   <ThemeProvider theme={customTheme}>
@@ -33,46 +41,32 @@ const TemplateWithTheme: ComponentStory<typeof EnhancedTable> = (args) => (
 );
 
 //**************************************************** Simple table *******************************************************/
+
+function createRandomSimpleData(): User {
+  return {
+    userId: faker.datatype.uuid(),
+    username: faker.internet.userName(),
+    website: faker.internet.domainName(),
+    age: faker.datatype.number({ min: 18, max: 99 })
+  };
+}
+const SIMPLE_USER: User[] = faker.helpers.arrayElements(
+  Array.from({ length: 15 }, () => createRandomSimpleData()),
+  15
+);
+
 interface SimpleRowData extends Identible {
-  name: StringCell;
-  website: StringCell;
-  age: NumberCell;
+  name?: StringCell;
+  website?: StringCell;
+  age?: NumberCell;
 }
 
-const rows: SimpleRowData[] = [
-  {
-    id: '1',
-    name: { id: '11', value: 'John', tooltip: 'This is Johns name' },
-    website: { id: '12', value: 'dr', tooltip: 'This is Johns website', href: 'https://www.dr.dk', target: '_top' },
-    age: { id: '12', value: 55 }
-  },
-  {
-    id: '2',
-    name: { id: '21', value: 'Max', tooltip: 'This is Maxs name' },
-    website: { id: '12', value: 'tv2', tooltip: 'This is Max website', href: 'https://www.tv2.dk' },
-    age: { id: '22', value: 44, tooltip: 'This is Max age', href: 'https://www.tv2.dk' }
-  },
-  {
-    id: '3',
-    name: {
-      id: '31',
-      value: 'Oliver',
-      tooltip: (
-        <React.Fragment>
-          <Typography color="yellow">Tooltip with HTML</Typography>
-        </React.Fragment>
-      )
-    },
-    website: {
-      id: '12',
-      value: 'google',
-      tooltip: 'This is Olivers website',
-      href: 'https://www.google.com',
-      target: '_parent'
-    },
-    age: { id: '32', value: 33 }
-  }
-];
+const rows: SimpleRowData[] = SIMPLE_USER.map((user) => ({
+  id: user.userId || 'N/A',
+  name: { id: user.userId ?? 'N/A', value: user.username ?? 'N/A' },
+  website: { id: user.userId ?? 'N/A', value: user.website ?? 'N/A' },
+  age: { id: user.userId ?? 'N/A', value: user.age ?? 0 }
+}));
 
 const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
   {
@@ -124,14 +118,10 @@ SimpleTable.storyName = 'Simple table';
 // OneLevelHeader.storyName = 'Table component with single level headers';
 
 //**************************************************** Multiple Sub headers *******************************************************/
-interface User {
-  userId: string;
-  username: string;
-  email: string;
-  age: number;
-}
 
-export function createRandomUser(): User {
+// create 100 random users
+
+function createRandomUser(): User {
   return {
     username: faker.internet.userName(),
     age: faker.datatype.number({ min: 18, max: 99 }),
@@ -139,30 +129,31 @@ export function createRandomUser(): User {
     userId: faker.datatype.uuid()
   };
 }
-
-export const USERS: User[] = faker.helpers.arrayElements(
-  [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(() => createRandomUser()),
-  10
+const USERS: User[] = faker.helpers.arrayElements(
+  Array.from({ length: 1000 }, () => createRandomUser()),
+  1000
 );
 
 export const HeaderGrouping = TemplateWithTheme.bind({});
 const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
   {
     label: 'User info',
+    align: 'center',
     tooltip: 'Information about users',
     subHeaders: [
       {
         label: 'Person details',
+        align: 'center',
         subHeaders: [
           {
             label: 'Username',
             dataType: 'username',
-            definition: { ...StringColDef, align: 'center' }
+            definition: StringColDef
           },
           {
             label: 'Age',
             dataType: 'age',
-            definition: NumberColDef
+            definition: { ...NumberColDef, suffix: ' years old' }
           },
           {
             label: 'Email',
@@ -173,6 +164,7 @@ const withSubheaders: TableHeader<HeaderGroupingRowData>[] = [
       },
       {
         label: 'System details',
+        align: 'center',
         subHeaders: [
           {
             label: 'User id',
@@ -193,18 +185,18 @@ interface HeaderGroupingRowData extends Identible {
 }
 
 const headerGroupingRows: HeaderGroupingRowData[] = USERS.map((user) => ({
-  id: user.userId,
-  userId: { id: user.userId, value: user.userId },
-  username: { id: user.userId, value: user.username },
-  email: { id: user.userId, value: user.email },
-  age: { id: user.userId, value: user.age }
+  id: user.userId ?? 'N/A',
+  userId: { id: user.userId ?? 'N/A', value: user.userId ?? 'N/A' },
+  username: { id: user.userId ?? 'N/A', value: user.username ?? 'N/A' },
+  email: { id: user.userId ?? 'N/A', value: user.email ?? 'N/A' },
+  age: { id: user.userId ?? 'N/A', value: user.age ?? 0 }
 }));
 
 HeaderGrouping.args = {
   headers: withSubheaders,
   rows: headerGroupingRows,
   stripedRows: true,
-  filterable: false,
+  filterable: true,
   tableSize: 'small'
 };
 HeaderGrouping.storyName = 'Table component showing header grouping';
