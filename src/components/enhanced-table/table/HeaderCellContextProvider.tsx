@@ -2,7 +2,6 @@ import React, { createContext, FC } from 'react';
 import { SortDirection } from './header-definitions';
 
 interface HeaderCellContextProps {
-  key: string;
   label: string;
   dataType: string;
   alignment: 'left' | 'center' | 'right';
@@ -20,7 +19,6 @@ interface HeaderCellContextProps {
 }
 
 export const HeaderCellContext = createContext<HeaderCellContextProps>({
-  key: '',
   label: '',
   dataType: '',
   alignment: 'left',
@@ -38,7 +36,6 @@ export const HeaderCellContext = createContext<HeaderCellContextProps>({
 });
 
 interface HeaderCellContextProviderProps {
-  key: string;
   label: string;
   dataType: string;
   alignment: 'left' | 'center' | 'right';
@@ -63,7 +60,6 @@ const HeaderCellContextProvider: FC<HeaderCellContextProviderProps> = ({
   dataType,
   fontColor,
   fontWeight,
-  key,
   label,
   setSortColumn,
   setSortDirection,
@@ -83,7 +79,6 @@ const HeaderCellContextProvider: FC<HeaderCellContextProviderProps> = ({
         dataType,
         fontColor,
         fontWeight,
-        key,
         label,
         seperatorColor,
         setSortColumn,

@@ -37,10 +37,18 @@ function SortCell() {
 
   function render() {
     if (!sortable || !dataType) return <LabelCell />;
+    let tooltip = ``;
+    if (!sortColumn) {
+      tooltip = `Sort this column. No column is currently sorted, so this will sort by ${dataType} in ascending order.`;
+    } else {
+      tooltip = `Sort this column. Currently sorted by ${sortColumn} in ${sortDirection}ending order.`;
+    }
     return (
-      <TableSortLabel active={dataType === sortColumn} direction={sortDirection} onClick={() => handleSort(dataType)}>
-        <LabelCell />
-      </TableSortLabel>
+      <Tooltip title={tooltip} placement="top-start">
+        <TableSortLabel active={dataType === sortColumn} direction={sortDirection} onClick={() => handleSort(dataType)}>
+          <LabelCell />
+        </TableSortLabel>
+      </Tooltip>
     );
   }
   return render();

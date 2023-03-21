@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TableCell, Tooltip } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
+import { hash } from '../../../../hashing';
 
 export interface StringCell extends Identible, Valuable<string>, Tooltipable, Linkable {}
 
@@ -15,7 +16,7 @@ function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
 
   function renderTableCell() {
     return (
-      <TableCell key={cell.id} align={columnDef.align}>
+      <TableCell key={`${hash(cell.id + cell.value)}`} align={columnDef.align}>
         {renderLink()}
       </TableCell>
     );

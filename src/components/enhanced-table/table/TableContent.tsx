@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Paper, Table, TableBody, TableContainer, TableHead, TableRow, useTheme } from '@mui/material';
+import { TableBody } from '@mui/material';
 import Row from './Row';
 import { TableHeader } from './header-definitions';
-import { getHeaderCells } from '../helpers';
 import { Identible } from './cell-types/cell-definitions';
+import { getHeaderCells } from '../helpers';
 
 interface TableContentProps<DataDef> {
   rows: DataDef[];
@@ -18,10 +18,19 @@ interface TableContentProps<DataDef> {
 function TableContent<DataDef extends Identible>(props: TableContentProps<DataDef>) {
   const [displayedRows, setDisplayedRows] = React.useState<DataDef[]>(props.rows);
 
-  const headers = getHeaderCells<DataDef>(props.headers);
+  const headers = React.useMemo(() => {
+    const headerCells: TableHeader<DataDef>[] = [];
+    props.headers.forEach((header) => {
+      if (header.subHeaders) {
+        headerCells.push(...getHeaderCells(header.subHeaders));
+      } else {
+        headerCells.push(header);
+      }
+    });
+    return headerCells;
+  }, [props.headers]);
 
   React.useEffect(() => {
-    const rows: DataDef[] = [];
     if (props.filter) {
       const fValue = props.filter.toLowerCase();
       const filteredRows = props.rows.filter((row) => {
@@ -35,22 +44,31 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
         }
         return !filters.every((element) => element === false);
       });
-      rows.push(...filteredRows);
+      setDisplayedRows(filteredRows);
     } else {
-      rows.push(...props.rows);
+      setDisplayedRows(props.rows);
     }
+  }, [props.filter]);
 
+  React.useEffect(() => {
     if (props.sortColumn !== undefined) {
       const sortHeader = headers.find((header) => header.dataType === props.sortColumn);
       if (sortHeader && sortHeader.definition && sortHeader.definition.comparator) {
         const comparator = sortHeader.definition.comparator(sortHeader.dataType);
-        props.sortDirection === 'asc' ? rows.sort(comparator) : rows.sort((a, b) => comparator(b, a));
+        if (props.sortDirection === 'asc') {
+          const asc = displayedRows.sort(comparator);
+          setDisplayedRows([...asc]);
+        } else {
+          const desc = displayedRows.sort((a, b) => comparator(b, a));
+          setDisplayedRows([...desc]);
+        }
       }
     }
+  }, [props.sortColumn, props.sortDirection]);
 
-    setDisplayedRows(rows);
-    props.setVisibleRows(rows.length);
-  }, [props.filter, props.sortDirection, props.sortColumn]);
+  React.useEffect(() => {
+    props.setVisibleRows(displayedRows.length);
+  }, [displayedRows.length]);
 
   return (
     <TableBody>

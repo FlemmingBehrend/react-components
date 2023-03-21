@@ -41,7 +41,6 @@ const TemplateWithTheme: ComponentStory<typeof EnhancedTable> = (args) => (
 );
 
 //**************************************************** Simple table *******************************************************/
-
 function createRandomSimpleData(): User {
   return {
     userId: faker.datatype.uuid(),
@@ -88,9 +87,12 @@ const simpleTableHeaders: TableHeader<SimpleRowData>[] = [
     definition: { ...NumberColDef, sortable: true, suffix: ' years old' }
   }
 ];
-export const SimpleTable = () => (
+export const SimpleTableNoHeader = () => (
   <EnhancedTable headers={simpleTableHeaders} rows={rows} stripedRows={true} filterable={false} showHeaders={false} />
 );
+SimpleTableNoHeader.storyName = 'Simple table (no header or filtering)';
+
+export const SimpleTable = () => <EnhancedTable headers={simpleTableHeaders} rows={rows} stripedRows={true} />;
 SimpleTable.storyName = 'Simple table';
 //**************************************************** Simple table *******************************************************/
 
@@ -118,8 +120,6 @@ SimpleTable.storyName = 'Simple table';
 // OneLevelHeader.storyName = 'Table component with single level headers';
 
 //**************************************************** Multiple Sub headers *******************************************************/
-
-// create 100 random users
 
 function createRandomUser(): User {
   return {
@@ -200,6 +200,7 @@ HeaderGrouping.args = {
   tableSize: 'small'
 };
 HeaderGrouping.storyName = 'Table component showing header grouping';
+
 //**************************************************** Multiple Sub headers *******************************************************/
 
 // //**************************************************** Medium table *******************************************************/

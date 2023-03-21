@@ -95,7 +95,6 @@ function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<Enhan
   const theme = useTheme();
   const [sortColumn, setSortColumn] = React.useState<keyof DataDef | undefined>(props.initialSortColumn);
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.initialSortDirection ?? 'desc');
-
   const [filter, setFilter] = React.useState('');
   const [visibleRows, setVisibleRows] = React.useState(props.rows.length);
 
