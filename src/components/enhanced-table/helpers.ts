@@ -1,5 +1,4 @@
 import { Theme } from '@mui/material';
-import { TableHeader } from './table/header-definitions';
 import { blueGrey } from '@mui/material/colors';
 
 export const DEFAULT_TABLE_HEADER_COLOR = blueGrey[400];
@@ -24,18 +23,6 @@ export function getLighterColor(hex: string, percent: number): string {
   b = Math.round(b + ((255 - b) * percent) / 100);
   let lighterHex = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
   return lighterHex;
-}
-
-export function getHeaderCells<DataDef>(headers: TableHeader<DataDef>[]): TableHeader<DataDef>[] {
-  const headerCells: TableHeader<DataDef>[] = [];
-  headers.forEach((header) => {
-    if (header.subHeaders) {
-      headerCells.push(...getHeaderCells(header.subHeaders));
-    } else {
-      headerCells.push(header);
-    }
-  });
-  return headerCells;
 }
 
 export function getBackgroundColor(theme: Theme, level: number) {

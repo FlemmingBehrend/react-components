@@ -3,7 +3,6 @@ import { TableBody } from '@mui/material';
 import Row from './Row';
 import { TableHeader } from './header-definitions';
 import { Identible } from './cell-types/cell-definitions';
-import { getHeaderCells } from '../helpers';
 
 interface TableContentProps<DataDef> {
   rows: DataDef[];
@@ -13,6 +12,18 @@ interface TableContentProps<DataDef> {
   sortDirection?: 'asc' | 'desc';
   filter: string;
   setVisibleRows: (no: number) => void;
+}
+
+function getHeaderCells<DataDef>(headers: TableHeader<DataDef>[]): TableHeader<DataDef>[] {
+  const headerCells: TableHeader<DataDef>[] = [];
+  headers.forEach((header) => {
+    if (header.subHeaders) {
+      headerCells.push(...getHeaderCells(header.subHeaders));
+    } else {
+      headerCells.push(header);
+    }
+  });
+  return headerCells;
 }
 
 function TableContent<DataDef extends Identible>(props: TableContentProps<DataDef>) {

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import * as React from 'react';
 import { Box, Grid, Paper, Table, TableContainer, useTheme } from '@mui/material';
 import FilterComponent from './table/FilterField';
 import { SortDirection, TableHeader } from './table/header-definitions';
@@ -91,7 +91,7 @@ export interface EnhancedTableProps<DataDef> {
   displayNumberOfRows?: boolean;
 }
 
-function EnhancedTable<DataDef extends Identible>(props: PropsWithChildren<EnhancedTableProps<DataDef>>) {
+function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<DataDef>) {
   const theme = useTheme();
   const [sortColumn, setSortColumn] = React.useState<keyof DataDef | undefined>(props.initialSortColumn);
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(props.initialSortDirection ?? 'desc');

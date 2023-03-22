@@ -2,13 +2,10 @@ import { Theme } from '@mui/material';
 import {
   getDarkerColor,
   getLighterColor,
-  calculateHeaderColspan,
   getBackgroundColor,
   DEFAULT_TABLE_HEADER_COLOR,
   getSeperatorColor
 } from './helpers';
-import { TableHeader } from './table/header-definitions';
-import { StringColDef } from './table/cell-types/string-cell';
 
 interface T {
   test: string;
@@ -46,88 +43,6 @@ describe('helper functions', () => {
     it('should return 10% darker color of white', () => {
       const result = getDarkerColor('#ffffff', 10);
       expect(result).toEqual('#e6e6e6');
-    });
-  });
-
-  describe('calculate header span', () => {
-    it('should span 1 if no sub headers', () => {
-      const headers: TableHeader<T> = {
-        label: 'test',
-        dataType: 'test',
-        definition: StringColDef
-      };
-      const result = calculateHeaderColspan(headers);
-      expect(result).toEqual(1);
-    });
-
-    it('should span 1 if 1 sub header', () => {
-      const headers: TableHeader<T> = {
-        label: 'test',
-        subHeaders: [
-          {
-            label: 'test',
-            dataType: 'test',
-            definition: StringColDef
-          }
-        ]
-      };
-      const result = calculateHeaderColspan(headers);
-      expect(result).toEqual(1);
-    });
-
-    it('should span 2 if 2 sub headers', () => {
-      const headers: TableHeader<T> = {
-        label: 'test',
-        subHeaders: [
-          {
-            label: 'test',
-            dataType: 'test',
-            definition: StringColDef
-          },
-          {
-            label: 'test',
-            dataType: 'test',
-            definition: StringColDef
-          }
-        ]
-      };
-      const result = calculateHeaderColspan(headers);
-      expect(result).toEqual(2);
-    });
-
-    it('should span 3 if 1 sub header with 2 sub headers', () => {
-      const headers: TableHeader<T> = {
-        label: 'test',
-        subHeaders: [
-          {
-            label: 'test',
-            subHeaders: [
-              {
-                label: 'test',
-                dataType: 'test',
-                definition: StringColDef
-              },
-              {
-                label: 'test',
-                dataType: 'test',
-                definition: StringColDef
-              }
-            ]
-          },
-          {
-            label: 'test',
-            subHeaders: [
-              {
-                label: 'test',
-                dataType: 'test',
-                definition: StringColDef
-              }
-            ]
-          }
-        ]
-      };
-      const result = calculateHeaderColspan(headers);
-      expect(result).toEqual(3);
     });
   });
 

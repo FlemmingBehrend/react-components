@@ -1,6 +1,6 @@
+import * as React from 'react';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
-import React, { memo, useContext } from 'react';
-import { SortDirection, TableHeader } from './header-definitions';
+import { SortDirection } from './header-definitions';
 import { HeaderCellContext } from './HeaderCellContextProvider';
 
 export interface HeaderCellProps {
@@ -22,13 +22,13 @@ export interface HeaderCellProps {
 }
 
 const LabelCell = function LabelCell() {
-  const { label } = useContext(HeaderCellContext);
+  const { label } = React.useContext(HeaderCellContext);
   return <span style={{ whiteSpace: 'nowrap' }}>{label}</span>;
 };
 
 function SortCell() {
   const { dataType, sortable, sortDirection, sortColumn, setSortColumn, setSortDirection } =
-    useContext(HeaderCellContext);
+    React.useContext(HeaderCellContext);
   function handleSort(row: string) {
     const isAsc = sortColumn === dataType && sortDirection === 'asc';
     setSortDirection(isAsc ? 'desc' : 'asc');
@@ -54,9 +54,9 @@ function SortCell() {
   return render();
 }
 
-const TooltipCell = memo(function TooltipCell() {
+const TooltipCell = React.memo(function TooltipCell() {
   const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment } =
-    useContext(HeaderCellContext);
+    React.useContext(HeaderCellContext);
   const sx = {
     backgroundColor,
     borderRight: `1px solid ${seperatorColor}`,

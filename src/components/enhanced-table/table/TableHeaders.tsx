@@ -20,6 +20,29 @@ interface TableHeadersProps<DataDef> {
 function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   const theme = useTheme();
 
+  const headerRows = React.useMemo(() => {
+    const headers = generateHeadersRecursively(props.headers);
+    // traverse the headerRows map from the bottom up calculating the colspan for each header
+    // this is done by adding the colspan of the subheaders to the colspan of the current header
+    // if the current header has no subheaders, the colspan is 1
+    for (let level = headers.size - 1; level >= 0; level--) {
+      const currentLevelHeaders = headers.get(level);
+      const nextLevelHeaders = headers.get(level + 1);
+      if (currentLevelHeaders && nextLevelHeaders) {
+        currentLevelHeaders.map((header, index) => {
+          if (header.colspan > 1) {
+            let colspan = header.colspan;
+            for (let i = index; i < index + header.colspan; i++) {
+              colspan += nextLevelHeaders[i].colspan - 1;
+            }
+            header.colspan = colspan;
+          }
+        });
+      }
+    }
+    return headers;
+  }, [props.headers, props.sortColumn, props.sortDirection]);
+
   function generateHeadersRecursively(
     headers: TableHeader<DataDef>[],
     headerRows: Map<number, HeaderCellProps[]> = new Map(),
@@ -58,27 +81,6 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
       }
     });
     return headerRows;
-  }
-
-  const headerRows = generateHeadersRecursively(props.headers);
-
-  // traverse the headerRows map from the bottom up calculating the colspan for each header
-  // this is done by adding the colspan of the subheaders to the colspan of the current header
-  // if the current header has no subheaders, the colspan is 1
-  for (let level = headerRows.size - 1; level >= 0; level--) {
-    const currentLevelHeaders = headerRows.get(level);
-    const nextLevelHeaders = headerRows.get(level + 1);
-    if (currentLevelHeaders && nextLevelHeaders) {
-      currentLevelHeaders.map((header, index) => {
-        if (header.colspan > 1) {
-          let colspan = header.colspan;
-          for (let i = index; i < index + header.colspan; i++) {
-            colspan += nextLevelHeaders[i].colspan - 1;
-          }
-          header.colspan = colspan;
-        }
-      });
-    }
   }
 
   return (
