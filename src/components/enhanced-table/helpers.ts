@@ -1,7 +1,4 @@
 import { Theme } from '@mui/material';
-import { blueGrey } from '@mui/material/colors';
-
-export const DEFAULT_TABLE_HEADER_COLOR = blueGrey[400];
 
 export function getDarkerColor(hex: string, percent: number): string {
   let r = parseInt(hex.substring(1, 3), 16);
@@ -25,19 +22,45 @@ export function getLighterColor(hex: string, percent: number): string {
   return lighterHex;
 }
 
-export function getBackgroundColor(theme: Theme, level: number) {
-  const baseBackgroundColor = theme?.enhancedTable?.headers?.backgroundColor ?? DEFAULT_TABLE_HEADER_COLOR;
+export function getBackgroundColor(color: string, level: number) {
   if (level === 0) {
-    return baseBackgroundColor;
+    return color;
   } else {
-    return getLighterColor(baseBackgroundColor, level * 10);
+    return getLighterColor(color, level * 10);
   }
 }
 
-export function getSeperatorColor(theme: Theme) {
-  const definedTheme = theme?.enhancedTable?.headers?.backgroundColor;
-  const verticalSeperatorColor = definedTheme
-    ? getLighterColor(definedTheme, 70)
-    : getLighterColor(DEFAULT_TABLE_HEADER_COLOR, 70);
-  return verticalSeperatorColor;
+type Color = {
+  50: string;
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  A100: string;
+  A200: string;
+  A400: string;
+  A700: string;
+  main: string;
+  light: string;
+  dark: string;
+  contrastText: string;
+};
+
+export function isPaletteColorSet(color: any): color is Color {
+  return (
+    color &&
+    color.main &&
+    color.light &&
+    color.dark &&
+    color.contrastText &&
+    color.A100 &&
+    color.A200 &&
+    color.A400 &&
+    color.A700
+  );
 }

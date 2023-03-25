@@ -1,24 +1,24 @@
-import { TableHead, TableRow, useTheme } from '@mui/material';
+import { TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import * as React from 'react';
-import { SortDirection, TableHeader } from './header-definitions';
-import { getBackgroundColor, getSeperatorColor } from '../helpers';
-import { common } from '@mui/material/colors';
-import TooltipCell, { HeaderCellProps } from './HeaderCell';
+import { SortDirection, EnhancedTableHeader } from './header-definitions';
+import { EnhancedHeaderCellProps, EnhancedHeaderCell } from './header-cell';
 import { hash } from '../../../hashing';
-import HeaderCellContextProvider from './HeaderCellContextProvider';
+import HeaderCellContextProvider from './header-cell-context-provider';
+import { getBackgroundColor } from '../helpers';
+import { TableThemeContext } from '../table-theme-context-provider';
 
 interface TableHeadersProps<DataDef> {
-  headers: TableHeader<DataDef>[];
-  initialSortColumn?: keyof DataDef;
-  initialSortOrder: SortDirection;
+  headers: EnhancedTableHeader<DataDef>[];
   sortColumn?: keyof DataDef;
   setSortColumn: (column: keyof DataDef) => void;
   sortDirection: SortDirection;
   setSortDirection: (direction: SortDirection) => void;
+  expandable: boolean;
 }
 
 function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   const theme = useTheme();
+  const tableTheme = React.useContext(TableThemeContext);
 
   const headerRows = React.useMemo(() => {
     const headers = generateHeadersRecursively(props.headers);
@@ -44,21 +44,16 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   }, [props.headers, props.sortColumn, props.sortDirection]);
 
   function generateHeadersRecursively(
-    headers: TableHeader<DataDef>[],
-    headerRows: Map<number, HeaderCellProps[]> = new Map(),
+    headers: EnhancedTableHeader<DataDef>[],
+    headerRows: Map<number, EnhancedHeaderCellProps[]> = new Map(),
     level: number = 0
-  ): Map<number, HeaderCellProps[]> {
+  ): Map<number, EnhancedHeaderCellProps[]> {
     if (!headers) return headerRows;
 
     headers.map((header, index) => {
       if (!headerRows.has(level)) {
         headerRows.set(level, []);
       }
-      const backgroundColor = getBackgroundColor(theme, level);
-      const fontColor = theme.enhancedTable?.headers?.fontColor || common.black;
-      const fontWeight = theme.enhancedTable?.headers?.fontWeight || 'normal';
-      const seperatorColor = getSeperatorColor(theme);
-
       headerRows.get(level)?.push({
         key: hash(header.label + index).toString(),
         label: header.label,
@@ -71,10 +66,10 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         sortColumn: props.sortColumn as string,
         setSortColumn: props.setSortColumn as (column: string) => void,
         setSortDirection: props.setSortDirection,
-        backgroundColor,
-        fontColor,
-        fontWeight,
-        seperatorColor
+        backgroundColor: getBackgroundColor(tableTheme.headerBackgroundColor, level),
+        fontColor: tableTheme.headerFontColor,
+        fontWeight: tableTheme.headerFontWeight,
+        seperatorColor: tableTheme.headerSeperatorColor
       });
       if (header.subHeaders) {
         generateHeadersRecursively(header.subHeaders, headerRows, level + 1);
@@ -88,6 +83,11 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
       {[...headerRows.keys()].map((level) => {
         return (
           <TableRow key={level}>
+            {props.expandable && (
+              <TableCell
+                sx={{ backgroundColor: `${getBackgroundColor(tableTheme.headerBackgroundColor, level)}`, width: '1%' }}
+              ></TableCell>
+            )}
             {headerRows.get(level)?.map((header) => (
               <HeaderCellContextProvider
                 alignment={header.alignment}
@@ -106,7 +106,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
                 sortable={header.sortable}
                 dataType={header.dataType}
               >
-                <TooltipCell />
+                <EnhancedHeaderCell />
               </HeaderCellContextProvider>
             ))}
           </TableRow>

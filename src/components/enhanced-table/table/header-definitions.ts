@@ -21,18 +21,19 @@ type CommonHeaderOptions = {
   align?: 'left' | 'center' | 'right';
 };
 
-type Header<DataDef> = {
+type EnhancedHeader<DataDef> = {
   subHeaders?: never;
   dataType: keyof DataDef;
   definition: ColDef<string> | ColDef<number>;
 };
 
-type HeaderGroup<DataDef> = {
-  subHeaders: TableHeader<DataDef>[];
+type EnhancedHeaderGroup<DataDef> = {
+  subHeaders: EnhancedTableHeader<DataDef>[];
   dataType?: never;
   definition?: never;
 };
 
-export type TableHeader<DataDef> = CommonHeaderOptions & (Header<DataDef> | HeaderGroup<DataDef>);
+export type EnhancedTableHeader<DataDef> = CommonHeaderOptions &
+  (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);
 
 export type SortDirection = 'asc' | 'desc';

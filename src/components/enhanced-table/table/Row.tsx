@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { TableHeader } from './header-definitions';
+import { EnhancedTableHeader } from './header-definitions';
 import { Identible } from './cell-types/cell-definitions';
-import { TableRow, styled } from '@mui/material';
-import { getLighterColor } from '../helpers';
+import { IconButton, TableCell, TableRow, styled } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const StripedTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(even)': {
-    backgroundColor:
-      theme.enhancedTable?.stripedRowsColor || theme.enhancedTable?.headers?.backgroundColor
-        ? getLighterColor(theme.enhancedTable.headers.backgroundColor, 90)
-        : theme.palette.action.hover
-  },
+const StyledRow = styled(TableRow)(({ theme }) => ({
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0
@@ -19,23 +14,47 @@ const StripedTableRow = styled(TableRow)(({ theme }) => ({
 
 interface RowProps<DataDef> {
   row: DataDef & Identible;
-  headers: TableHeader<DataDef>[];
+  headers: EnhancedTableHeader<DataDef>[];
   stripedRows: boolean;
+  expandable: boolean;
+  rowColor: string;
 }
 
 function Row<DataDef>(props: RowProps<DataDef>) {
-  return props.stripedRows ? (
-    <StripedTableRow>
-      {props.headers.map((header) => {
-        return header.definition?.render(props.row[header.dataType], header.definition);
-      })}
-    </StripedTableRow>
-  ) : (
-    <TableRow>
-      {props.headers.map((header) => {
-        return header.definition?.render(props.row[header.dataType], header.definition);
-      })}
-    </TableRow>
+  const [open, setOpen] = React.useState(false);
+
+  function renderExpandCell() {
+    if (props.expandable) {
+      return (
+        <TableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+      );
+    }
+  }
+
+  function renderExpandedElement() {
+    if (open) {
+      return (
+        <StyledRow>
+          <TableCell colSpan={props.headers.length + 1}>EXPANDED</TableCell>
+        </StyledRow>
+      );
+    }
+  }
+
+  return (
+    <React.Fragment>
+      <StyledRow sx={{ backgroundColor: props.rowColor }}>
+        {props.expandable && renderExpandCell()}
+        {props.headers.map((header) => {
+          return header.definition?.render(props.row[header.dataType], header.definition);
+        })}
+      </StyledRow>
+      {renderExpandedElement()}
+    </React.Fragment>
   );
 }
 

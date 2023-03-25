@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { SortDirection } from './header-definitions';
-import { HeaderCellContext } from './HeaderCellContextProvider';
+import { HeaderCellContext } from './header-cell-context-provider';
 
-export interface HeaderCellProps {
+export interface EnhancedHeaderCellProps {
   key: string;
   label: string;
   dataType: string;
@@ -57,11 +57,12 @@ function SortCell() {
 const TooltipCell = React.memo(function TooltipCell() {
   const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment } =
     React.useContext(HeaderCellContext);
+
   const sx = {
     backgroundColor,
     borderRight: `1px solid ${seperatorColor}`,
     color: fontColor,
-    fontWeight
+    fontWeight: fontWeight
   };
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
@@ -86,4 +87,4 @@ const TooltipCell = React.memo(function TooltipCell() {
   );
 });
 
-export default TooltipCell;
+export { TooltipCell as EnhancedHeaderCell };

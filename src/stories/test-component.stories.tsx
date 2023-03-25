@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import TestComponent from './';
+import TestComponent from '../components/test-component';
 
 //👇 This default export determines where your story goes in the story list
 export default {
