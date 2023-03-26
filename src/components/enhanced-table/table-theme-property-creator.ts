@@ -1,157 +1,177 @@
 import { Theme } from '@mui/material';
 import { getDarkerColor, getLighterColor, isPaletteColorSet } from './helpers';
 
-export function getNumberOfRowsFontColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].numberOfRowsFontColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.primary[900];
-      } else {
-        return theme.palette.primary[50];
-      }
+function getNumberOfRowsFontColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.primary[100];
     } else {
-      // Standard palette we calculate the color
-      if (mode === 'dark') {
-        return getLighterColor(theme.palette.primary.main, 0.5);
-      } else {
-        return getDarkerColor(theme.palette.primary.main, 0.5);
-      }
+      return theme.palette.primary[900];
+    }
+  } else {
+    if (mode === 'dark') {
+      return getDarkerColor(theme.palette.primary.main, 10);
+    } else {
+      return getLighterColor(theme.palette.primary.main, 50);
     }
   }
 }
 
-export function getNumberOfRowsFontWeight(mode: 'dark' | 'light', theme: Theme): 'bold' | 'normal' {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].numberOfRowsFontWeight;
-  } else {
-    return 'bold';
-  }
+function getNumberOfRowsFontWeight(mode: 'dark' | 'light', theme: Theme): 'bold' | 'normal' {
+  return 'bold';
 }
 
-export function getHeaderBackgroundColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].headerBackgroundColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.primary[900];
-      } else {
-        return theme.palette.primary[50];
-      }
+function getHeaderBackgroundColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.primary[900];
     } else {
-      // Standard palette we calculate the color
-      if (mode === 'dark') {
-        return getLighterColor(theme.palette.primary.main, 0.5);
-      } else {
-        return getDarkerColor(theme.palette.primary.main, 0.5);
-      }
+      return theme.palette.primary[50];
+    }
+  } else {
+    if (mode === 'dark') {
+      return getLighterColor(theme.palette.primary.main, 0.5);
+    } else {
+      return getDarkerColor(theme.palette.primary.main, 0.5);
     }
   }
 }
 
-export function getHeaderSeperatorColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].headerSeperatorColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.primary[900];
-      } else {
-        return theme.palette.primary[50];
-      }
+function getHeaderSeperatorColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.primary[900];
     } else {
-      // Standard palette we calculate the color
-      if (mode === 'dark') {
-        return getLighterColor(theme.palette.primary.main, 0.5);
-      } else {
-        return getDarkerColor(theme.palette.primary.main, 0.5);
-      }
+      return theme.palette.primary[50];
+    }
+  } else {
+    if (mode === 'dark') {
+      return getLighterColor(theme.palette.primary.main, 0.5);
+    } else {
+      return getDarkerColor(theme.palette.primary.main, 0.5);
     }
   }
 }
 
-export function getHeaderFontColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].headerFontColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.common.white;
-      } else {
-        return theme.palette.common.black;
-      }
+function getHeaderFontColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.common.white;
     } else {
-      return theme.palette.primary.contrastText;
+      return theme.palette.common.black;
+    }
+  } else {
+    return theme.palette.primary.contrastText;
+  }
+}
+
+function getHeaderFontWeight(mode: 'dark' | 'light', theme: Theme): 'bold' | 'normal' {
+  return 'bold';
+}
+
+function getCellFontColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.common.white;
+    } else {
+      return theme.palette.common.black;
+    }
+  } else {
+    return theme.palette.primary.contrastText;
+  }
+}
+
+function getCellExpandColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.common.white;
+    } else {
+      return theme.palette.common.black;
+    }
+  } else {
+    return theme.palette.primary.contrastText;
+  }
+}
+
+function getCellStripedRowColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.primary[900];
+    } else {
+      return theme.palette.primary[50];
+    }
+  } else {
+    if (mode === 'dark') {
+      return getLighterColor(theme.palette.primary.main, 0.5);
+    } else {
+      return getDarkerColor(theme.palette.primary.main, 0.5);
     }
   }
 }
 
-export function getHeaderFontWeight(mode: 'dark' | 'light', theme: Theme): 'bold' | 'normal' {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].headerFontWeight;
-  } else {
-    return 'bold';
-  }
-}
-
-export function getCellFontColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].cellFontColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.common.white;
-      } else {
-        return theme.palette.common.black;
-      }
+function getFilterFieldColor(mode: 'dark' | 'light', theme: Theme): string {
+  if (isPaletteColorSet(theme.palette.primary)) {
+    if (mode === 'dark') {
+      return theme.palette.primary[900];
     } else {
-      return theme.palette.primary.contrastText;
+      return theme.palette.primary[50];
+    }
+  } else {
+    if (mode === 'dark') {
+      return getLighterColor(theme.palette.primary.main, 60);
+    } else {
+      return getDarkerColor(theme.palette.primary.main, 60);
     }
   }
 }
 
-export function getCellExpandColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].cellExpandColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.common.white;
-      } else {
-        return theme.palette.common.black;
-      }
-    } else {
-      return theme.palette.primary.contrastText;
-    }
-  }
+interface ThemeProps {
+  numberOfRowsFontColor: string;
+  numberOfRowsFontWeight: 'bold' | 'normal';
+  headerBackgroundColor: string;
+  headerSeperatorColor: string;
+  headerFontColor: string;
+  headerFontWeight: 'bold' | 'normal';
+  cellFontColor: string;
+  cellStripedRowColor: string;
+  cellExpandColor: string;
+  filterFieldColor: string;
 }
 
-export function getCellStripedRowColor(mode: 'dark' | 'light', theme: Theme): string {
-  if (theme.palette.enhancedTable) {
-    return theme.palette.enhancedTable[mode].cellStripedRowColor;
-  } else {
-    if (isPaletteColorSet(theme.palette.primary)) {
-      // A color from the palette has been set, we can assume that the palette has 50 to 900 in colors
-      if (mode === 'dark') {
-        return theme.palette.primary[900];
-      } else {
-        return theme.palette.primary[50];
-      }
-    } else {
-      // Standard palette we calculate the color
-      if (mode === 'dark') {
-        return getLighterColor(theme.palette.primary.main, 0.5);
-      } else {
-        return getDarkerColor(theme.palette.primary.main, 0.5);
-      }
+function createEnhancedTableTheme(theme: Theme): { dark: ThemeProps; light: ThemeProps } {
+  return {
+    dark: {
+      numberOfRowsFontColor: getNumberOfRowsFontColor('dark', theme),
+      numberOfRowsFontWeight: getNumberOfRowsFontWeight('dark', theme),
+      headerBackgroundColor: getHeaderBackgroundColor('dark', theme),
+      headerSeperatorColor: getHeaderSeperatorColor('dark', theme),
+      headerFontColor: getHeaderFontColor('dark', theme),
+      headerFontWeight: getHeaderFontWeight('dark', theme),
+      cellFontColor: getCellFontColor('dark', theme),
+      cellExpandColor: getCellExpandColor('dark', theme),
+      cellStripedRowColor: getCellStripedRowColor('dark', theme),
+      filterFieldColor: getFilterFieldColor('dark', theme)
+    },
+    light: {
+      numberOfRowsFontColor: getNumberOfRowsFontColor('light', theme),
+      numberOfRowsFontWeight: getNumberOfRowsFontWeight('light', theme),
+      headerBackgroundColor: getHeaderBackgroundColor('light', theme),
+      headerSeperatorColor: getHeaderSeperatorColor('light', theme),
+      headerFontColor: getHeaderFontColor('light', theme),
+      headerFontWeight: getHeaderFontWeight('light', theme),
+      cellFontColor: getCellFontColor('light', theme),
+      cellExpandColor: getCellExpandColor('light', theme),
+      cellStripedRowColor: getCellStripedRowColor('light', theme),
+      filterFieldColor: getFilterFieldColor('light', theme)
     }
+  };
+}
+
+export function applyTableTheme(theme: Theme): void {
+  if (!theme.palette.enhancedTable) {
+    console.log('Applying enhanced table theme');
+    const defaultTheme = createEnhancedTableTheme(theme);
+    console.log('defaultTheme', defaultTheme);
+    theme.palette.enhancedTable = defaultTheme;
   }
 }

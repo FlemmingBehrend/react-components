@@ -3,6 +3,8 @@ import { faker } from '@faker-js/faker';
 import { EnhancedTable, EnhancedTableHeader, Identible, StringCell, StringColDef } from '../../components';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
+import { blue, red } from '@mui/material/colors';
+import { EnhancedTableProps } from '../../components/enhanced-table/enhanced-table';
 
 interface Factory {
   companyName?: string;
@@ -158,15 +160,28 @@ const rows: RowData[] = FACTORY.map((factory) => {
   };
 });
 
-const theme = createTheme({
+const lightTheme = createTheme({
   palette: {
     mode: 'light'
   }
 });
 
-export const fiveHeaderGrouping = () => (
-  <ThemeProvider theme={theme}>
-    <EnhancedTable headers={headers} rows={rows} expandable={true}></EnhancedTable>
+export const fourLevelLight = (props: EnhancedTableProps<Factory>) => (
+  <ThemeProvider theme={lightTheme}>
+    <EnhancedTable {...props} headers={headers} rows={rows}></EnhancedTable>
   </ThemeProvider>
 );
-fiveHeaderGrouping.storyName = 'Table component 4 level sub headers';
+fourLevelLight.storyName = '4 level - light theme';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark'
+  }
+});
+
+export const fourLevelDark = (props: EnhancedTableProps<Factory>) => (
+  <ThemeProvider theme={darkTheme}>
+    <EnhancedTable {...props} headers={headers} rows={rows}></EnhancedTable>
+  </ThemeProvider>
+);
+fourLevelDark.storyName = '4 level - dark theme';

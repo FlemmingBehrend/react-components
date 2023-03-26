@@ -1,76 +1,28 @@
 import React, { createContext, FC } from 'react';
 
-export interface TableThemeContextProps {
-  numberOfRowsFontColor: string;
-  numberOfRowsFontWeight: 'bold' | 'normal';
-  headerBackgroundColor: string;
-  headerSeperatorColor: string;
-  headerFontColor: string;
-  headerFontWeight: 'bold' | 'normal';
-  cellFontColor: string;
-  cellStripedRowColor: string;
-  cellExpandColor: string;
+export interface EnhancedTableThemeContextProps {
   mode: 'dark' | 'light';
 }
 
-export const TableThemeContext = createContext<TableThemeContextProps>({
-  numberOfRowsFontColor: '',
-  numberOfRowsFontWeight: 'bold',
-  headerBackgroundColor: '',
-  headerSeperatorColor: '',
-  headerFontColor: '',
-  headerFontWeight: 'bold',
-  cellFontColor: '',
-  cellStripedRowColor: '',
-  cellExpandColor: '',
+export const EnhancedTableThemeContext = createContext<EnhancedTableThemeContextProps>({
   mode: 'dark'
 });
 
-interface TableThemeContextProviderProps {
-  numberOfRowsFontColor: string;
-  numberOfRowsFontWeight: 'bold' | 'normal';
-  headerBackgroundColor: string;
-  headerSeperatorColor: string;
-  headerFontColor: string;
-  headerFontWeight: 'bold' | 'normal';
-  cellFontColor: string;
-  cellStripedRowColor: string;
-  cellExpandColor: string;
+interface EnhancedTableThemeContextProviderProps {
   mode: 'dark' | 'light';
   children: React.ReactNode;
 }
 
-const ThemeContextProvider: FC<TableThemeContextProviderProps> = ({
-  numberOfRowsFontColor,
-  numberOfRowsFontWeight,
-  headerBackgroundColor,
-  headerSeperatorColor,
-  headerFontColor,
-  headerFontWeight,
-  cellFontColor,
-  cellStripedRowColor,
-  cellExpandColor,
-  mode,
-  children
-}) => {
+const EnhancedThemeContextProvider: FC<EnhancedTableThemeContextProviderProps> = ({ mode, children }) => {
   return (
-    <TableThemeContext.Provider
+    <EnhancedTableThemeContext.Provider
       value={{
-        numberOfRowsFontColor,
-        numberOfRowsFontWeight,
-        headerBackgroundColor,
-        headerSeperatorColor,
-        headerFontColor,
-        headerFontWeight,
-        cellFontColor,
-        cellStripedRowColor,
-        cellExpandColor,
         mode
       }}
     >
       {children}
-    </TableThemeContext.Provider>
+    </EnhancedTableThemeContext.Provider>
   );
 };
 
-export default ThemeContextProvider;
+export default EnhancedThemeContextProvider;

@@ -3,3 +3,5 @@ export const DEFAULT_TABLE_EXPANDABLE = false;
 export const DEFAULT_TABLE_SHOW_HEADERS = true;
 export const DEFAULT_TABLE_FILTERABLE = true;
 export const DEFAULT_TABLE_SORT_DIRECTION = 'asc';
+export const DEFAULT_TABLE_STRIPED_ROWS = false;
+export const DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS = true;

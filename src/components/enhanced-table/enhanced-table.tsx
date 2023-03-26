@@ -7,24 +7,16 @@ import NumberOfRowsComponent from './table/number-of-rows';
 import TableHeaders from './table/table-headers';
 import TableContent from './table/table-content';
 import {
+  DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS,
   DEFAULT_TABLE_EXPANDABLE,
   DEFAULT_TABLE_FILTERABLE,
   DEFAULT_TABLE_SHOW_HEADERS,
   DEFAULT_TABLE_SIZE,
-  DEFAULT_TABLE_SORT_DIRECTION
+  DEFAULT_TABLE_SORT_DIRECTION,
+  DEFAULT_TABLE_STRIPED_ROWS
 } from './default-values';
-import ThemeContextProvider from './table-theme-context-provider';
-import {
-  getCellExpandColor,
-  getCellFontColor,
-  getCellStripedRowColor,
-  getHeaderBackgroundColor,
-  getHeaderFontColor,
-  getHeaderFontWeight,
-  getHeaderSeperatorColor,
-  getNumberOfRowsFontColor,
-  getNumberOfRowsFontWeight
-} from './table-theme-property-creator';
+import { applyTableTheme } from './table-theme-property-creator';
+import EnhancedThemeContextProvider from './table-theme-context-provider';
 
 export interface EnhancedTableProps<DataDef> {
   /**
@@ -88,16 +80,6 @@ export interface EnhancedTableProps<DataDef> {
    * @default false
    */
   expandable?: boolean;
-
-  /**
-   * Set the render mode of the table.
-   *
-   * If 'dark' the table will render in dark mode.
-   * If 'light' the table will render in light mode.
-   *
-   * @default palette.mode from theme
-   */
-  mode?: 'light' | 'dark';
 }
 
 function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<DataDef>) {
@@ -109,58 +91,52 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
   const [filter, setFilter] = React.useState('');
   const [visibleRows, setVisibleRows] = React.useState(props.rows.length);
 
+  applyTableTheme(theme);
+
   const filterable = props.filterable ?? DEFAULT_TABLE_FILTERABLE;
   const showHeaders = props.showHeaders ?? DEFAULT_TABLE_SHOW_HEADERS;
   const expandable = props.expandable ?? DEFAULT_TABLE_EXPANDABLE;
   const tableSize = props.tableSize ?? DEFAULT_TABLE_SIZE;
-  const stripedRows = props.stripedRows ?? false;
+  const stripedRows = props.stripedRows ?? DEFAULT_TABLE_STRIPED_ROWS;
+  const displayNumberOfRows = props.displayNumberOfRows ?? DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS;
 
   return (
-    <ThemeContextProvider
-      mode={props.mode ?? theme.palette.mode}
-      numberOfRowsFontColor={getNumberOfRowsFontColor(props.mode ?? theme.palette.mode, theme)}
-      numberOfRowsFontWeight={getNumberOfRowsFontWeight(props.mode ?? theme.palette.mode, theme)}
-      headerBackgroundColor={getHeaderBackgroundColor(props.mode ?? theme.palette.mode, theme)}
-      headerSeperatorColor={getHeaderSeperatorColor(props.mode ?? theme.palette.mode, theme)}
-      headerFontColor={getHeaderFontColor(props.mode ?? theme.palette.mode, theme)}
-      headerFontWeight={getHeaderFontWeight(props.mode ?? theme.palette.mode, theme)}
-      cellFontColor={getCellFontColor(props.mode ?? theme.palette.mode, theme)}
-      cellExpandColor={getCellExpandColor(props.mode ?? theme.palette.mode, theme)}
-      cellStripedRowColor={getCellStripedRowColor(props.mode ?? theme.palette.mode, theme)}
-    >
-      <Box sx={{ mt: 2 }}>
-        <Grid container justifyContent="space-between" alignItems="flex-end">
-          {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
-          <NumberOfRowsComponent totalRows={visibleRows} />
-        </Grid>
-        <Grid container justifyContent="space-between" alignItems="flex-end">
-          <TableContainer component={Paper}>
-            <Table size={tableSize}>
-              {showHeaders && (
-                <TableHeaders
+    theme.palette.enhancedTable && (
+      <EnhancedThemeContextProvider mode={theme.palette.mode}>
+        <Box sx={{ mt: 2 }}>
+          <Grid container justifyContent="space-between" alignItems="flex-end">
+            {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
+            {displayNumberOfRows && <NumberOfRowsComponent totalRows={visibleRows} />}
+          </Grid>
+          <Grid container justifyContent="space-between" alignItems="flex-end">
+            <TableContainer component={Paper}>
+              <Table size={tableSize}>
+                {showHeaders && (
+                  <TableHeaders
+                    headers={props.headers}
+                    sortColumn={sortColumn}
+                    setSortColumn={setSortColumn}
+                    sortDirection={sortDirection}
+                    setSortDirection={setSortDirection}
+                    expandable={expandable}
+                  />
+                )}
+                <TableContent
+                  rows={props.rows}
                   headers={props.headers}
+                  stripedRows={stripedRows}
                   sortColumn={sortColumn}
-                  setSortColumn={setSortColumn}
                   sortDirection={sortDirection}
-                  setSortDirection={setSortDirection}
+                  filter={filter}
+                  setVisibleRows={setVisibleRows}
                   expandable={expandable}
-                />
-              )}
-              <TableContent
-                rows={props.rows}
-                headers={props.headers}
-                stripedRows={stripedRows}
-                sortColumn={sortColumn}
-                sortDirection={sortDirection}
-                filter={filter}
-                setVisibleRows={setVisibleRows}
-                expandable={expandable}
-              ></TableContent>
-            </Table>
-          </TableContainer>
-        </Grid>
-      </Box>
-    </ThemeContextProvider>
+                ></TableContent>
+              </Table>
+            </TableContainer>
+          </Grid>
+        </Box>
+      </EnhancedThemeContextProvider>
+    )
   );
 }
 

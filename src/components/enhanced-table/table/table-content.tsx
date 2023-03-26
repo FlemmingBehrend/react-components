@@ -3,7 +3,7 @@ import { TableBody, useTheme } from '@mui/material';
 import { EnhancedTableHeader } from './header-definitions';
 import { Identible } from './cell-types/cell-definitions';
 import { getDarkerColor, getLighterColor } from '../helpers';
-import { TableThemeContext } from '../table-theme-context-provider';
+import { EnhancedTableThemeContext } from '../table-theme-context-provider';
 import Row from './row';
 
 interface TableContentProps<DataDef> {
@@ -32,7 +32,7 @@ function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[]): Enhan
 function TableContent<DataDef extends Identible>(props: TableContentProps<DataDef>) {
   const [displayedRows, setDisplayedRows] = React.useState<DataDef[]>(props.rows);
   const theme = useTheme();
-  const tableTheme = React.useContext(TableThemeContext);
+  const tableTheme = React.useContext(EnhancedTableThemeContext);
 
   const headers = React.useMemo(() => {
     const headerCells: EnhancedTableHeader<DataDef>[] = [];

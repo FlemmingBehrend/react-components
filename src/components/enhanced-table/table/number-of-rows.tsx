@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Typography } from '@mui/material';
-import { TableThemeContext } from '../table-theme-context-provider';
+import { EnhancedTableThemeContext } from '../table-theme-context-provider';
 
 function getDisplayedRows(rows: number) {
   switch (rows) {
@@ -14,7 +14,7 @@ function getDisplayedRows(rows: number) {
 }
 
 const NumberOfRowsComponent = React.memo(function NumberOfRowsComponent(props: { totalRows: number }) {
-  const tableTheme = React.useContext(TableThemeContext);
+  const tableTheme = React.useContext(EnhancedTableThemeContext);
   return (
     <Typography sx={{ fontWeight: tableTheme.numberOfRowsFontWeight, color: tableTheme.numberOfRowsFontColor }}>
       {getDisplayedRows(props.totalRows)}

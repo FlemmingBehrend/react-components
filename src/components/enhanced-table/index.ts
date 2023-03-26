@@ -17,6 +17,7 @@ declare module '@mui/material/styles' {
         cellFontColor: string;
         cellStripedRowColor: string;
         cellExpandColor: string;
+        filterFieldColor: string;
       };
       light: {
         numberOfRowsFontColor: string;
@@ -28,6 +29,7 @@ declare module '@mui/material/styles' {
         cellFontColor: string;
         cellStripedRowColor: string;
         cellExpandColor: string;
+        filterFieldColor: string;
       };
     };
   }
@@ -43,6 +45,7 @@ declare module '@mui/material/styles' {
         cellFontColor?: string;
         cellStripedRowColor?: string;
         cellExpandColor?: string;
+        filterFieldColor?: string;
       };
       light?: {
         numberOfRowsFontColor?: string;
@@ -54,6 +57,7 @@ declare module '@mui/material/styles' {
         cellFontColor?: string;
         cellStripedRowColor?: string;
         cellExpandColor?: string;
+        filterFieldColor?: string;
       };
     };
   }
@@ -69,6 +73,7 @@ declare module '@mui/material/styles' {
         cellFontColor: string;
         cellStripedRowColor: string;
         cellExpandColor: string;
+        filterFieldColor: string;
       };
       light: {
         numberOfRowsFontColor: string;
@@ -80,6 +85,7 @@ declare module '@mui/material/styles' {
         cellFontColor: string;
         cellStripedRowColor: string;
         cellExpandColor: string;
+        filterFieldColor: string;
       };
     };
   }

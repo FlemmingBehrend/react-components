@@ -5,7 +5,7 @@ import { EnhancedHeaderCellProps, EnhancedHeaderCell } from './header-cell';
 import { hash } from '../../../hashing';
 import HeaderCellContextProvider from './header-cell-context-provider';
 import { getBackgroundColor } from '../helpers';
-import { TableThemeContext } from '../table-theme-context-provider';
+import { EnhancedTableThemeContext } from '../table-theme-context-provider';
 
 interface TableHeadersProps<DataDef> {
   headers: EnhancedTableHeader<DataDef>[];
@@ -18,7 +18,7 @@ interface TableHeadersProps<DataDef> {
 
 function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   const theme = useTheme();
-  const tableTheme = React.useContext(TableThemeContext);
+  const tableTheme = React.useContext(EnhancedTableThemeContext);
 
   const headerRows = React.useMemo(() => {
     const headers = generateHeadersRecursively(props.headers);
@@ -66,10 +66,13 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         sortColumn: props.sortColumn as string,
         setSortColumn: props.setSortColumn as (column: string) => void,
         setSortDirection: props.setSortDirection,
-        backgroundColor: getBackgroundColor(tableTheme.headerBackgroundColor, level),
-        fontColor: tableTheme.headerFontColor,
-        fontWeight: tableTheme.headerFontWeight,
-        seperatorColor: tableTheme.headerSeperatorColor
+        backgroundColor: getBackgroundColor(
+          theme.palette.enhancedTable[theme.palette.mode].headerBackgroundColor,
+          level
+        ),
+        fontColor: theme.palette.enhancedTable[theme.palette.mode].headerFontColor,
+        fontWeight: theme.palette.enhancedTable[theme.palette.mode].headerFontWeight,
+        seperatorColor: theme.palette.enhancedTable[theme.palette.mode].headerSeperatorColor
       });
       if (header.subHeaders) {
         generateHeadersRecursively(header.subHeaders, headerRows, level + 1);
@@ -85,7 +88,13 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
           <TableRow key={level}>
             {props.expandable && (
               <TableCell
-                sx={{ backgroundColor: `${getBackgroundColor(tableTheme.headerBackgroundColor, level)}`, width: '1%' }}
+                sx={{
+                  backgroundColor: `${getBackgroundColor(
+                    theme.palette.enhancedTable[theme.palette.mode].headerBackgroundColor,
+                    level
+                  )}`,
+                  width: '1%'
+                }}
               ></TableCell>
             )}
             {headerRows.get(level)?.map((header) => (
