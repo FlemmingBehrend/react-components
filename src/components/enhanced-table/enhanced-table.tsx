@@ -13,10 +13,69 @@ import {
   DEFAULT_TABLE_SHOW_HEADERS,
   DEFAULT_TABLE_SIZE,
   DEFAULT_TABLE_SORT_DIRECTION,
-  DEFAULT_TABLE_STRIPED_ROWS
+  DEFAULT_TABLE_STRIPED_ROWS,
+  DEFAULT_THEME
 } from './default-values';
-import { applyTableTheme } from './table-theme-property-creator';
-import EnhancedThemeContextProvider from './table-theme-context-provider';
+import ModeContextProvider from './mode-context-provider';
+
+declare module '@mui/material/styles' {
+  interface Theme {
+    enhancedTable: {
+      dark: {
+        numberOfRowsFontColor: string;
+        numberOfRowsFontWeight: 'bold' | 'normal';
+        headerBackgroundColor: string;
+        headerSeperatorColor: string;
+        headerFontColor: string;
+        headerFontWeight: 'bold' | 'normal';
+        cellFontColor: string;
+        cellStripedRowColor: string;
+        cellExpandColor: string;
+        filterFieldColor: string;
+      };
+      light: {
+        numberOfRowsFontColor: string;
+        numberOfRowsFontWeight: 'bold' | 'normal';
+        headerBackgroundColor: string;
+        headerSeperatorColor: string;
+        headerFontColor: string;
+        headerFontWeight: 'bold' | 'normal';
+        cellFontColor: string;
+        cellStripedRowColor: string;
+        cellExpandColor: string;
+        filterFieldColor: string;
+      };
+    };
+  }
+  interface ThemeOptions {
+    enhancedTable?: {
+      dark?: {
+        numberOfRowsFontColor?: string;
+        numberOfRowsFontWeight?: 'bold' | 'normal';
+        headerBackgroundColor?: string;
+        headerSeperatorColor?: string;
+        headerFontColor?: string;
+        headerFontWeight?: 'bold' | 'normal';
+        cellFontColor?: string;
+        cellStripedRowColor?: string;
+        cellExpandColor?: string;
+        filterFieldColor?: string;
+      };
+      light?: {
+        numberOfRowsFontColor?: string;
+        numberOfRowsFontWeight?: 'bold' | 'normal';
+        headerBackgroundColor?: string;
+        headerSeperatorColor?: string;
+        headerFontColor?: string;
+        headerFontWeight?: 'bold' | 'normal';
+        cellFontColor?: string;
+        cellStripedRowColor?: string;
+        cellExpandColor?: string;
+        filterFieldColor?: string;
+      };
+    };
+  }
+}
 
 export interface EnhancedTableProps<DataDef> {
   /**
@@ -80,19 +139,42 @@ export interface EnhancedTableProps<DataDef> {
    * @default false
    */
   expandable?: boolean;
+
+  /**
+   * mode
+   * @default theme.palette.mode
+   * @see https://mui.com/customization/palette/#palette-mode
+   */
+  mode?: 'light' | 'dark';
 }
 
 function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<DataDef>) {
+  console.log('EnhancedTable', props);
+
+  // Fail fast if required props are not provided
+  if (!props.rows) {
+    throw new Error('The rows property is required');
+  }
+  if (!props.headers) {
+    throw new Error('The headers property is required');
+  }
+
+  // State variables at the top of the component
   const theme = useTheme();
   const [sortColumn, setSortColumn] = React.useState<keyof DataDef | undefined>(props.initialSortColumn);
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(
     props.initialSortDirection ?? DEFAULT_TABLE_SORT_DIRECTION
   );
   const [filter, setFilter] = React.useState('');
-  const [visibleRows, setVisibleRows] = React.useState(props.rows.length);
+  const [visibleRows, setVisibleRows] = React.useState(props.rows?.length);
+  const [mode, setMode] = React.useState(props.mode ?? theme.palette.mode);
 
-  applyTableTheme(theme);
+  // Only apply the theme when the mode changes
+  React.useMemo(() => {
+    setMode(props.mode ?? theme.palette.mode);
+  }, [props.mode]);
 
+  // Determine default values for optional props
   const filterable = props.filterable ?? DEFAULT_TABLE_FILTERABLE;
   const showHeaders = props.showHeaders ?? DEFAULT_TABLE_SHOW_HEADERS;
   const expandable = props.expandable ?? DEFAULT_TABLE_EXPANDABLE;
@@ -100,9 +182,13 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
   const stripedRows = props.stripedRows ?? DEFAULT_TABLE_STRIPED_ROWS;
   const displayNumberOfRows = props.displayNumberOfRows ?? DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS;
 
+  if (!theme.enhancedTable) {
+    theme.enhancedTable = { ...DEFAULT_THEME };
+  }
+
   return (
-    theme.palette.enhancedTable && (
-      <EnhancedThemeContextProvider mode={theme.palette.mode}>
+    theme.enhancedTable && (
+      <ModeContextProvider mode={mode}>
         <Box sx={{ mt: 2 }}>
           <Grid container justifyContent="space-between" alignItems="flex-end">
             {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
@@ -135,7 +221,7 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
             </TableContainer>
           </Grid>
         </Box>
-      </EnhancedThemeContextProvider>
+      </ModeContextProvider>
     )
   );
 }

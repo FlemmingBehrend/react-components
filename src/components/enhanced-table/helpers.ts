@@ -1,5 +1,3 @@
-import { Theme } from '@mui/material';
-
 export function getDarkerColor(hex: string, percent: number): string {
   let r = parseInt(hex.substring(1, 3), 16);
   let g = parseInt(hex.substring(3, 5), 16);
@@ -22,45 +20,16 @@ export function getLighterColor(hex: string, percent: number): string {
   return lighterHex;
 }
 
-export function getBackgroundColor(color: string, level: number) {
+export function getBackgroundColor(color: string, level: number, mode: 'light' | 'dark') {
   if (level === 0) {
     return color;
   } else {
-    return getLighterColor(color, level * 10);
+    if (mode === 'dark') {
+      return getDarkerColor(color, level * 15);
+    }
+    if (mode === 'light') {
+      return getLighterColor(color, level * 15);
+    }
+    throw new Error('Invalid mode');
   }
-}
-
-type Color = {
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-  A100: string;
-  A200: string;
-  A400: string;
-  A700: string;
-  main: string;
-  light: string;
-  dark: string;
-  contrastText: string;
-};
-
-export function isPaletteColorSet(color: any): color is Color {
-  return (
-    color &&
-    color.main &&
-    color.light &&
-    color.dark &&
-    color.contrastText &&
-    color.A100 &&
-    color.A200 &&
-    color.A400 &&
-    color.A700
-  );
 }

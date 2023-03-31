@@ -1,10 +1,12 @@
 import React from 'react';
 import { faker } from '@faker-js/faker';
-import { EnhancedTable, EnhancedTableHeader, Identible, StringCell, StringColDef } from '../../components';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { Story } from '@storybook/addon-docs';
+import { Identible, StringCell, StringColDef, EnhancedTable, EnhancedTableHeader } from './';
+import { Theme, ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
-import { blue, red } from '@mui/material/colors';
-import { EnhancedTableProps } from '../../components/enhanced-table/enhanced-table';
+import { grey, blueGrey, common } from '@mui/material/colors';
+import { CYAN, LIGHT_BLUE, TableTheme } from './themes';
 
 interface Factory {
   companyName?: string;
@@ -160,28 +162,104 @@ const rows: RowData[] = FACTORY.map((factory) => {
   };
 });
 
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light'
+export default {
+  title: 'EnhancedTable',
+  component: EnhancedTable,
+  argTypes: {
+    rows: {
+      control: {
+        disable: true
+      }
+    },
+    headers: {
+      control: {
+        disable: true
+      }
+    }
   }
-});
+} as ComponentMeta<typeof EnhancedTable>;
 
-export const fourLevelLight = (props: EnhancedTableProps<Factory>) => (
-  <ThemeProvider theme={lightTheme}>
-    <EnhancedTable {...props} headers={headers} rows={rows}></EnhancedTable>
+function chooseMode(mode: 'light' | 'dark', colorTheme: TableTheme = LIGHT_BLUE): Theme {
+  return createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: mode === 'light' ? grey[500] : blueGrey[500]
+      },
+      background: {
+        default: mode === 'light' ? common.white : '#22272e',
+        paper: mode === 'light' ? common.white : blueGrey[800]
+      }
+    },
+    enhancedTable: colorTheme
+  });
+}
+
+export const DarkTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+  <ThemeProvider theme={chooseMode('dark')}>
+    <EnhancedTable {...args} />
   </ThemeProvider>
 );
-fourLevelLight.storyName = '4 level - light theme';
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark'
+DarkTemplate.args = {
+  headers: headers as EnhancedTableHeader<Identible>[],
+  rows,
+  displayNumberOfRows: true,
+  expandable: true,
+  filterable: true,
+  stripedRows: true,
+  showHeaders: true
+};
+DarkTemplate.story = {
+  name: 'Dark mode',
+  parameters: {
+    backgrounds: {
+      default: 'dark'
+    }
   }
-});
+};
 
-export const fourLevelDark = (props: EnhancedTableProps<Factory>) => (
-  <ThemeProvider theme={darkTheme}>
-    <EnhancedTable {...props} headers={headers} rows={rows}></EnhancedTable>
+export const LightBlueTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+  <ThemeProvider theme={chooseMode('light', LIGHT_BLUE)}>
+    <EnhancedTable {...args} />
   </ThemeProvider>
 );
-fourLevelDark.storyName = '4 level - dark theme';
+LightBlueTemplate.args = {
+  headers: headers as EnhancedTableHeader<Identible>[],
+  rows,
+  displayNumberOfRows: true,
+  expandable: true,
+  filterable: true,
+  stripedRows: true,
+  showHeaders: true
+};
+LightBlueTemplate.story = {
+  name: 'Light blue theme',
+  parameters: {
+    backgrounds: {
+      default: 'light'
+    }
+  }
+};
+
+export const LightCyanTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+  <ThemeProvider theme={chooseMode('light', CYAN)}>
+    <EnhancedTable {...args} />
+  </ThemeProvider>
+);
+LightCyanTemplate.args = {
+  headers: headers as EnhancedTableHeader<Identible>[],
+  rows,
+  displayNumberOfRows: true,
+  expandable: true,
+  filterable: true,
+  stripedRows: true,
+  showHeaders: true
+};
+LightCyanTemplate.story = {
+  name: 'Cyan theme',
+  parameters: {
+    backgrounds: {
+      default: 'light'
+    }
+  }
+};

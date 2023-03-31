@@ -5,7 +5,7 @@ import { EnhancedHeaderCellProps, EnhancedHeaderCell } from './header-cell';
 import { hash } from '../../../hashing';
 import HeaderCellContextProvider from './header-cell-context-provider';
 import { getBackgroundColor } from '../helpers';
-import { EnhancedTableThemeContext } from '../table-theme-context-provider';
+import { ModeContext } from '../mode-context-provider';
 
 interface TableHeadersProps<DataDef> {
   headers: EnhancedTableHeader<DataDef>[];
@@ -18,7 +18,7 @@ interface TableHeadersProps<DataDef> {
 
 function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   const theme = useTheme();
-  const tableTheme = React.useContext(EnhancedTableThemeContext);
+  const modeContext = React.useContext(ModeContext);
 
   const headerRows = React.useMemo(() => {
     const headers = generateHeadersRecursively(props.headers);
@@ -41,7 +41,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
       }
     }
     return headers;
-  }, [props.headers, props.sortColumn, props.sortDirection]);
+  }, [props.headers, props.sortColumn, props.sortDirection, modeContext.mode]);
 
   function generateHeadersRecursively(
     headers: EnhancedTableHeader<DataDef>[],
@@ -67,12 +67,13 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         setSortColumn: props.setSortColumn as (column: string) => void,
         setSortDirection: props.setSortDirection,
         backgroundColor: getBackgroundColor(
-          theme.palette.enhancedTable[theme.palette.mode].headerBackgroundColor,
-          level
+          theme.enhancedTable[modeContext.mode].headerBackgroundColor,
+          level,
+          modeContext.mode
         ),
-        fontColor: theme.palette.enhancedTable[theme.palette.mode].headerFontColor,
-        fontWeight: theme.palette.enhancedTable[theme.palette.mode].headerFontWeight,
-        seperatorColor: theme.palette.enhancedTable[theme.palette.mode].headerSeperatorColor
+        fontColor: theme.enhancedTable[modeContext.mode].headerFontColor,
+        fontWeight: theme.enhancedTable[modeContext.mode].headerFontWeight,
+        seperatorColor: theme.enhancedTable[modeContext.mode].headerSeperatorColor
       });
       if (header.subHeaders) {
         generateHeadersRecursively(header.subHeaders, headerRows, level + 1);
@@ -90,8 +91,9 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
               <TableCell
                 sx={{
                   backgroundColor: `${getBackgroundColor(
-                    theme.palette.enhancedTable[theme.palette.mode].headerBackgroundColor,
-                    level
+                    theme.enhancedTable[modeContext.mode].headerBackgroundColor,
+                    level,
+                    modeContext.mode
                   )}`,
                   width: '1%'
                 }}

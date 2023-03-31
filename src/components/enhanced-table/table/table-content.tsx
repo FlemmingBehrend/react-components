@@ -3,7 +3,7 @@ import { TableBody, useTheme } from '@mui/material';
 import { EnhancedTableHeader } from './header-definitions';
 import { Identible } from './cell-types/cell-definitions';
 import { getDarkerColor, getLighterColor } from '../helpers';
-import { EnhancedTableThemeContext } from '../table-theme-context-provider';
+import { ModeContext } from '../mode-context-provider';
 import Row from './row';
 
 interface TableContentProps<DataDef> {
@@ -32,7 +32,7 @@ function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[]): Enhan
 function TableContent<DataDef extends Identible>(props: TableContentProps<DataDef>) {
   const [displayedRows, setDisplayedRows] = React.useState<DataDef[]>(props.rows);
   const theme = useTheme();
-  const tableTheme = React.useContext(EnhancedTableThemeContext);
+  const modeContext = React.useContext(ModeContext);
 
   const headers = React.useMemo(() => {
     const headerCells: EnhancedTableHeader<DataDef>[] = [];
@@ -90,10 +90,9 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
     if (props.stripedRows) {
       return index % 2 === 0
         ? theme.palette.background.default
-        : tableTheme.mode === 'dark'
-        ? getDarkerColor(theme.palette.primary.main, 90)
-        : getLighterColor(theme.palette.primary.main, 90);
+        : theme.enhancedTable[modeContext.mode].cellStripedRowColor;
     } else {
+      console.log(theme.palette.background.default);
       return theme.palette.background.default;
     }
   }
