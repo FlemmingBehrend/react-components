@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Typography, useTheme } from '@mui/material';
-import { ModeContext } from '../mode-context-provider';
 
 function getDisplayedRows(rows: number) {
   switch (rows) {
@@ -15,12 +14,11 @@ function getDisplayedRows(rows: number) {
 
 const NumberOfRowsComponent = React.memo(function NumberOfRowsComponent(props: { totalRows: number }) {
   const theme = useTheme();
-  const modeContext = React.useContext(ModeContext);
   return (
     <Typography
       sx={{
-        fontWeight: theme.enhancedTable[modeContext.mode].numberOfRowsFontWeight,
-        color: theme.enhancedTable[modeContext.mode].numberOfRowsFontColor
+        fontWeight: theme.enhancedTable.numberOfRowsFontWeight,
+        color: theme.enhancedTable.numberOfRowsFontColor
       }}
     >
       {getDisplayedRows(props.totalRows)}

@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { TableCell, Tooltip, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
-import { ModeContext } from '../../mode-context-provider';
 
 export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
 
 function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
   const theme = useTheme();
-  const modeContext = React.useContext(ModeContext);
 
   function renderLink() {
     return cell.href ? (
@@ -19,11 +17,7 @@ function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
 
   function renderTableCell() {
     return (
-      <TableCell
-        key={cell.id}
-        align={columnDef.align}
-        sx={{ color: theme.enhancedTable[modeContext.mode].cellFontColor }}
-      >
+      <TableCell key={cell.id} align={columnDef.align} sx={{ color: theme.enhancedTable.cellFontColor }}>
         {renderLink()}
       </TableCell>
     );
@@ -69,6 +63,7 @@ export const NumberColDef: ColDef<number> = {
   align: 'right',
   sortable: true,
   suffix: '',
+  ellipsis: false,
   render: renderNumberCell,
   comparator: numberComparator,
   filterFn: numberFilterFn

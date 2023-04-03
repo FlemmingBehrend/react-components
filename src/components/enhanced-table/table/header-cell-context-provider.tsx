@@ -16,6 +16,7 @@ interface HeaderCellContextProps {
   fontColor: string;
   fontWeight: string;
   seperatorColor: string;
+  width: string;
 }
 
 export const HeaderCellContext = createContext<HeaderCellContextProps>({
@@ -32,7 +33,8 @@ export const HeaderCellContext = createContext<HeaderCellContextProps>({
   backgroundColor: '',
   fontColor: '',
   fontWeight: '',
-  seperatorColor: ''
+  seperatorColor: '',
+  width: ''
 });
 
 interface HeaderCellContextProviderProps {
@@ -50,6 +52,7 @@ interface HeaderCellContextProviderProps {
   fontColor: string;
   fontWeight: string;
   seperatorColor: string;
+  width: string;
   children: React.ReactNode;
 }
 
@@ -68,6 +71,7 @@ const HeaderCellContextProvider: FC<HeaderCellContextProviderProps> = ({
   sortColumn,
   sortDirection,
   tooltip,
+  width,
   children
 }) => {
   return (
@@ -86,7 +90,8 @@ const HeaderCellContextProvider: FC<HeaderCellContextProviderProps> = ({
         sortable,
         sortColumn,
         sortDirection,
-        tooltip
+        tooltip,
+        width
       }}
     >
       {children}

@@ -21,6 +21,12 @@ export interface ColDef<DataDef> {
   align: 'left' | 'right' | 'center';
 
   /**
+   * If this is set to true text that is too long will be truncated with an ellipsis.
+   * @link https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow
+   */
+  ellipsis: boolean;
+
+  /**
    * The render function for the column.
    *
    * This function will be called for every row in the table.

@@ -4,7 +4,6 @@ import { Identible } from './cell-types/cell-definitions';
 import { IconButton, TableCell, TableRow, styled, useTheme } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { ModeContext } from '../mode-context-provider';
 
 const StyledRow = styled(TableRow)(({ theme }) => ({
   // hide last border
@@ -23,8 +22,6 @@ interface RowProps<DataDef> {
 
 function Row<DataDef>(props: RowProps<DataDef>) {
   const theme = useTheme();
-  const modeContext = React.useContext(ModeContext);
-  console.log(modeContext.mode);
   const [open, setOpen] = React.useState(false);
 
   function renderExpandCell() {
@@ -43,10 +40,7 @@ function Row<DataDef>(props: RowProps<DataDef>) {
     if (open) {
       return (
         <StyledRow>
-          <TableCell
-            colSpan={props.headers.length + 1}
-            sx={{ backgroundColor: theme.enhancedTable[modeContext.mode].cellExpandColor }}
-          >
+          <TableCell colSpan={props.headers.length + 1} sx={{ backgroundColor: theme.enhancedTable.cellExpandColor }}>
             EXPANDED
           </TableCell>
         </StyledRow>

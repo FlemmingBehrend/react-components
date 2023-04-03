@@ -16,64 +16,14 @@ import {
   DEFAULT_TABLE_STRIPED_ROWS,
   DEFAULT_THEME
 } from './default-values';
-import ModeContextProvider from './mode-context-provider';
+import { EnhancedTableTheme } from './themes';
 
 declare module '@mui/material/styles' {
   interface Theme {
-    enhancedTable: {
-      dark: {
-        numberOfRowsFontColor: string;
-        numberOfRowsFontWeight: 'bold' | 'normal';
-        headerBackgroundColor: string;
-        headerSeperatorColor: string;
-        headerFontColor: string;
-        headerFontWeight: 'bold' | 'normal';
-        cellFontColor: string;
-        cellStripedRowColor: string;
-        cellExpandColor: string;
-        filterFieldColor: string;
-      };
-      light: {
-        numberOfRowsFontColor: string;
-        numberOfRowsFontWeight: 'bold' | 'normal';
-        headerBackgroundColor: string;
-        headerSeperatorColor: string;
-        headerFontColor: string;
-        headerFontWeight: 'bold' | 'normal';
-        cellFontColor: string;
-        cellStripedRowColor: string;
-        cellExpandColor: string;
-        filterFieldColor: string;
-      };
-    };
+    enhancedTable: EnhancedTableTheme;
   }
   interface ThemeOptions {
-    enhancedTable?: {
-      dark?: {
-        numberOfRowsFontColor?: string;
-        numberOfRowsFontWeight?: 'bold' | 'normal';
-        headerBackgroundColor?: string;
-        headerSeperatorColor?: string;
-        headerFontColor?: string;
-        headerFontWeight?: 'bold' | 'normal';
-        cellFontColor?: string;
-        cellStripedRowColor?: string;
-        cellExpandColor?: string;
-        filterFieldColor?: string;
-      };
-      light?: {
-        numberOfRowsFontColor?: string;
-        numberOfRowsFontWeight?: 'bold' | 'normal';
-        headerBackgroundColor?: string;
-        headerSeperatorColor?: string;
-        headerFontColor?: string;
-        headerFontWeight?: 'bold' | 'normal';
-        cellFontColor?: string;
-        cellStripedRowColor?: string;
-        cellExpandColor?: string;
-        filterFieldColor?: string;
-      };
-    };
+    enhancedTable?: EnhancedTableTheme;
   }
 }
 
@@ -139,13 +89,6 @@ export interface EnhancedTableProps<DataDef> {
    * @default false
    */
   expandable?: boolean;
-
-  /**
-   * mode
-   * @default theme.palette.mode
-   * @see https://mui.com/customization/palette/#palette-mode
-   */
-  mode?: 'light' | 'dark';
 }
 
 function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<DataDef>) {
@@ -167,12 +110,6 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
   );
   const [filter, setFilter] = React.useState('');
   const [visibleRows, setVisibleRows] = React.useState(props.rows?.length);
-  const [mode, setMode] = React.useState(props.mode ?? theme.palette.mode);
-
-  // Only apply the theme when the mode changes
-  React.useMemo(() => {
-    setMode(props.mode ?? theme.palette.mode);
-  }, [props.mode]);
 
   // Determine default values for optional props
   const filterable = props.filterable ?? DEFAULT_TABLE_FILTERABLE;
@@ -186,43 +123,64 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
     theme.enhancedTable = { ...DEFAULT_THEME };
   }
 
+  // return (
+  //   <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
+  //     {showHeaders && (
+  //       <TableHeaders
+  //         headers={props.headers}
+  //         sortColumn={sortColumn}
+  //         setSortColumn={setSortColumn}
+  //         sortDirection={sortDirection}
+  //         setSortDirection={setSortDirection}
+  //         expandable={expandable}
+  //       />
+  //     )}
+  //     <TableContent
+  //       rows={props.rows}
+  //       headers={props.headers}
+  //       stripedRows={stripedRows}
+  //       sortColumn={sortColumn}
+  //       sortDirection={sortDirection}
+  //       filter={filter}
+  //       setVisibleRows={setVisibleRows}
+  //       expandable={expandable}
+  //     ></TableContent>
+  //   </Table>
+  // );
+
   return (
-    theme.enhancedTable && (
-      <ModeContextProvider mode={mode}>
-        <Box sx={{ mt: 2 }}>
-          <Grid container justifyContent="space-between" alignItems="flex-end">
-            {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
-            {displayNumberOfRows && <NumberOfRowsComponent totalRows={visibleRows} />}
-          </Grid>
-          <Grid container justifyContent="space-between" alignItems="flex-end">
-            <TableContainer component={Paper}>
-              <Table size={tableSize}>
-                {showHeaders && (
-                  <TableHeaders
-                    headers={props.headers}
-                    sortColumn={sortColumn}
-                    setSortColumn={setSortColumn}
-                    sortDirection={sortDirection}
-                    setSortDirection={setSortDirection}
-                    expandable={expandable}
-                  />
-                )}
-                <TableContent
-                  rows={props.rows}
-                  headers={props.headers}
-                  stripedRows={stripedRows}
-                  sortColumn={sortColumn}
-                  sortDirection={sortDirection}
-                  filter={filter}
-                  setVisibleRows={setVisibleRows}
-                  expandable={expandable}
-                ></TableContent>
-              </Table>
-            </TableContainer>
-          </Grid>
-        </Box>
-      </ModeContextProvider>
-    )
+    <Box sx={{ mt: 2, border: 1, width: '100%', overflow: 'fixed' }}>
+      <Grid container justifyContent="space-between" alignItems="flex-end">
+        {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
+        {displayNumberOfRows && <NumberOfRowsComponent totalRows={visibleRows} />}
+      </Grid>
+      <Grid container justifyContent="space-between" alignItems="flex-end">
+        <TableContainer component={Paper}>
+          <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
+            {showHeaders && (
+              <TableHeaders
+                headers={props.headers}
+                sortColumn={sortColumn}
+                setSortColumn={setSortColumn}
+                sortDirection={sortDirection}
+                setSortDirection={setSortDirection}
+                expandable={expandable}
+              />
+            )}
+            <TableContent
+              rows={props.rows}
+              headers={props.headers}
+              stripedRows={stripedRows}
+              sortColumn={sortColumn}
+              sortDirection={sortDirection}
+              filter={filter}
+              setVisibleRows={setVisibleRows}
+              expandable={expandable}
+            ></TableContent>
+          </Table>
+        </TableContainer>
+      </Grid>
+    </Box>
   );
 }
 

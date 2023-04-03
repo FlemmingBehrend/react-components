@@ -1,3 +1,5 @@
+import { EnhancedHeader, EnhancedHeaderGroup } from './table/header-definitions';
+
 export function getDarkerColor(hex: string, percent: number): string {
   let r = parseInt(hex.substring(1, 3), 16);
   let g = parseInt(hex.substring(3, 5), 16);
@@ -32,4 +34,12 @@ export function getBackgroundColor(color: string, level: number, mode: 'light' |
     }
     throw new Error('Invalid mode');
   }
+}
+
+export function instanceOfEnhancedHeader<DataDef>(object: any): object is EnhancedHeader<DataDef> {
+  return 'dataType' in object;
+}
+
+export function instanceOfEnhancedHeaderGroup<DataDef>(object: any): object is EnhancedHeaderGroup<DataDef> {
+  return 'subHeaders' in object;
 }

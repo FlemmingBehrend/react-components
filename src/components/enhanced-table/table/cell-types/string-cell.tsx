@@ -1,20 +1,25 @@
 import * as React from 'react';
-import { TableCell, Tooltip, useTheme } from '@mui/material';
+import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 import { hash } from '../../../../hashing';
-import { ModeContext } from '../../mode-context-provider';
+import { styled } from '@mui/material/styles';
 
 export interface StringCell extends Identible, Valuable<string>, Tooltipable, Linkable {}
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   const theme = useTheme();
-  const modeContext = React.useContext(ModeContext);
+
+  function renderText() {
+    return <Typography noWrap>{`${cell.value}${columnDef.suffix}`}</Typography>;
+  }
 
   function renderLink() {
     return cell.href ? (
-      <a href={cell.href} target={cell.target ?? '_blank'}>{`${cell.value}${columnDef.suffix}`}</a>
+      <a href={cell.href} target={cell.target ?? '_blank'}>
+        {renderText()}
+      </a>
     ) : (
-      `${cell.value}${columnDef.suffix}`
+      renderText()
     );
   }
 
@@ -23,7 +28,9 @@ function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
       <TableCell
         key={`${hash(cell.id + cell.value)}`}
         align={columnDef.align}
-        sx={{ color: theme.enhancedTable[modeContext.mode].cellFontColor }}
+        sx={{
+          color: theme.enhancedTable.cellFontColor
+        }}
       >
         {renderLink()}
       </TableCell>
@@ -68,6 +75,7 @@ export const StringColDef: ColDef<string> = {
   align: 'left',
   sortable: true,
   suffix: '',
+  ellipsis: true,
   render: renderStringCell,
   comparator: stringComparator,
   filterFn: stringFilterFn

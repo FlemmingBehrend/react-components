@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
+import { TableCell, TableSortLabel, Tooltip, Typography } from '@mui/material';
 import { SortDirection } from './header-definitions';
 import { HeaderCellContext } from './header-cell-context-provider';
 
@@ -18,12 +18,13 @@ export interface EnhancedHeaderCellProps {
   backgroundColor: string;
   fontColor: string;
   fontWeight: string;
+  width: string;
   seperatorColor: string;
 }
 
 const LabelCell = function LabelCell() {
   const { label } = React.useContext(HeaderCellContext);
-  return <span style={{ whiteSpace: 'nowrap' }}>{label}</span>;
+  return <Typography noWrap>{label}</Typography>;
 };
 
 function SortCell() {
@@ -55,14 +56,15 @@ function SortCell() {
 }
 
 const TooltipCell = React.memo(function TooltipCell() {
-  const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment } =
+  const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment, width } =
     React.useContext(HeaderCellContext);
 
   const sx = {
     backgroundColor,
     borderRight: `1px solid ${seperatorColor}`,
     color: fontColor,
-    fontWeight: fontWeight
+    fontWeight: fontWeight,
+    width: width
   };
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
@@ -71,6 +73,7 @@ const TooltipCell = React.memo(function TooltipCell() {
         colSpan={colspan}
         align={alignment}
         sx={sx}
+        variant="head"
       >
         <SortCell />
       </TableCell>
@@ -81,6 +84,7 @@ const TooltipCell = React.memo(function TooltipCell() {
       colSpan={colspan}
       align={alignment}
       sx={sx}
+      variant="head"
     >
       <SortCell />
     </TableCell>

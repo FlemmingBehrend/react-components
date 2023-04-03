@@ -19,15 +19,21 @@ type CommonHeaderOptions = {
    * Align the header text.
    */
   align?: 'left' | 'center' | 'right';
+
+  /**
+   * The colspan of the header.
+   */
+  colspan: number;
 };
 
-type EnhancedHeader<DataDef> = {
+export type EnhancedHeader<DataDef> = {
   subHeaders?: never;
   dataType: keyof DataDef;
   definition: ColDef<string> | ColDef<number>;
+  width: string;
 };
 
-type EnhancedHeaderGroup<DataDef> = {
+export type EnhancedHeaderGroup<DataDef> = {
   subHeaders: EnhancedTableHeader<DataDef>[];
   dataType?: never;
   definition?: never;
