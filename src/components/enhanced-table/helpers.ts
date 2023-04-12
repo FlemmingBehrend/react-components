@@ -1,4 +1,4 @@
-import { EnhancedHeader, EnhancedHeaderGroup } from './table/header-definitions';
+import { EnhancedHeader, EnhancedHeaderGroup, EnhancedTableHeader } from './table/header-definitions';
 
 export function getDarkerColor(hex: string, percent: number): string {
   let r = parseInt(hex.substring(1, 3), 16);
@@ -34,6 +34,18 @@ export function getBackgroundColor(color: string, level: number, mode: 'light' |
     }
     throw new Error('Invalid mode');
   }
+}
+
+export function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[]): EnhancedTableHeader<DataDef>[] {
+  const headerCells: EnhancedTableHeader<DataDef>[] = [];
+  headers.forEach((header) => {
+    if (header.subHeaders) {
+      headerCells.push(...getHeaderCells(header.subHeaders));
+    } else {
+      headerCells.push(header);
+    }
+  });
+  return headerCells;
 }
 
 export function instanceOfEnhancedHeader<DataDef>(object: any): object is EnhancedHeader<DataDef> {

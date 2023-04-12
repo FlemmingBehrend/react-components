@@ -3,6 +3,7 @@ import { TableBody, useTheme } from '@mui/material';
 import { EnhancedTableHeader } from './header-definitions';
 import { Identible } from './cells/cell-definitions';
 import Row from './row';
+import { getHeaderCells } from '../helpers';
 
 interface TableContentProps<DataDef> {
   rows: DataDef[];
@@ -13,18 +14,6 @@ interface TableContentProps<DataDef> {
   filter: string;
   setVisibleRows: (no: number) => void;
   expandable: boolean;
-}
-
-function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[]): EnhancedTableHeader<DataDef>[] {
-  const headerCells: EnhancedTableHeader<DataDef>[] = [];
-  headers.forEach((header) => {
-    if (header.subHeaders) {
-      headerCells.push(...getHeaderCells(header.subHeaders));
-    } else {
-      headerCells.push(header);
-    }
-  });
-  return headerCells;
 }
 
 function TableContent<DataDef extends Identible>(props: TableContentProps<DataDef>) {
@@ -91,7 +80,6 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
       return theme.palette.background.default;
     }
   }
-
   return (
     <TableBody>
       {displayedRows.map((row, index) => {

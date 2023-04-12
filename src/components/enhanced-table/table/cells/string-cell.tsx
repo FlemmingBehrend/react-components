@@ -2,7 +2,6 @@ import * as React from 'react';
 import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 import { hash } from '../../../../hashing';
-import { styled } from '@mui/material/styles';
 
 export interface StringCell extends Identible, Valuable<string>, Tooltipable, Linkable {}
 

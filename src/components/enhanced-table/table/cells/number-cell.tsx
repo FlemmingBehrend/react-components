@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TableCell, Tooltip, useTheme } from '@mui/material';
+import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 
 export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
@@ -9,9 +9,11 @@ function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
 
   function renderLink() {
     return cell.href ? (
-      <a href={cell.href} target={cell.target ?? '_blank'}>{`${cell.value}${columnDef.suffix}`}</a>
+      <Typography noWrap>
+        <a href={cell.href} target={cell.target ?? '_blank'}>{`${cell.value}${columnDef.suffix}`}</a>
+      </Typography>
     ) : (
-      `${cell.value}${columnDef.suffix}`
+      <Typography noWrap>{`${cell.value}${columnDef.suffix}`}</Typography>
     );
   }
 
@@ -23,7 +25,7 @@ function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
     );
   }
 
-  function renderWithTooltip() {
+  function renderTooltip() {
     return (
       <Tooltip title={cell.tooltip} followCursor>
         {renderTableCell()}
@@ -31,7 +33,7 @@ function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
     );
   }
 
-  return cell.tooltip ? renderWithTooltip() : renderTableCell();
+  return cell.tooltip ? renderTooltip() : renderTableCell();
 }
 
 function numberComparator<DataDef>(sortColumn: keyof DataDef) {

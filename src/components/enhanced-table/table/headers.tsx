@@ -4,6 +4,7 @@ import { SortDirection, EnhancedTableHeader } from './header-definitions';
 import { EnhancedHeaderCell } from './header';
 import HeaderCellContextProvider, { HeaderCellContextProps } from '../context/header-cell-context-provider';
 import { getBackgroundColor } from '../helpers';
+import { hash } from '../../../hashing';
 
 interface TableHeadersProps<DataDef> {
   headers: EnhancedTableHeader<DataDef>[];
@@ -43,8 +44,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         backgroundColor: getBackgroundColor(theme.enhancedTable.headerBackgroundColor, level, theme.palette.mode),
         fontColor: theme.enhancedTable.headerFontColor,
         fontWeight: theme.enhancedTable.headerFontWeight,
-        seperatorColor: theme.enhancedTable.headerSeperatorColor,
-        width: header.width ?? 'auto'
+        seperatorColor: theme.enhancedTable.headerSeperatorColor
       };
 
       headerRows.get(level)?.push(contextProps);
@@ -75,8 +75,9 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
                 }}
               ></TableCell>
             )}
-            {headerRows.get(level)?.map((header) => (
+            {headerRows.get(level)?.map((header, index) => (
               <HeaderCellContextProvider
+                key={hash(header.label + index)}
                 alignment={header.alignment}
                 backgroundColor={header.backgroundColor}
                 colspan={header.colspan}
@@ -91,7 +92,6 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
                 tooltip={header.tooltip}
                 sortable={header.sortable}
                 dataType={header.dataType}
-                width={header.width}
               >
                 <EnhancedHeaderCell />
               </HeaderCellContextProvider>

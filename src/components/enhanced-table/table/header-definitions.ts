@@ -24,18 +24,9 @@ type CommonHeaderOptions = {
    * The colspan of the header.
    */
   colspan: number;
-
-  /**
-   * Specifing this will set the column to a fixed width.
-   *
-   * If the mixWidth or mixWidth is set then it will override this value.
-   *
-   * @default undefined, column will be auto-sized
-   */
-  width?: string;
 };
 
-export type EnhancedHeader<DataDef> = {
+type EnhancedHeader<DataDef> = {
   /**
    * A Header on the lowest level of the table can never have subHeaders.
    */
@@ -53,13 +44,14 @@ export type EnhancedHeader<DataDef> = {
   definition: ColDef<string> | ColDef<number>;
 };
 
-export type EnhancedHeaderGroup<DataDef> = {
+type EnhancedHeaderGroup<DataDef> = {
   subHeaders: EnhancedTableHeader<DataDef>[];
   dataType?: never;
   definition?: never;
 };
 
-export type EnhancedTableHeader<DataDef> = CommonHeaderOptions &
-  (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);
+type EnhancedTableHeader<DataDef> = CommonHeaderOptions & (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);
 
-export type SortDirection = 'asc' | 'desc';
+type SortDirection = 'asc' | 'desc';
+
+export type { EnhancedTableHeader, SortDirection, EnhancedHeader, EnhancedHeaderGroup };

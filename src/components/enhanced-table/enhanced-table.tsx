@@ -17,6 +17,7 @@ import {
   DEFAULT_THEME
 } from './default-values';
 import { EnhancedTableTheme } from './themes';
+import { getHeaderCells } from './helpers';
 
 declare module '@mui/material/styles' {
   interface Theme {
@@ -37,6 +38,20 @@ export interface EnhancedTableProps<DataDef> {
    * The headers of the table
    */
   headers: EnhancedTableHeader<DataDef>[];
+
+  /**
+   * An array of strings or numbers that represent the width of each column.
+   *
+   * A number will be interpreted as a pixel value.
+   * A string can be any valid CSS value, e.g. '10%', 'auto', '100px'.
+   *
+   * - if the array is shorter than the number of columns,
+   * the last value in the array is used for the remaining columns
+   * - if the array is longer than the number of columns, the extra values are ignored.
+   * - if the array is empty or undefined, we set tableLayout to 'auto' and let the browser figure it out.
+   * @default undefined, the browser will figure it out
+   */
+  columnWidths?: Array<number | string>;
 
   /**
    * If 'true' the table will show the headers
@@ -92,8 +107,6 @@ export interface EnhancedTableProps<DataDef> {
 }
 
 function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<DataDef>) {
-  console.log('EnhancedTable', props);
-
   // Fail fast if required props are not provided
   if (!props.rows) {
     throw new Error('The rows property is required');
@@ -102,7 +115,7 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
     throw new Error('The headers property is required');
   }
 
-  // State variables at the top of the component
+  // State of the component
   const theme = useTheme();
   const [sortColumn, setSortColumn] = React.useState<keyof DataDef | undefined>(props.initialSortColumn);
   const [sortDirection, setSortDirection] = React.useState<SortDirection>(
@@ -123,33 +136,23 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
     theme.enhancedTable = { ...DEFAULT_THEME };
   }
 
-  return (
-    <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
-      {showHeaders && (
-        <TableHeaders
-          headers={props.headers}
-          sortColumn={sortColumn}
-          setSortColumn={setSortColumn}
-          sortDirection={sortDirection}
-          setSortDirection={setSortDirection}
-          expandable={expandable}
-        />
-      )}
-      <TableContent
-        rows={props.rows}
-        headers={props.headers}
-        stripedRows={stripedRows}
-        sortColumn={sortColumn}
-        sortDirection={sortDirection}
-        filter={filter}
-        setVisibleRows={setVisibleRows}
-        expandable={expandable}
-      ></TableContent>
-    </Table>
-  );
+  function renderColGroup(columnWidths: Array<number | string>) {
+    const numberOfHeaders = getHeaderCells(props.headers).length;
+    if (columnWidths.length < numberOfHeaders) {
+      const lastWidth = columnWidths[columnWidths.length - 1];
+      for (let i = columnWidths.length; i < numberOfHeaders; i++) {
+        columnWidths.push(lastWidth);
+      }
+    } else if (columnWidths.length > numberOfHeaders) {
+      columnWidths = columnWidths.slice(0, numberOfHeaders);
+    }
+    return columnWidths.map((width, index) => {
+      return <col key={index} style={{ width }} />;
+    });
+  }
 
   return (
-    <Box sx={{ mt: 2, border: 1, width: '100%', overflow: 'fixed' }}>
+    <Box sx={{ mt: 2, width: '100%' }}>
       <Grid container justifyContent="space-between" alignItems="flex-end">
         {filterable ? <FilterComponent setFilter={setFilter} /> : <React.Fragment>&nbsp;</React.Fragment>}
         {displayNumberOfRows && <NumberOfRowsComponent totalRows={visibleRows} />}
@@ -157,6 +160,12 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
       <Grid container justifyContent="space-between" alignItems="flex-end">
         <TableContainer component={Paper}>
           <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
+            {props.columnWidths && props.columnWidths.length > 0 && (
+              <colgroup>
+                {props.expandable && <col style={{ width: '64px' }} />}
+                {renderColGroup(props.columnWidths)}
+              </colgroup>
+            )}
             {showHeaders && (
               <TableHeaders
                 headers={props.headers}

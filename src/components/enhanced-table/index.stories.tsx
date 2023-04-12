@@ -4,14 +4,14 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { Identible, StringCell, StringColDef, EnhancedTable, EnhancedTableHeader, NumberCell, NumberColDef } from './';
 import { Grid, Theme, ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
-import { grey, blueGrey, common } from '@mui/material/colors';
+import { grey, common } from '@mui/material/colors';
 import { CYAN, LIGHT_BLUE, EnhancedTableTheme, DARK } from './themes';
 
 interface Factory {
   companyName?: string;
   companySuffix?: string;
   streetAddress?: string;
-  buildingNumber?: string;
+  buildingNumber?: number;
   country?: string;
   phoneNo?: string;
   department?: string;
@@ -23,7 +23,7 @@ function createRandomFatory(): Factory {
     companyName: faker.company.name(),
     companySuffix: faker.company.companySuffix(),
     streetAddress: faker.address.streetAddress(),
-    buildingNumber: faker.address.buildingNumber(),
+    buildingNumber: Number(faker.address.buildingNumber()),
     country: faker.address.country(),
     phoneNo: faker.phone.number(),
     department: faker.commerce.department(),
@@ -39,7 +39,7 @@ interface RowData extends Identible {
   companyName: StringCell;
   companySuffix: StringCell;
   streetAddress?: StringCell;
-  buildingNumber?: StringCell;
+  buildingNumber?: NumberCell;
   country?: StringCell;
   phoneNo?: StringCell;
   department?: StringCell;
@@ -51,72 +51,67 @@ const headers: EnhancedTableHeader<RowData>[] = [
     label: 'Factory details',
     align: 'center',
     tooltip: 'Information about factories',
-    colspan: 3,
+    colspan: 8,
     subHeaders: [
-      // {
-      //   label: 'Name and address',
-      //   align: 'center',
-      //   tooltip: 'Name and address of the factory',
-      //   colspan: 5,
-      //   subHeaders: [
-      //     {
-      //       label: 'Name',
-      //       align: 'center',
-      //       tooltip: 'Name of the factory',
-      //       colspan: 2,
-      //       subHeaders: [
-      //         {
-      //           label: 'Company name',
-      //           tooltip: 'Name of the company',
-      //           definition: StringColDef,
-      //           dataType: 'companyName',
-      //           width: '200px',
-      //           colspan: 1
-      //         },
-      //         {
-      //           label: 'Company suffix',
-      //           tooltip: 'Suffix of the company',
-      //           definition: StringColDef,
-      //           dataType: 'companySuffix',
-      //           width: '10%',
-      //           colspan: 1
-      //         }
-      //       ]
-      //     },
-      //     {
-      //       label: 'Address',
-      //       align: 'center',
-      //       tooltip: 'Address of the factory',
-      //       colspan: 3,
-      //       subHeaders: [
-      //         {
-      //           label: 'Street address',
-      //           tooltip: 'Street address of the factory',
-      //           definition: StringColDef,
-      //           dataType: 'streetAddress',
-      //           width: '15%',
-      //           colspan: 1
-      //         },
-      //         {
-      //           label: 'No.',
-      //           tooltip: 'Building number of the factory',
-      //           definition: StringColDef,
-      //           dataType: 'buildingNumber',
-      //           width: '10px',
-      //           colspan: 1
-      //         },
-      //         {
-      //           label: 'Country',
-      //           tooltip: 'Country of the factory',
-      //           definition: StringColDef,
-      //           dataType: 'country',
-      //           width: '10%',
-      //           colspan: 1
-      //         }
-      //       ]
-      //     }
-      //   ]
-      // },
+      {
+        label: 'Name and address',
+        align: 'center',
+        tooltip: 'Name and address of the factory',
+        colspan: 5,
+        subHeaders: [
+          {
+            label: 'Company',
+            align: 'center',
+            tooltip: 'Name of the factory',
+            colspan: 2,
+            subHeaders: [
+              {
+                label: 'Name',
+                tooltip: 'Name of the company',
+                definition: StringColDef,
+                dataType: 'companyName',
+                colspan: 1
+              },
+              {
+                label: 'Suffix',
+                tooltip: 'Suffix of the company',
+                definition: StringColDef,
+                dataType: 'companySuffix',
+                colspan: 1
+              }
+            ]
+          },
+          {
+            label: 'Address',
+            align: 'center',
+            tooltip: 'Address of the factory',
+            colspan: 3,
+            subHeaders: [
+              {
+                label: 'Street address',
+                tooltip: 'Street address of the factory',
+                definition: StringColDef,
+                dataType: 'streetAddress',
+                colspan: 1
+              },
+              {
+                label: 'No.',
+                tooltip: 'Building number of the factory',
+                definition: NumberColDef,
+                dataType: 'buildingNumber',
+                colspan: 1
+              },
+              {
+                label: 'Country',
+                tooltip: 'Country of the factory',
+                definition: StringColDef,
+                dataType: 'country',
+                colspan: 1
+              }
+            ]
+          }
+        ]
+      },
       {
         label: 'Other details',
         align: 'center',
@@ -134,7 +129,6 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Phone number of the factory',
                 definition: StringColDef,
                 dataType: 'phoneNo',
-                width: '100%',
                 colspan: 1
               }
             ]
@@ -150,7 +144,6 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Department of the factory',
                 definition: StringColDef,
                 dataType: 'department',
-                width: '100px',
                 colspan: 1
               },
               {
@@ -168,6 +161,8 @@ const headers: EnhancedTableHeader<RowData>[] = [
   }
 ];
 
+const columnWidths: Array<number | string> = ['auto', 100];
+
 const rows: RowData[] = FACTORY.map((factory) => {
   const id = `${hash(factory.companyName! + factory.companySuffix!)}`;
   return {
@@ -175,7 +170,7 @@ const rows: RowData[] = FACTORY.map((factory) => {
     companyName: { id, value: factory.companyName ?? 'N/A' },
     companySuffix: { id, value: factory.companySuffix ?? 'N/A' },
     streetAddress: { id, value: factory.streetAddress ?? 'N/A' },
-    buildingNumber: { id, value: factory.buildingNumber ?? 'N/A' },
+    buildingNumber: { id, value: factory.buildingNumber ?? 0 },
     country: { id, value: factory.country ?? 'N/A' },
     phoneNo: { id, value: factory.phoneNo ?? 'N/A' },
     department: { id, value: factory.department ?? 'N/A' },
@@ -246,6 +241,7 @@ export const LightBlueTemplate: ComponentStory<typeof EnhancedTable> = (args) =>
 );
 LightBlueTemplate.args = {
   headers: headers as EnhancedTableHeader<Identible>[],
+  columnWidths,
   rows,
   displayNumberOfRows: true,
   expandable: true,
@@ -320,7 +316,6 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
     tooltip: 'Name of the user',
     definition: StringColDef,
     dataType: 'name',
-    width: 'auto',
     colspan: 1
   },
   {
@@ -328,7 +323,6 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
     tooltip: 'Age of the user',
     definition: NumberColDef,
     dataType: 'age',
-    width: '5%',
     colspan: 1
   },
   {
@@ -336,7 +330,6 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
     tooltip: 'Birth date of the user',
     definition: StringColDef,
     dataType: 'birthDate',
-    width: '15%',
     colspan: 1
   }
 ];
