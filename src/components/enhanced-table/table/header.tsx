@@ -1,30 +1,14 @@
 import * as React from 'react';
-import { TableCell, TableSortLabel, Tooltip, Typography } from '@mui/material';
-import { SortDirection } from './header-definitions';
-import { HeaderCellContext } from './header-cell-context-provider';
-
-export interface EnhancedHeaderCellProps {
-  key: string;
-  label: string;
-  dataType: string;
-  alignment: 'left' | 'center' | 'right';
-  tooltip?: string;
-  sortable: boolean;
-  colspan: number;
-  sortDirection: SortDirection;
-  sortColumn: string;
-  setSortColumn: (column: string) => void;
-  setSortDirection: (direction: SortDirection) => void;
-  backgroundColor: string;
-  fontColor: string;
-  fontWeight: string;
-  width: string;
-  seperatorColor: string;
-}
+import { TableCell, TableSortLabel, Tooltip, Typography, SxProps } from '@mui/material';
+import { HeaderCellContext } from '../context/header-cell-context-provider';
 
 const LabelCell = function LabelCell() {
   const { label } = React.useContext(HeaderCellContext);
-  return <Typography noWrap>{label}</Typography>;
+  return (
+    <Typography noWrap width="auto">
+      {label}
+    </Typography>
+  );
 };
 
 function SortCell() {
@@ -45,38 +29,51 @@ function SortCell() {
       tooltip = `Sort this column. Currently sorted by ${sortColumn} in ${sortDirection}ending order.`;
     }
     return (
-      <Tooltip title={tooltip} placement="top-start">
-        <TableSortLabel active={dataType === sortColumn} direction={sortDirection} onClick={() => handleSort(dataType)}>
-          <LabelCell />
-        </TableSortLabel>
-      </Tooltip>
+      // <Tooltip title={tooltip} placement="top-start">
+      <TableSortLabel active={dataType === sortColumn} direction={sortDirection} onClick={() => handleSort(dataType)}>
+        <LabelCell />
+      </TableSortLabel>
+      // </Tooltip>
     );
   }
   return render();
 }
 
 const TooltipCell = React.memo(function TooltipCell() {
-  const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment, width } =
+  const { backgroundColor, fontColor, fontWeight, seperatorColor, tooltip, colspan, alignment, width, label } =
     React.useContext(HeaderCellContext);
 
-  const sx = {
+  const sx: SxProps = {
     backgroundColor,
     borderRight: `1px solid ${seperatorColor}`,
     color: fontColor,
     fontWeight: fontWeight,
     width: width
   };
+
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
-      <TableCell
-        // @ts-ignore: colspan is used internally to calculate the width of the header
-        colSpan={colspan}
-        align={alignment}
-        sx={sx}
-        variant="head"
-      >
-        <SortCell />
-      </TableCell>
+      {label === 'Build date' ? (
+        <TableCell
+          // @ts-ignore: colspan is used internally to calculate the width of the header
+          colSpan={colspan}
+          align={alignment}
+          sx={{ ...sx, maxWidth: 60, minWidth: 60, width: 60, overflow: 'hidden' }}
+          variant="head"
+        >
+          <SortCell />
+        </TableCell>
+      ) : (
+        <TableCell
+          // @ts-ignore: colspan is used internally to calculate the width of the header
+          colSpan={colspan}
+          align={alignment}
+          sx={sx}
+          variant="head"
+        >
+          <SortCell />
+        </TableCell>
+      )}
     </Tooltip>
   ) : (
     <TableCell

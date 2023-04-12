@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EnhancedTableHeader } from './header-definitions';
-import { Identible } from './cell-types/cell-definitions';
+import { Identible } from './cells/cell-definitions';
 import { IconButton, TableCell, TableRow, styled, useTheme } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';

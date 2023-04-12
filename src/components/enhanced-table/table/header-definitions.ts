@@ -1,4 +1,4 @@
-import { ColDef } from './cell-types/cell-definitions';
+import { ColDef } from './cells/cell-definitions';
 
 type CommonHeaderOptions = {
   /**
@@ -24,13 +24,33 @@ type CommonHeaderOptions = {
    * The colspan of the header.
    */
   colspan: number;
+
+  /**
+   * Specifing this will set the column to a fixed width.
+   *
+   * If the mixWidth or mixWidth is set then it will override this value.
+   *
+   * @default undefined, column will be auto-sized
+   */
+  width?: string;
 };
 
 export type EnhancedHeader<DataDef> = {
+  /**
+   * A Header on the lowest level of the table can never have subHeaders.
+   */
   subHeaders?: never;
+
+  /**
+   * The data type of the column.
+   * This is used to determine the cell type.
+   */
   dataType: keyof DataDef;
+
+  /**
+   * The definition of the column.
+   */
   definition: ColDef<string> | ColDef<number>;
-  width: string;
 };
 
 export type EnhancedHeaderGroup<DataDef> = {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TableBody, useTheme } from '@mui/material';
 import { EnhancedTableHeader } from './header-definitions';
-import { Identible } from './cell-types/cell-definitions';
+import { Identible } from './cells/cell-definitions';
 import Row from './row';
 
 interface TableContentProps<DataDef> {

@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Box, Grid, Paper, Table, TableContainer, useTheme } from '@mui/material';
 import FilterComponent from './table/filter-field';
 import { SortDirection, EnhancedTableHeader } from './table/header-definitions';
-import { Identible } from './table/cell-types/cell-definitions';
+import { Identible } from './table/cells/cell-definitions';
 import NumberOfRowsComponent from './table/number-of-rows';
-import TableHeaders from './table/table-headers';
-import TableContent from './table/table-content';
+import TableHeaders from './table/headers';
+import TableContent from './table/body';
 import {
   DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS,
   DEFAULT_TABLE_EXPANDABLE,
@@ -123,30 +123,30 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
     theme.enhancedTable = { ...DEFAULT_THEME };
   }
 
-  // return (
-  //   <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
-  //     {showHeaders && (
-  //       <TableHeaders
-  //         headers={props.headers}
-  //         sortColumn={sortColumn}
-  //         setSortColumn={setSortColumn}
-  //         sortDirection={sortDirection}
-  //         setSortDirection={setSortDirection}
-  //         expandable={expandable}
-  //       />
-  //     )}
-  //     <TableContent
-  //       rows={props.rows}
-  //       headers={props.headers}
-  //       stripedRows={stripedRows}
-  //       sortColumn={sortColumn}
-  //       sortDirection={sortDirection}
-  //       filter={filter}
-  //       setVisibleRows={setVisibleRows}
-  //       expandable={expandable}
-  //     ></TableContent>
-  //   </Table>
-  // );
+  return (
+    <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
+      {showHeaders && (
+        <TableHeaders
+          headers={props.headers}
+          sortColumn={sortColumn}
+          setSortColumn={setSortColumn}
+          sortDirection={sortDirection}
+          setSortDirection={setSortDirection}
+          expandable={expandable}
+        />
+      )}
+      <TableContent
+        rows={props.rows}
+        headers={props.headers}
+        stripedRows={stripedRows}
+        sortColumn={sortColumn}
+        sortDirection={sortDirection}
+        filter={filter}
+        setVisibleRows={setVisibleRows}
+        expandable={expandable}
+      ></TableContent>
+    </Table>
+  );
 
   return (
     <Box sx={{ mt: 2, border: 1, width: '100%', overflow: 'fixed' }}>

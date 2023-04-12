@@ -1,7 +1,7 @@
 import React, { createContext, FC } from 'react';
-import { SortDirection } from './header-definitions';
+import { SortDirection } from '../table/header-definitions';
 
-interface HeaderCellContextProps {
+export interface HeaderCellContextProps {
   label: string;
   dataType: string;
   alignment: 'left' | 'center' | 'right';
@@ -16,7 +16,7 @@ interface HeaderCellContextProps {
   fontColor: string;
   fontWeight: string;
   seperatorColor: string;
-  width: string;
+  width?: string;
 }
 
 export const HeaderCellContext = createContext<HeaderCellContextProps>({
@@ -52,7 +52,7 @@ interface HeaderCellContextProviderProps {
   fontColor: string;
   fontWeight: string;
   seperatorColor: string;
-  width: string;
+  width?: string;
   children: React.ReactNode;
 }
 

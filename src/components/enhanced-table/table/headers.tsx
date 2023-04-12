@@ -1,10 +1,9 @@
 import { TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import * as React from 'react';
-import { SortDirection, EnhancedTableHeader, EnhancedHeaderGroup } from './header-definitions';
-import { EnhancedHeaderCellProps, EnhancedHeaderCell } from './header-cell';
-import { hash } from '../../../hashing';
-import HeaderCellContextProvider from './header-cell-context-provider';
-import { getBackgroundColor, instanceOfEnhancedHeader, instanceOfEnhancedHeaderGroup } from '../helpers';
+import { SortDirection, EnhancedTableHeader } from './header-definitions';
+import { EnhancedHeaderCell } from './header';
+import HeaderCellContextProvider, { HeaderCellContextProps } from '../context/header-cell-context-provider';
+import { getBackgroundColor } from '../helpers';
 
 interface TableHeadersProps<DataDef> {
   headers: EnhancedTableHeader<DataDef>[];
@@ -20,17 +19,17 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
 
   function generateHeadersRecursively(
     headers: EnhancedTableHeader<DataDef>[],
-    headerRows: Map<number, EnhancedHeaderCellProps[]> = new Map(),
+    headerRows = new Map<number, HeaderCellContextProps[]>(),
     level: number = 0
-  ): Map<number, EnhancedHeaderCellProps[]> {
+  ): Map<number, HeaderCellContextProps[]> {
     if (!headers) return headerRows;
 
-    headers.map((header, index) => {
+    headers.map((header) => {
       if (!headerRows.has(level)) {
         headerRows.set(level, []);
       }
-      headerRows.get(level)?.push({
-        key: hash(header.label + index).toString(),
+
+      const contextProps: HeaderCellContextProps = {
         label: header.label,
         dataType: header.dataType as string,
         alignment: header.align ?? 'left',
@@ -45,8 +44,11 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         fontColor: theme.enhancedTable.headerFontColor,
         fontWeight: theme.enhancedTable.headerFontWeight,
         seperatorColor: theme.enhancedTable.headerSeperatorColor,
-        width: instanceOfEnhancedHeader(header) ? header.width : 'auto'
-      });
+        width: header.width ?? 'auto'
+      };
+
+      headerRows.get(level)?.push(contextProps);
+
       if (header.subHeaders) {
         generateHeadersRecursively(header.subHeaders, headerRows, level + 1);
       }
@@ -69,7 +71,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
                     level,
                     theme.palette.mode
                   )}`,
-                  width: '1%'
+                  width: '35px'
                 }}
               ></TableCell>
             )}
@@ -80,7 +82,6 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
                 colspan={header.colspan}
                 fontColor={header.fontColor}
                 fontWeight={header.fontWeight}
-                key={header.key}
                 label={header.label}
                 seperatorColor={header.seperatorColor}
                 sortColumn={header.sortColumn}

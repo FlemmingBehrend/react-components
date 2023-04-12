@@ -134,7 +134,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Phone number of the factory',
                 definition: StringColDef,
                 dataType: 'phoneNo',
-                width: '5%',
+                width: '100%',
                 colspan: 1
               }
             ]
@@ -150,7 +150,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Department of the factory',
                 definition: StringColDef,
                 dataType: 'department',
-                width: 'auto',
+                width: '100px',
                 colspan: 1
               },
               {
@@ -158,7 +158,6 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Build date of the factory',
                 definition: StringColDef,
                 dataType: 'buildDate',
-                width: '30%',
                 colspan: 1
               }
             ]
