@@ -53,7 +53,11 @@ function Row<DataDef>(props: RowProps<DataDef>) {
       <StyledRow sx={{ backgroundColor: props.rowColor }}>
         {props.expandable && renderExpandCell()}
         {props.headers.map((header) => {
-          return header.definition?.render(props.row[header.dataType], header.definition);
+          return (
+            <React.Fragment key={crypto.randomUUID()}>
+              {header.definition?.render(props.row[header.dataType], header.definition)}
+            </React.Fragment>
+          );
         })}
       </StyledRow>
       {renderExpandedElement()}

@@ -1,39 +1,24 @@
 import * as React from 'react';
 import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
+import Cell from '../cell';
 
 export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
 
 function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
   const theme = useTheme();
 
-  function renderLink() {
-    return cell.href ? (
-      <Typography noWrap>
-        <a href={cell.href} target={cell.target ?? '_blank'}>{`${cell.value}${columnDef.suffix}`}</a>
-      </Typography>
-    ) : (
-      <Typography noWrap>{`${cell.value}${columnDef.suffix}`}</Typography>
-    );
-  }
-
-  function renderTableCell() {
-    return (
-      <TableCell key={cell.id} align={columnDef.align} sx={{ color: theme.enhancedTable.cellFontColor }}>
-        {renderLink()}
-      </TableCell>
-    );
-  }
-
-  function renderTooltip() {
-    return (
-      <Tooltip title={cell.tooltip} followCursor>
-        {renderTableCell()}
-      </Tooltip>
-    );
-  }
-
-  return cell.tooltip ? renderTooltip() : renderTableCell();
+  return (
+    <React.Fragment>
+      <Cell
+        align={columnDef.align}
+        tooltip={cell.tooltip}
+        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
+      >
+        {`${cell.value}${columnDef.suffix}`}
+      </Cell>
+    </React.Fragment>
+  );
 }
 
 function numberComparator<DataDef>(sortColumn: keyof DataDef) {

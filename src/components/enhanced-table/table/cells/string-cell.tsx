@@ -2,49 +2,24 @@ import * as React from 'react';
 import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 import { hash } from '../../../../hashing';
+import Cell from '../cell';
 
 export interface StringCell extends Identible, Valuable<string>, Tooltipable, Linkable {}
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   const theme = useTheme();
 
-  function renderText() {
-    return <Typography noWrap>{`${cell.value}${columnDef.suffix}`}</Typography>;
-  }
-
-  function renderLink() {
-    return cell.href ? (
-      <a href={cell.href} target={cell.target ?? '_blank'}>
-        {renderText()}
-      </a>
-    ) : (
-      renderText()
-    );
-  }
-
-  function renderTableCell() {
-    return (
-      <TableCell
-        key={`${hash(cell.id + cell.value)}`}
+  return (
+    <React.Fragment key={crypto.randomUUID()}>
+      <Cell
         align={columnDef.align}
-        sx={{
-          color: theme.enhancedTable.cellFontColor
-        }}
+        tooltip={cell.tooltip}
+        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
       >
-        {renderLink()}
-      </TableCell>
-    );
-  }
-
-  function renderWithTooltip() {
-    return (
-      <Tooltip title={cell.tooltip} followCursor>
-        {renderTableCell()}
-      </Tooltip>
-    );
-  }
-
-  return cell.tooltip ? renderWithTooltip() : renderTableCell();
+        {`${cell.value}${columnDef.suffix}`}
+      </Cell>
+    </React.Fragment>
+  );
 }
 
 function stringComparator<DataDef>(sortColumn: keyof DataDef) {

@@ -41,12 +41,12 @@ const TooltipCell = React.memo(function TooltipCell() {
 
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
-      <TableCell colSpan={colspan} align={alignment} sx={sx} variant="head">
+      <TableCell colSpan={colspan} align={alignment} sx={sx}>
         <SortCell />
       </TableCell>
     </Tooltip>
   ) : (
-    <TableCell colSpan={colspan} align={alignment} sx={sx} variant="head">
+    <TableCell colSpan={colspan} align={alignment} sx={sx}>
       <SortCell />
     </TableCell>
   );

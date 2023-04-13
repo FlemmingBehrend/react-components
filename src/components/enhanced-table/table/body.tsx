@@ -85,7 +85,7 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
       {displayedRows.map((row, index) => {
         return (
           <Row
-            key={row.id}
+            key={crypto.randomUUID()}
             row={row}
             headers={headers}
             stripedRows={props.stripedRows}

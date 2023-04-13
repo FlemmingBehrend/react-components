@@ -99,6 +99,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
                 tooltip: 'Building number of the factory',
                 definition: NumberColDef,
                 dataType: 'buildingNumber',
+                align: 'right',
                 colspan: 1
               },
               {
@@ -125,7 +126,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
             colspan: 1,
             subHeaders: [
               {
-                label: 'Phone number',
+                label: 'Phone no.',
                 tooltip: 'Phone number of the factory',
                 definition: StringColDef,
                 dataType: 'phoneNo',
@@ -140,8 +141,8 @@ const headers: EnhancedTableHeader<RowData>[] = [
             colspan: 2,
             subHeaders: [
               {
-                label: 'Department',
-                tooltip: 'Department of the factory',
+                label: 'Name',
+                tooltip: 'Name of the factory',
                 definition: StringColDef,
                 dataType: 'department',
                 colspan: 1
@@ -161,20 +162,45 @@ const headers: EnhancedTableHeader<RowData>[] = [
   }
 ];
 
-const columnWidths: Array<number | string> = ['auto', 100];
+const columnWidths: Array<number | string> = ['auto', 120, 160, 80, 120, 180, 100, 120];
 
 const rows: RowData[] = FACTORY.map((factory) => {
   const id = `${hash(factory.companyName! + factory.companySuffix!)}`;
   return {
     id,
-    companyName: { id, value: factory.companyName ?? 'N/A' },
-    companySuffix: { id, value: factory.companySuffix ?? 'N/A' },
-    streetAddress: { id, value: factory.streetAddress ?? 'N/A' },
-    buildingNumber: { id, value: factory.buildingNumber ?? 0 },
-    country: { id, value: factory.country ?? 'N/A' },
+    companyName: { id, value: factory.companyName ?? 'N/A', tooltip: 'Company name' },
+    companySuffix: { id, value: factory.companySuffix ?? 'N/A', tooltip: 'Company suffix' },
+    streetAddress: {
+      id,
+      value: factory.streetAddress ?? 'N/A',
+      tooltip: (
+        <React.Fragment>
+          <table>
+            <tbody>
+              <tr>
+                <td>Street address</td>
+                <td>{factory.streetAddress ?? 'N/A'}</td>
+              </tr>
+              <tr>
+                <td>Building number</td>
+                <td>{factory.buildingNumber ?? 0}</td>
+              </tr>
+            </tbody>
+          </table>
+        </React.Fragment>
+      )
+    },
+    buildingNumber: { id, value: factory.buildingNumber ?? 0, tooltip: 'Building number' },
+    country: {
+      id,
+      value: factory.country ?? 'N/A',
+      href: 'https://www.google.com',
+      target: '_blank',
+      tooltip: 'Country'
+    },
     phoneNo: { id, value: factory.phoneNo ?? 'N/A' },
     department: { id, value: factory.department ?? 'N/A' },
-    buildDate: { id, value: factory.buildDate ?? 'N/A' }
+    buildDate: { id, value: factory.buildDate ?? 'N/A', tooltip: 'Build date' }
   };
 });
 
