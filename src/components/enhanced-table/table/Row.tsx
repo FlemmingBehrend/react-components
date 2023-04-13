@@ -28,8 +28,8 @@ function Row<DataDef>(props: RowProps<DataDef>) {
     if (props.expandable) {
       return (
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          <IconButton size="small" aria-label="expand row" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon fontSize="inherit" /> : <KeyboardArrowDownIcon fontSize="inherit" />}
           </IconButton>
         </TableCell>
       );

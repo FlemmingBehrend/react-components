@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 import Cell from '../cell';
 
 export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
 
 function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
-  const theme = useTheme();
-
   return (
     <React.Fragment>
       <Cell

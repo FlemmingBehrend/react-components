@@ -76,7 +76,6 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
     if (props.stripedRows) {
       return index % 2 === 0 ? theme.palette.background.default : theme.enhancedTable.cellStripedRowColor;
     } else {
-      console.log(theme.palette.background.default);
       return theme.palette.background.default;
     }
   }

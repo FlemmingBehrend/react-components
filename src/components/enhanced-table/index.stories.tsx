@@ -75,7 +75,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
               {
                 label: 'Suffix',
                 tooltip: 'Suffix of the company',
-                definition: StringColDef,
+                definition: { ...StringColDef, suffix: ' Inc.' },
                 dataType: 'companySuffix',
                 colspan: 1
               }
