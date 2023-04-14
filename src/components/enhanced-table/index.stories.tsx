@@ -1,7 +1,17 @@
 import React from 'react';
 import { faker } from '@faker-js/faker';
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Identible, StringCell, StringColDef, EnhancedTable, EnhancedTableHeader, NumberCell, NumberColDef } from './';
+import { ComponentStory, ComponentMeta, Meta } from '@storybook/react';
+import {
+  Identible,
+  StringCell,
+  StringColDef,
+  EnhancedTable,
+  EnhancedTableHeader,
+  NumberCell,
+  NumberColDef,
+  DateColDef,
+  DateCell
+} from './';
 import { Grid, Theme, ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
 import { grey, common } from '@mui/material/colors';
@@ -15,7 +25,7 @@ interface Factory {
   country?: string;
   phoneNo?: string;
   department?: string;
-  buildDate?: string;
+  buildDate?: Date;
 }
 
 function createRandomFatory(): Factory {
@@ -27,7 +37,7 @@ function createRandomFatory(): Factory {
     country: faker.address.country(),
     phoneNo: faker.phone.number(),
     department: faker.commerce.department(),
-    buildDate: faker.date.past().toLocaleDateString()
+    buildDate: faker.date.past()
   };
 }
 const FACTORY: Factory[] = faker.helpers.arrayElements(
@@ -43,7 +53,7 @@ interface RowData extends Identible {
   country?: StringCell;
   phoneNo?: StringCell;
   department?: StringCell;
-  buildDate?: StringCell;
+  buildDate?: DateCell;
 }
 
 const headers: EnhancedTableHeader<RowData>[] = [
@@ -150,7 +160,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
               {
                 label: 'Build date',
                 tooltip: 'Build date of the factory',
-                definition: StringColDef,
+                definition: DateColDef,
                 dataType: 'buildDate',
                 colspan: 1
               }
@@ -200,7 +210,7 @@ const rows: RowData[] = FACTORY.map((factory) => {
     },
     phoneNo: { id, value: factory.phoneNo ?? 'N/A' },
     department: { id, value: factory.department ?? 'N/A' },
-    buildDate: { id, value: factory.buildDate ?? 'N/A', tooltip: 'Build date' }
+    buildDate: { id, value: factory.buildDate ?? new Date(), tooltip: 'Build date' }
   };
 });
 
@@ -219,7 +229,7 @@ export default {
       }
     }
   }
-} as ComponentMeta<typeof EnhancedTable>;
+} as Meta<typeof EnhancedTable>;
 
 function chooseMode(mode: 'light' | 'dark', colorTheme: EnhancedTableTheme = LIGHT_BLUE): Theme {
   return createTheme({
@@ -237,7 +247,7 @@ function chooseMode(mode: 'light' | 'dark', colorTheme: EnhancedTableTheme = LIG
   });
 }
 
-export const DarkTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+export const DarkTemplate = (args) => (
   <ThemeProvider theme={chooseMode('dark', DARK)}>
     <EnhancedTable {...args} />
   </ThemeProvider>
@@ -260,7 +270,7 @@ DarkTemplate.story = {
   }
 };
 
-export const LightBlueTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+export const LightBlueTemplate = (args) => (
   <ThemeProvider theme={chooseMode('light', LIGHT_BLUE)}>
     <EnhancedTable {...args} />
   </ThemeProvider>
@@ -284,7 +294,7 @@ LightBlueTemplate.story = {
   }
 };
 
-export const LightCyanTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+export const LightCyanTemplate = (args) => (
   <Grid container>
     <Grid item xs={12}>
       <ThemeProvider theme={chooseMode('light', CYAN)}>
@@ -312,16 +322,16 @@ LightCyanTemplate.story = {
 };
 
 interface User {
-  name?: string;
-  age?: number;
-  birthDate?: string;
+  name: string;
+  age: number;
+  birthDate: Date;
 }
 
 function createRandomUser(): User {
   return {
     name: faker.name.firstName() + ' ' + faker.name.lastName(),
     age: faker.datatype.number({ min: 18, max: 65 }) as number,
-    birthDate: faker.date.past().toLocaleDateString()
+    birthDate: faker.date.past()
   };
 }
 
@@ -333,7 +343,7 @@ const USER: User[] = faker.helpers.arrayElements(
 interface SimpleRowData extends Identible {
   name: StringCell;
   age: NumberCell;
-  birthDate: StringCell;
+  birthDate: DateCell;
 }
 
 const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
@@ -354,7 +364,7 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
   {
     label: 'Birth date',
     tooltip: 'Birth date of the user',
-    definition: StringColDef,
+    definition: DateColDef,
     dataType: 'birthDate',
     colspan: 1
   }
@@ -364,13 +374,13 @@ const simpleRows: SimpleRowData[] = USER.map((user) => {
   const id = `${hash(user.name! + user.age!)}`;
   return {
     id,
-    name: { id, value: user.name ?? 'N/A' },
-    age: { id, value: user.age ?? 0 },
-    birthDate: { id, value: user.birthDate ?? 'N/A' }
+    name: { id, value: user.name },
+    age: { id, value: user.age },
+    birthDate: { id, value: user.birthDate, display: 'datetime' }
   };
 });
 
-export const SimpleTemplate: ComponentStory<typeof EnhancedTable> = (args) => (
+export const SimpleTemplate = (args) => (
   <ThemeProvider theme={chooseMode('light')}>
     <EnhancedTable {...args} />
   </ThemeProvider>

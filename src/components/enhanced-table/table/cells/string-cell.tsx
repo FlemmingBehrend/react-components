@@ -6,7 +6,7 @@ export interface StringCell extends Identible, Valuable<string>, Tooltipable, Li
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   return (
-    <React.Fragment key={crypto.randomUUID()}>
+    <React.Fragment>
       <Cell
         align={columnDef.align}
         tooltip={cell.tooltip}
@@ -32,7 +32,7 @@ function stringComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function stringFilterFn(cell: Valuable<unknown>, columnDef: ColDef<unknown>) {
+function stringFilterFn(cell: Valuable<string>, columnDef: ColDef<string>) {
   const stringCell = cell as unknown as Valuable<string>;
   const stringColumnDef = columnDef as unknown as ColDef<string>;
   return (filterValue: string): boolean => {
@@ -45,7 +45,6 @@ export const StringColDef: ColDef<string> = {
   align: 'left',
   sortable: true,
   suffix: '',
-  ellipsis: true,
   render: renderStringCell,
   comparator: stringComparator,
   filterFn: stringFilterFn

@@ -32,7 +32,7 @@ function numberComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function numberFilterFn(cell: Valuable<unknown>, columnDef: ColDef<unknown>) {
+function numberFilterFn(cell: Valuable<number>, columnDef: ColDef<number>) {
   const numberCell = cell as unknown as Valuable<number>;
   const numberColumnDef = columnDef as unknown as ColDef<number>;
   return (filterValue: string): boolean => {
@@ -47,7 +47,6 @@ export const NumberColDef: ColDef<number> = {
   align: 'right',
   sortable: true,
   suffix: '',
-  ellipsis: false,
   render: renderNumberCell,
   comparator: numberComparator,
   filterFn: numberFilterFn

@@ -162,7 +162,7 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
           <Table size={tableSize} sx={{ width: '100%', tableLayout: 'fixed' }}>
             {props.columnWidths && props.columnWidths.length > 0 && (
               <colgroup>
-                {props.expandable && <col style={{ width: '64px' }} />}
+                {props.expandable && <col style={{ width: '60px' }} />}
                 {renderColGroup(props.columnWidths)}
               </colgroup>
             )}

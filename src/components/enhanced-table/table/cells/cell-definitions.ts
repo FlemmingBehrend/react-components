@@ -11,20 +11,14 @@ export interface ColDef<DataDef> {
   sortable: boolean;
 
   /**
-   * This value will be displayed in the end of other values in the column.
+   * This value may be displayed in the end of other values in the column.
    */
-  suffix: string;
+  suffix?: string;
 
   /**
    * The alignment of content of the column.
    */
   align: 'left' | 'right' | 'center';
-
-  /**
-   * If this is set to true text that is too long will be truncated with an ellipsis.
-   * @link https://developer.mozilla.org/en-US/docs/Web/CSS/text-overflow
-   */
-  ellipsis: boolean;
 
   /**
    * The render function for the column.
@@ -53,7 +47,7 @@ export interface ColDef<DataDef> {
    * @param columnDef The column definition of the cell
    * @returns a function that takes a filter value and returns true if the cell should be filtered out.
    */
-  filterFn?: (cell: Valuable<unknown>, columnDef: ColDef<unknown>) => (filterValue: string) => boolean;
+  filterFn?: (cell: Valuable<DataDef>, columnDef: ColDef<DataDef>) => (filterValue: string) => boolean;
 }
 
 /**

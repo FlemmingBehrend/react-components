@@ -41,7 +41,7 @@ type EnhancedHeader<DataDef> = {
   /**
    * The definition of the column.
    */
-  definition: ColDef<string> | ColDef<number>;
+  definition: ColDef<string> | ColDef<number> | ColDef<Date>;
 };
 
 type EnhancedHeaderGroup<DataDef> = {
