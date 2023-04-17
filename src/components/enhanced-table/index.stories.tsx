@@ -1,6 +1,6 @@
 import React from 'react';
 import { faker } from '@faker-js/faker';
-import { ComponentStory, ComponentMeta, Meta } from '@storybook/react';
+import { Meta } from '@storybook/react';
 import {
   Identible,
   StringCell,
@@ -10,7 +10,9 @@ import {
   NumberCell,
   NumberColDef,
   DateColDef,
-  DateCell
+  DateCell,
+  BooleanColDef,
+  BooleanCell
 } from './';
 import { Grid, Theme, ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
@@ -24,6 +26,7 @@ interface Factory {
   buildingNumber?: number;
   country?: string;
   phoneNo?: string;
+  valid?: boolean;
   department?: string;
   buildDate?: Date;
 }
@@ -36,6 +39,7 @@ function createRandomFatory(): Factory {
     buildingNumber: Number(faker.address.buildingNumber()),
     country: faker.address.country(),
     phoneNo: faker.phone.number(),
+    valid: faker.datatype.boolean(),
     department: faker.commerce.department(),
     buildDate: faker.date.past()
   };
@@ -52,6 +56,7 @@ interface RowData extends Identible {
   buildingNumber?: NumberCell;
   country?: StringCell;
   phoneNo?: StringCell;
+  valid?: BooleanCell;
   department?: StringCell;
   buildDate?: DateCell;
 }
@@ -61,7 +66,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
     label: 'Factory details',
     align: 'center',
     tooltip: 'Information about factories',
-    colspan: 8,
+    colspan: 9,
     subHeaders: [
       {
         label: 'Name and address',
@@ -127,19 +132,26 @@ const headers: EnhancedTableHeader<RowData>[] = [
         label: 'Other details',
         align: 'center',
         tooltip: 'Other details of the factory',
-        colspan: 3,
+        colspan: 4,
         subHeaders: [
           {
             label: 'Contact details',
             align: 'center',
             tooltip: 'Contact details of the factory',
-            colspan: 1,
+            colspan: 2,
             subHeaders: [
               {
                 label: 'Phone no.',
                 tooltip: 'Phone number of the factory',
                 definition: StringColDef,
                 dataType: 'phoneNo',
+                colspan: 1
+              },
+              {
+                label: 'Valid',
+                tooltip: 'Validity of the factory',
+                definition: BooleanColDef,
+                dataType: 'valid',
                 colspan: 1
               }
             ]
@@ -172,7 +184,7 @@ const headers: EnhancedTableHeader<RowData>[] = [
   }
 ];
 
-const columnWidths: Array<number | string> = ['auto', 120, 160, 80, 120, 180, 100, 120];
+const columnWidths: Array<number | string> = ['auto', 120, 160, 80, 120, 180, 70, 100, 120];
 
 const rows: RowData[] = FACTORY.map((factory) => {
   const id = `${hash(factory.companyName! + factory.companySuffix!)}`;
@@ -209,6 +221,7 @@ const rows: RowData[] = FACTORY.map((factory) => {
       tooltip: 'Country'
     },
     phoneNo: { id, value: factory.phoneNo ?? 'N/A' },
+    valid: { id, value: factory.valid ?? false, tooltip: 'Validity' },
     department: { id, value: factory.department ?? 'N/A' },
     buildDate: { id, value: factory.buildDate ?? new Date(), tooltip: 'Build date' }
   };
@@ -325,13 +338,16 @@ interface User {
   name: string;
   age: number;
   birthDate: Date;
+  working: boolean;
 }
 
 function createRandomUser(): User {
+  const age = faker.datatype.number({ min: 18, max: 85 });
   return {
     name: faker.name.firstName() + ' ' + faker.name.lastName(),
-    age: faker.datatype.number({ min: 18, max: 65 }) as number,
-    birthDate: faker.date.past()
+    age,
+    birthDate: faker.date.past(),
+    working: age > 18 && age < 65
   };
 }
 
@@ -344,6 +360,7 @@ interface SimpleRowData extends Identible {
   name: StringCell;
   age: NumberCell;
   birthDate: DateCell;
+  working: BooleanCell;
 }
 
 const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
@@ -367,6 +384,13 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
     definition: DateColDef,
     dataType: 'birthDate',
     colspan: 1
+  },
+  {
+    label: 'Working',
+    tooltip: 'Is the user working?',
+    definition: BooleanColDef,
+    dataType: 'working',
+    colspan: 1
   }
 ];
 
@@ -376,7 +400,8 @@ const simpleRows: SimpleRowData[] = USER.map((user) => {
     id,
     name: { id, value: user.name },
     age: { id, value: user.age },
-    birthDate: { id, value: user.birthDate, display: 'datetime' }
+    birthDate: { id, value: user.birthDate, display: 'datetime' },
+    working: { id, value: user.working, tooltip: user.working ? 'The user is working' : 'The user is not working' }
   };
 });
 

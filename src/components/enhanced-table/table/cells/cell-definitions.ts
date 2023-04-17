@@ -50,6 +50,10 @@ export interface ColDef<DataDef> {
   filterFn?: (cell: Valuable<DataDef>, columnDef: ColDef<DataDef>) => (filterValue: string) => boolean;
 }
 
+export interface ImagableColDef<DataDef> extends ColDef<DataDef> {
+  imageMap: Record<string, React.ReactNode>;
+}
+
 /**
  * This interface is implemented by items that needs to
  * be displayed in the table where each row requires a

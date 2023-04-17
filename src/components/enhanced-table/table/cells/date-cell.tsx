@@ -14,10 +14,10 @@ function renderDateCell(cell: DateCell, columnDef: ColDef<Date>) {
       date = moment(cell.value).format('L');
       break;
     case 'time':
-      date = moment(cell.value).format('LTS');
+      date = moment(cell.value).format('LT');
       break;
     case 'datetime':
-      date = moment(cell.value).format('L LTS');
+      date = moment(cell.value).format('L LT');
       break;
     case 'relative':
     default:
