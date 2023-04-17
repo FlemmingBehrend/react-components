@@ -401,7 +401,13 @@ const simpleRows: SimpleRowData[] = USER.map((user) => {
     name: { id, value: user.name },
     age: { id, value: user.age },
     birthDate: { id, value: user.birthDate, display: 'datetime' },
-    working: { id, value: user.working, tooltip: user.working ? 'The user is working' : 'The user is not working' }
+    working: {
+      id,
+      value: user.working,
+      tooltip: user.working ? 'The user is working' : 'The user is not working',
+      href: 'https://www.google.com',
+      target: '_blank'
+    }
   };
 });
 

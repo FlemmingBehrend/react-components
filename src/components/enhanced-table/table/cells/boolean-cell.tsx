@@ -1,20 +1,23 @@
 import * as React from 'react';
-import { Identible, ImagableColDef, Tooltipable, Valuable } from './cell-definitions';
+import { Identible, ImagableColDef, Linkable, Tooltipable, Valuable } from './cell-definitions';
 import { TableCell, Tooltip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import Cell from '../cell';
 
-export interface BooleanCell extends Identible, Valuable<Boolean>, Tooltipable {}
+export interface BooleanCell extends Identible, Valuable<Boolean>, Tooltipable, Linkable {}
 
 function renderBooleanCell(cell: BooleanCell, columnDef: ImagableColDef<boolean>) {
-  function renderCellContent(cell: BooleanCell) {
-    return <span>{columnDef.imageMap[`${cell.value}`]}</span>;
-  }
-
   return (
-    <TableCell key={cell.id} align={columnDef.align}>
-      {cell.tooltip ? <Tooltip title={cell.tooltip}>{renderCellContent(cell)}</Tooltip> : renderCellContent(cell)}
-    </TableCell>
+    <React.Fragment>
+      <Cell
+        align={columnDef.align}
+        tooltip={cell.tooltip}
+        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
+      >
+        {columnDef.imageMap[`${cell.value}`]}
+      </Cell>
+    </React.Fragment>
   );
 }
 
