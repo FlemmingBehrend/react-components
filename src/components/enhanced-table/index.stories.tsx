@@ -12,7 +12,9 @@ import {
   DateColDef,
   DateCell,
   BooleanColDef,
-  BooleanCell
+  BooleanCell,
+  SparklineColDef,
+  SparklineCell
 } from './';
 import { Grid, Theme, ThemeProvider, createTheme } from '@mui/material';
 import { hash } from '../../hashing';
@@ -338,6 +340,7 @@ interface User {
   name: string;
   age: number;
   birthDate: Date;
+  interval: number[];
   working: boolean;
 }
 
@@ -347,6 +350,18 @@ function createRandomUser(): User {
     name: faker.name.firstName() + ' ' + faker.name.lastName(),
     age,
     birthDate: faker.date.past(),
+    interval: [
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 }),
+      faker.datatype.number({ min: 0, max: 100 })
+    ],
     working: age > 18 && age < 65
   };
 }
@@ -360,6 +375,7 @@ interface SimpleRowData extends Identible {
   name: StringCell;
   age: NumberCell;
   birthDate: DateCell;
+  interval: SparklineCell;
   working: BooleanCell;
 }
 
@@ -386,6 +402,13 @@ const simpleHeaders: EnhancedTableHeader<SimpleRowData>[] = [
     colspan: 1
   },
   {
+    label: 'Interval',
+    tooltip: 'Interval of random numbers',
+    definition: SparklineColDef,
+    dataType: 'interval',
+    colspan: 1
+  },
+  {
     label: 'Working',
     tooltip: 'Is the user working?',
     definition: BooleanColDef,
@@ -401,6 +424,25 @@ const simpleRows: SimpleRowData[] = USER.map((user) => {
     name: { id, value: user.name },
     age: { id, value: user.age },
     birthDate: { id, value: user.birthDate, display: 'datetime' },
+    interval: {
+      id,
+      value: user.interval,
+      heigth: 15,
+      width: 100,
+      tooltip: (
+        <div>
+          <div>
+            Max value: <strong>{Math.max(...user.interval)}</strong>
+          </div>
+          <div>
+            Min value: <strong>{Math.min(...user.interval)}</strong>
+          </div>
+          <div>
+            Avg value: <strong>{user.interval.reduce((a, b) => a + b, 0) / user.interval.length}</strong>
+          </div>
+        </div>
+      )
+    },
     working: {
       id,
       value: user.working,
@@ -411,12 +453,12 @@ const simpleRows: SimpleRowData[] = USER.map((user) => {
   };
 });
 
-export const SimpleTemplate = (args) => (
+export const SimpleTemplateLight = (args) => (
   <ThemeProvider theme={chooseMode('light')}>
     <EnhancedTable {...args} />
   </ThemeProvider>
 );
-SimpleTemplate.args = {
+SimpleTemplateLight.args = {
   headers: simpleHeaders as EnhancedTableHeader<Identible>[],
   rows: simpleRows,
   displayNumberOfRows: true,
@@ -425,11 +467,36 @@ SimpleTemplate.args = {
   stripedRows: true,
   showHeaders: true
 };
-SimpleTemplate.story = {
-  name: 'Simple table',
+SimpleTemplateLight.story = {
+  name: 'Simple table light',
   parameters: {
     backgrounds: {
       default: 'light'
+    }
+  }
+};
+
+const simpleTemplateDarkColWidth: Array<number | string> = ['auto', 80, 220, 100, 100];
+export const SimpleTemplateDark = (args) => (
+  <ThemeProvider theme={chooseMode('dark', DARK)}>
+    <EnhancedTable {...args} />
+  </ThemeProvider>
+);
+SimpleTemplateDark.args = {
+  headers: simpleHeaders as EnhancedTableHeader<Identible>[],
+  rows: simpleRows,
+  columnWidths: simpleTemplateDarkColWidth,
+  displayNumberOfRows: true,
+  expandable: true,
+  filterable: true,
+  stripedRows: true,
+  showHeaders: true
+};
+SimpleTemplateDark.story = {
+  name: 'Simple table dark',
+  parameters: {
+    backgrounds: {
+      default: 'dark'
     }
   }
 };
