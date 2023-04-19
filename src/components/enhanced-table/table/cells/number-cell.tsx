@@ -1,12 +1,11 @@
 import * as React from 'react';
 import Cell from '../cell';
-import type { Identible } from './types/identible';
 import type { Tooltipable } from './types/tooltipable';
 import type { Valuable } from './types/valauble';
 import type { Linkable } from './types/linkable';
 import type { ColDef } from './defs/base';
 
-export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
+export interface NumberCell extends Valuable<number>, Tooltipable, Linkable {}
 
 function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
   return (

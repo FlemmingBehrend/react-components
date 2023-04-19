@@ -38,15 +38,15 @@ const TooltipCell = React.memo(function TooltipCell() {
     color: fontColor,
     fontWeight: fontWeight
   };
-
+  console.log(alignment);
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
-      <TableCell colSpan={colspan} align={alignment} sx={sx}>
+      <TableCell colSpan={colspan} sx={sx}>
         <SortCell />
       </TableCell>
     </Tooltip>
   ) : (
-    <TableCell colSpan={colspan} align={alignment} sx={sx}>
+    <TableCell colSpan={colspan} sx={sx}>
       <SortCell />
     </TableCell>
   );

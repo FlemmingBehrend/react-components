@@ -1,13 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import Cell from '../cell';
-import type { Identible } from './types/identible';
 import type { Tooltipable } from './types/tooltipable';
 import type { Valuable } from './types/valauble';
 import type { Suffixable } from './types/suffixable';
 import type { ColDef } from './defs/base';
 
-export interface DateCell extends Identible, Valuable<Date>, Tooltipable, Suffixable {
+export interface DateCell extends Valuable<Date>, Tooltipable, Suffixable {
   display?: 'date' | 'time' | 'datetime' | 'relative';
 }
 

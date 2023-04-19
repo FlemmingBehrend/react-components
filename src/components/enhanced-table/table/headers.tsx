@@ -61,6 +61,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   return (
     <TableHead>
       {[...headerRows.keys()].map((level) => {
+        console.log(level);
         return (
           <TableRow key={level}>
             {props.expandable && (
