@@ -7,7 +7,7 @@ Components are based on the [Material Design](https://material.io/) spec. and ar
 ## Installation
 
 ```bash
-TBD
+npm install @flemmingbehrend/react-components
 ```
 
 ## Components

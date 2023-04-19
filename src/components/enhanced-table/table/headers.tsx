@@ -36,7 +36,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         alignment: header.align ?? 'left',
         tooltip: header.tooltip,
         sortable: header.definition?.sortable ?? false,
-        colspan: header.colspan,
+        colspan: header.colspan ?? 1,
         sortDirection: props.sortDirection,
         sortColumn: props.sortColumn as string,
         setSortColumn: props.setSortColumn as (column: string) => void,

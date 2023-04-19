@@ -1,4 +1,4 @@
-import { ColDef } from './cells/cell-definitions';
+import { ColDef } from './cells/defs/base';
 
 type CommonHeaderOptions = {
   /**
@@ -22,8 +22,9 @@ type CommonHeaderOptions = {
 
   /**
    * The colspan of the header.
+   * @default 1
    */
-  colspan: number;
+  colspan?: number;
 };
 
 type EnhancedHeader<DataDef> = {
@@ -41,7 +42,7 @@ type EnhancedHeader<DataDef> = {
   /**
    * The definition of the column.
    */
-  definition: ColDef<string> | ColDef<number> | ColDef<Date> | ColDef<boolean> | ColDef<number[]>;
+  definition: ColDef<any>;
 };
 
 type EnhancedHeaderGroup<DataDef> = {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box, Grid, Paper, Table, TableContainer, useTheme } from '@mui/material';
 import FilterComponent from './table/filter-field';
 import { SortDirection, EnhancedTableHeader } from './table/header-definitions';
-import { Identible } from './table/cells/cell-definitions';
+import { Identible } from './table/cells/types/identible';
 import NumberOfRowsComponent from './table/number-of-rows';
 import TableHeaders from './table/headers';
 import TableContent from './table/body';

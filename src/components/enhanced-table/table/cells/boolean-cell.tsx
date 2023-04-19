@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Identible, ImagableColDef, Linkable, Tooltipable, Valuable } from './cell-definitions';
-import { TableCell, Tooltip } from '@mui/material';
+import Cell from '../cell';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import Cell from '../cell';
+import type { Identible } from './types/identible';
+import type { Valuable } from './types/valauble';
+import type { Tooltipable } from './types/tooltipable';
+import type { Linkable } from './types/linkable';
+import type { ImagableColDef } from './defs/imagable';
 
 export interface BooleanCell extends Identible, Valuable<Boolean>, Tooltipable, Linkable {}
 

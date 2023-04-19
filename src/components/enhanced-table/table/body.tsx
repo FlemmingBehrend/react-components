@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TableBody, useTheme } from '@mui/material';
 import { EnhancedTableHeader } from './header-definitions';
-import { Identible } from './cells/cell-definitions';
 import Row from './row';
 import { getHeaderCells } from '../helpers';
+import type { Identible } from './cells/types/identible';
 
 interface TableContentProps<DataDef> {
   rows: DataDef[];

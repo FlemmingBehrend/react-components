@@ -1,10 +1,12 @@
+import { Valuable } from '../types/valauble';
+
 /**
  * This is the base column definition most of the other column definitions extend from.
  *
  * If a column contains text, numbers, dates or other things that can be rendered
  * as a JSX element it should extend from this.
  */
-export interface ColDef<DataDef> {
+interface ColDef<DataDef> {
   /**
    * If this is set to true the column will be sortable.
    */
@@ -50,63 +52,4 @@ export interface ColDef<DataDef> {
   filterFn?: (cell: Valuable<DataDef>, columnDef: ColDef<DataDef>) => (filterValue: string) => boolean;
 }
 
-export interface ImagableColDef<DataDef> extends ColDef<DataDef> {
-  imageMap: Record<string, React.ReactNode>;
-}
-
-/**
- * This interface is implemented by items that needs to
- * be displayed in the table where each row requires a
- * unique identifier.
- */
-export interface Identible extends Object {
-  id: string;
-}
-
-/**
- * This interface is implemented by cells that support
- * tooltips.
- */
-export interface Tooltipable {
-  tooltip?: string | React.ReactNode;
-}
-
-/**
- * This interface is implemented by cells that support
- * a value.
- * @template T The type of the value.
- */
-export interface Valuable<T> {
-  value: T;
-}
-
-/**
- * This interface is implemented by cells that support
- * a suffix.
- *
- * The suffix will be displayed after the value.
- */
-export interface Suffixable {
-  suffix?: string;
-}
-
-/**
- * This interface is implemented by cells that support
- * a link that will be navigated to when the text is
- * clicked.
- */
-export interface Linkable {
-  /**
-   * The link to navigate to when the cell is clicked.
-   * @default undefined
-   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-href
-   */
-  href?: string;
-
-  /**
-   * Sets the target attribute of the anchor tag.
-   * @default _blank
-   * @link https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attr-target
-   */
-  target?: '_self' | '_blank' | '_parent' | '_top';
-}
+export type { ColDef };

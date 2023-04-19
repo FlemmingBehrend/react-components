@@ -1,6 +1,10 @@
 import * as React from 'react';
-import { ColDef, Valuable, Identible, Tooltipable, Linkable } from './cell-definitions';
 import Cell from '../cell';
+import type { Identible } from './types/identible';
+import type { Tooltipable } from './types/tooltipable';
+import type { Valuable } from './types/valauble';
+import type { Linkable } from './types/linkable';
+import type { ColDef } from './defs/base';
 
 export interface NumberCell extends Identible, Valuable<number>, Tooltipable, Linkable {}
 

@@ -500,3 +500,50 @@ SimpleTemplateDark.story = {
     }
   }
 };
+
+// MINIMAL TABLE
+
+export const MinimalTemplate = (args) => (
+  <ThemeProvider theme={chooseMode('light')}>
+    <EnhancedTable {...args} />
+  </ThemeProvider>
+);
+
+interface MinimalRowDef extends Identible {
+  animal: StringCell;
+  maxAge: NumberCell;
+}
+
+const minimalHeaders: EnhancedTableHeader<MinimalRowDef>[] = [
+  {
+    label: 'Animal',
+    dataType: 'animal',
+    definition: StringColDef
+  },
+  {
+    label: 'Max age',
+    dataType: 'maxAge',
+    definition: NumberColDef
+  }
+];
+const minimalRows = [
+  {
+    id: '1',
+    animal: { value: 'Dog' },
+    maxAge: { value: 15 }
+  },
+  {
+    id: '2',
+    animal: { value: 'Cat' },
+    maxAge: { value: 20 }
+  }
+];
+
+MinimalTemplate.args = {
+  headers: minimalHeaders,
+  rows: minimalRows
+};
+
+MinimalTemplate.story = {
+  name: 'Minimal'
+};

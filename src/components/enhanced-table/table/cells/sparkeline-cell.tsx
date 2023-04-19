@@ -1,8 +1,11 @@
 import * as React from 'react';
-import { ColDef, Identible, Tooltipable, Valuable } from './cell-definitions';
-import Cell from '../cell';
-import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { useTheme } from '@mui/material';
+import { Sparklines, SparklinesLine } from 'react-sparklines';
+import Cell from '../cell';
+import type { Identible } from './types/identible';
+import type { Tooltipable } from './types/tooltipable';
+import type { Valuable } from './types/valauble';
+import type { ColDef } from './defs/base';
 
 export interface SparklineCell extends Identible, Valuable<number[]>, Tooltipable {
   color?: string;
