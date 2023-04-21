@@ -2,12 +2,12 @@ import * as React from 'react';
 import Cell from '../cell';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import type { Valuable } from './types/valauble';
+import type { Value } from './types/value';
 import type { Tooltipable } from './types/tooltipable';
 import type { Linkable } from './types/linkable';
 import type { ImagableColDef } from './defs/imagable';
 
-export interface BooleanCell extends Valuable<Boolean>, Tooltipable, Linkable {}
+export interface BooleanCell extends Value<Boolean>, Tooltipable, Linkable {}
 
 function renderBooleanCell(cell: BooleanCell, columnDef: ImagableColDef<boolean>) {
   return (

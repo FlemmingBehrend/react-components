@@ -1,11 +1,11 @@
 import * as React from 'react';
 import Cell from '../cell';
-import type { Valuable } from './types/valauble';
+import type { Value } from './types/value';
 import type { Tooltipable } from './types/tooltipable';
 import type { Linkable } from './types/linkable';
 import type { ColDef } from './defs/base';
 
-export interface StringCell extends Valuable<string>, Tooltipable, Linkable {}
+export interface StringCell extends Value<string>, Tooltipable, Linkable {}
 
 function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
   return (
@@ -35,8 +35,8 @@ function stringComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function stringFilterFn(cell: Valuable<string>, columnDef: ColDef<string>) {
-  const stringCell = cell as unknown as Valuable<string>;
+function stringFilterFn(cell: Value<string>, columnDef: ColDef<string>) {
+  const stringCell = cell as unknown as Value<string>;
   const stringColumnDef = columnDef as unknown as ColDef<string>;
   return (filterValue: string): boolean => {
     const searchString = stringColumnDef.suffix ? `${stringCell.value}${stringColumnDef.suffix}` : stringCell.value;

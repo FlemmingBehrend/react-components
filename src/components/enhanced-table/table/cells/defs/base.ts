@@ -1,4 +1,4 @@
-import { Valuable } from '../types/valauble';
+import { Value } from '../types/value';
 
 /**
  * This is the base column definition most of the other column definitions extend from.
@@ -49,7 +49,7 @@ interface ColDef<DataDef> {
    * @param columnDef The column definition of the cell
    * @returns a function that takes a filter value and returns true if the cell should be filtered out.
    */
-  filterFn?: (cell: Valuable<DataDef>, columnDef: ColDef<DataDef>) => (filterValue: string) => boolean;
+  filterFn?: (cell: Value<DataDef>, columnDef: ColDef<DataDef>) => (filterValue: string) => boolean;
 }
 
 export type { ColDef };

@@ -4,7 +4,7 @@ import { HeaderCellContext } from '../context/header-cell-context-provider';
 
 const LabelCell = function LabelCell() {
   const { label } = React.useContext(HeaderCellContext);
-  return <Typography noWrap>{label}</Typography>;
+  return <Typography>{label}</Typography>;
 };
 
 function SortCell() {
@@ -36,17 +36,18 @@ const TooltipCell = React.memo(function TooltipCell() {
     backgroundColor,
     borderRight: `1px solid ${seperatorColor}`,
     color: fontColor,
-    fontWeight: fontWeight
+    fontWeight: fontWeight,
+    textAlign: alignment
   };
   console.log(alignment);
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
-      <TableCell colSpan={colspan} sx={sx}>
+      <TableCell colSpan={colspan} sx={sx} align={alignment}>
         <SortCell />
       </TableCell>
     </Tooltip>
   ) : (
-    <TableCell colSpan={colspan} sx={sx}>
+    <TableCell colSpan={colspan} sx={sx} align={alignment}>
       <SortCell />
     </TableCell>
   );

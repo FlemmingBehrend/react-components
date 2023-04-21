@@ -17,12 +17,14 @@ const headers: EnhancedTableHeader<MinimalRowDef>[] = [
   {
     label: 'Animal',
     dataType: 'animal',
-    definition: StringColDef
+    colDef: { ...StringColDef, align: 'center' }
   },
   {
     label: 'Max age',
     dataType: 'maxAge',
-    definition: NumberColDef
+    colDef: NumberColDef,
+    align: 'right',
+    tooltip: 'The maximum age of the animal'
   }
 ];
 const rows: MinimalRowDef[] = [

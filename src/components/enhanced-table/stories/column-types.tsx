@@ -58,35 +58,35 @@ const headers: EnhancedTableHeader<RowData>[] = [
   {
     label: 'Name',
     tooltip: 'This is an example of a string cell',
-    definition: StringColDef,
+    colDef: StringColDef,
     dataType: 'name',
     colspan: 1
   },
   {
     label: 'Age',
     tooltip: 'This is an example of a number cell',
-    definition: NumberColDef,
+    colDef: NumberColDef,
     dataType: 'age',
     colspan: 1
   },
   {
     label: 'Birth date',
     tooltip: 'This is an example of a date cell',
-    definition: DateColDef,
+    colDef: DateColDef,
     dataType: 'birthDate',
     colspan: 1
   },
   {
     label: 'Interval',
     tooltip: 'This is an example of a sparkline cell',
-    definition: SparklineColDef,
+    colDef: SparklineColDef,
     dataType: 'interval',
     colspan: 1
   },
   {
     label: 'Working',
     tooltip: 'This is an example of a boolean cell',
-    definition: BooleanColDef,
+    colDef: BooleanColDef,
     dataType: 'working',
     colspan: 1
   }

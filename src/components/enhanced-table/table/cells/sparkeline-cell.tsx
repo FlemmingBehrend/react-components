@@ -3,10 +3,10 @@ import { useTheme } from '@mui/material';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
 import Cell from '../cell';
 import type { Tooltipable } from './types/tooltipable';
-import type { Valuable } from './types/valauble';
+import type { Value } from './types/value';
 import type { ColDef } from './defs/base';
 
-export interface SparklineCell extends Valuable<number[]>, Tooltipable {
+export interface SparklineCell extends Value<number[]>, Tooltipable {
   color?: string;
   heigth?: number;
   width?: number;

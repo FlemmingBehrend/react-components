@@ -5,7 +5,7 @@ import { IconButton, TableCell, TableRow, styled, useTheme } from '@mui/material
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-const StyledRow = styled(TableRow)(({ theme }) => ({
+const StyledRow = styled(TableRow)(() => ({
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0
@@ -13,7 +13,7 @@ const StyledRow = styled(TableRow)(({ theme }) => ({
 }));
 
 interface RowProps<DataDef> {
-  row: DataDef & Identible;
+  row: DataDef;
   headers: EnhancedTableHeader<DataDef>[];
   stripedRows: boolean;
   expandable: boolean;
@@ -47,7 +47,6 @@ function Row<DataDef>(props: RowProps<DataDef>) {
       );
     }
   }
-
   return (
     <React.Fragment>
       <StyledRow sx={{ backgroundColor: props.rowColor }}>
@@ -55,7 +54,7 @@ function Row<DataDef>(props: RowProps<DataDef>) {
         {props.headers.map((header) => {
           return (
             <React.Fragment key={crypto.randomUUID()}>
-              {header.definition?.render(props.row[header.dataType], header.definition)}
+              {header.colDef?.render(props.row[header.dataType], header.colDef)}
             </React.Fragment>
           );
         })}

@@ -3,8 +3,8 @@
  * a value.
  * @template T The type of the value.
  */
-interface Valuable<T> {
+interface Value<T> {
   value: T;
 }
 
-export type { Valuable };
+export type { Value };

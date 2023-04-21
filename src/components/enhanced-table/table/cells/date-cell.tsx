@@ -2,11 +2,11 @@ import React from 'react';
 import moment from 'moment';
 import Cell from '../cell';
 import type { Tooltipable } from './types/tooltipable';
-import type { Valuable } from './types/valauble';
+import type { Value } from './types/value';
 import type { Suffixable } from './types/suffixable';
 import type { ColDef } from './defs/base';
 
-export interface DateCell extends Valuable<Date>, Tooltipable, Suffixable {
+export interface DateCell extends Value<Date>, Tooltipable, Suffixable {
   display?: 'date' | 'time' | 'datetime' | 'relative';
 }
 
@@ -62,7 +62,7 @@ function dateComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function dateFilterFn(cell: Valuable<unknown>) {
+function dateFilterFn(cell: Value<unknown>) {
   return (filterValue: string): boolean => {
     const dateCell = cell as DateCell;
     const from = moment(dateCell.value).fromNow();

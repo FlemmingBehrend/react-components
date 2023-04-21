@@ -4,8 +4,8 @@ import FilterComponent from './table/filter-field';
 import { SortDirection, EnhancedTableHeader } from './table/header-definitions';
 import { Identible } from './table/cells/types/identible';
 import NumberOfRowsComponent from './table/number-of-rows';
-import TableHeaders from './table/headers';
-import TableContent from './table/body';
+import TableHeaders from './table/table-headers';
+import TableContent from './table/table-content';
 import {
   DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS,
   DEFAULT_TABLE_EXPANDABLE,
@@ -173,7 +173,7 @@ function EnhancedTable<DataDef extends Identible>(props: EnhancedTableProps<Data
                 setSortColumn={setSortColumn}
                 sortDirection={sortDirection}
                 setSortDirection={setSortDirection}
-                expandable={expandable}
+                renderExpandableHeader={expandable}
               />
             )}
             <TableContent

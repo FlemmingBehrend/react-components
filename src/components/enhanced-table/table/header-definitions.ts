@@ -41,14 +41,32 @@ type EnhancedHeader<DataDef> = {
 
   /**
    * The definition of the column.
+   * The is used for common column options.
    */
-  definition: ColDef<any>;
+  colDef: ColDef<any>;
 };
 
 type EnhancedHeaderGroup<DataDef> = {
+  /**
+   * A HeaderGroup can have subHeaders.
+   *
+   * These are the headers that are displayed
+   * in the next row.
+   *
+   * Subheaders can be either a Header or a new HeaderGroup but the last
+   * header rows can only contain EnhancedHeader types.
+   */
   subHeaders: EnhancedTableHeader<DataDef>[];
+
+  /**
+   * A HeaderGroup can never have a dataType.
+   */
   dataType?: never;
-  definition?: never;
+
+  /**
+   * A HeaderGroup can never have a definition.
+   */
+  colDef?: never;
 };
 
 type EnhancedTableHeader<DataDef> = CommonHeaderOptions & (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);

@@ -39,8 +39,8 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
         let filters: Array<boolean> = [];
         for (const [key, cell] of Object.entries(row)) {
           const header = headers.find((header) => header.dataType === key);
-          if (header && header.definition && header.definition.filterFn) {
-            const filterFn = header.definition.filterFn(cell, header.definition);
+          if (header && header.colDef && header.colDef.filterFn) {
+            const filterFn = header.colDef.filterFn(cell, header.colDef);
             filters.push(filterFn(fValue));
           }
         }
@@ -55,8 +55,8 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
   React.useEffect(() => {
     if (props.sortColumn !== undefined) {
       const sortHeader = headers.find((header) => header.dataType === props.sortColumn);
-      if (sortHeader && sortHeader.definition && sortHeader.definition.comparator) {
-        const comparator = sortHeader.definition.comparator(sortHeader.dataType);
+      if (sortHeader && sortHeader.colDef && sortHeader.colDef.comparator) {
+        const comparator = sortHeader.colDef.comparator(sortHeader.dataType);
         if (props.sortDirection === 'asc') {
           const asc = displayedRows.sort(comparator);
           setDisplayedRows([...asc]);

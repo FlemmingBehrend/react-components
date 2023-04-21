@@ -75,14 +75,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Name',
                 tooltip: 'Name of the company',
-                definition: StringColDef,
+                colDef: StringColDef,
                 dataType: 'companyName',
                 colspan: 1
               },
               {
                 label: 'Suffix',
                 tooltip: 'Suffix of the company',
-                definition: { ...StringColDef, suffix: ' Inc.' },
+                colDef: { ...StringColDef, suffix: ' Inc.' },
                 dataType: 'companySuffix',
                 colspan: 1
               }
@@ -97,14 +97,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Street address',
                 tooltip: 'Street address of the factory',
-                definition: StringColDef,
+                colDef: StringColDef,
                 dataType: 'streetAddress',
                 colspan: 1
               },
               {
                 label: 'No.',
                 tooltip: 'Building number of the factory',
-                definition: NumberColDef,
+                colDef: NumberColDef,
                 dataType: 'buildingNumber',
                 align: 'right',
                 colspan: 1
@@ -112,7 +112,7 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Country',
                 tooltip: 'Country of the factory',
-                definition: StringColDef,
+                colDef: StringColDef,
                 dataType: 'country',
                 colspan: 1
               }
@@ -135,14 +135,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Phone no.',
                 tooltip: 'Phone number of the factory',
-                definition: StringColDef,
+                colDef: StringColDef,
                 dataType: 'phoneNo',
                 colspan: 1
               },
               {
                 label: 'Valid',
                 tooltip: 'Validity of the factory',
-                definition: BooleanColDef,
+                colDef: BooleanColDef,
                 dataType: 'valid',
                 colspan: 1
               }
@@ -157,14 +157,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Name',
                 tooltip: 'Name of the factory',
-                definition: StringColDef,
+                colDef: StringColDef,
                 dataType: 'department',
                 colspan: 1
               },
               {
                 label: 'Build date',
                 tooltip: 'Build date of the factory',
-                definition: DateColDef,
+                colDef: DateColDef,
                 dataType: 'buildDate',
                 colspan: 1
               }

@@ -12,7 +12,7 @@ interface TableHeadersProps<DataDef> {
   setSortColumn: (column: keyof DataDef) => void;
   sortDirection: SortDirection;
   setSortDirection: (direction: SortDirection) => void;
-  expandable: boolean;
+  renderExpandableHeader: boolean;
 }
 
 function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
@@ -29,13 +29,12 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
       if (!headerRows.has(level)) {
         headerRows.set(level, []);
       }
-
       const contextProps: HeaderCellContextProps = {
         label: header.label,
         dataType: header.dataType as string,
         alignment: header.align ?? 'left',
         tooltip: header.tooltip,
-        sortable: header.definition?.sortable ?? false,
+        sortable: header.colDef?.sortable ?? false,
         colspan: header.colspan ?? 1,
         sortDirection: props.sortDirection,
         sortColumn: props.sortColumn as string,
@@ -57,14 +56,12 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
   }
 
   const headerRows = generateHeadersRecursively(props.headers);
-
   return (
     <TableHead>
       {[...headerRows.keys()].map((level) => {
-        console.log(level);
         return (
           <TableRow key={level}>
-            {props.expandable && (
+            {props.renderExpandableHeader && (
               <TableCell
                 sx={{
                   backgroundColor: `${getBackgroundColor(
