@@ -1,10 +1,10 @@
 import { TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import * as React from 'react';
-import { SortDirection, EnhancedTableHeader } from './header-definitions';
-import { EnhancedHeaderCell } from './header';
+import { EnhancedHeaderCell } from './header/header';
 import HeaderCellContextProvider, { HeaderCellContextProps } from '../context/header-cell-context-provider';
 import { getBackgroundColor } from '../helpers';
 import { hash } from '../../../hashing';
+import { EnhancedTableHeader, SortDirection } from './header/header-options';
 
 interface TableHeadersProps<DataDef> {
   headers: EnhancedTableHeader<DataDef>[];
@@ -34,7 +34,7 @@ function TableHeaders<DataDef>(props: TableHeadersProps<DataDef>) {
         dataType: header.dataType as string,
         alignment: header.align ?? 'left',
         tooltip: header.tooltip,
-        sortable: header.colDef?.sortable ?? false,
+        sortable: header.columnOptions?.sortable ?? false,
         colspan: header.colspan ?? 1,
         sortDirection: props.sortDirection,
         sortColumn: props.sortColumn as string,

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TableBody, useTheme } from '@mui/material';
-import { EnhancedTableHeader } from './header-definitions';
 import Row from './row';
-import { getHeaderCells } from '../helpers';
-import type { Identible } from './cells/types/identible';
+import { getHeaderCells, columnHasFunctions } from '../helpers';
+import type { Identible } from './cell/types/identible';
+import { EnhancedTableHeader } from './header/header-options';
 
 interface TableContentProps<DataDef> {
   rows: DataDef[];
@@ -39,9 +39,10 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
         let filters: Array<boolean> = [];
         for (const [key, cell] of Object.entries(row)) {
           const header = headers.find((header) => header.dataType === key);
-          if (header && header.colDef && header.colDef.filterFn) {
-            const filterFn = header.colDef.filterFn(cell, header.colDef);
-            filters.push(filterFn(fValue));
+          const options = header?.columnOptions;
+          if (columnHasFunctions(options)) {
+            const fn = options.filterFn!(cell, options);
+            filters.push(fn(fValue));
           }
         }
         return !filters.every((element) => element === false);
@@ -55,14 +56,19 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
   React.useEffect(() => {
     if (props.sortColumn !== undefined) {
       const sortHeader = headers.find((header) => header.dataType === props.sortColumn);
-      if (sortHeader && sortHeader.colDef && sortHeader.colDef.comparator) {
-        const comparator = sortHeader.colDef.comparator(sortHeader.dataType);
+      if (!sortHeader) {
+        console.warn('Sort column not found, this is probably a bug');
+        return;
+      }
+      const options = sortHeader.columnOptions;
+      if (columnHasFunctions(options)) {
+        const comparator = options.comparator!(sortHeader.dataType!);
         if (props.sortDirection === 'asc') {
-          const asc = displayedRows.sort(comparator);
-          setDisplayedRows([...asc]);
+          const sortedRows = displayedRows.sort(comparator);
+          setDisplayedRows([...sortedRows]);
         } else {
-          const desc = displayedRows.sort((a, b) => comparator(b, a));
-          setDisplayedRows([...desc]);
+          const sortedRows = displayedRows.sort((a, b) => comparator(b, a));
+          setDisplayedRows([...sortedRows]);
         }
       }
     }

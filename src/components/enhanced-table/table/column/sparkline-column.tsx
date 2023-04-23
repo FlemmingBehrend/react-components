@@ -1,22 +1,16 @@
 import * as React from 'react';
+import { SparklineCell } from '../cell/sparkeline-cell';
+import { ColumnOptions } from './column-options';
 import { useTheme } from '@mui/material';
+import Cell from '../cell/cell';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
-import Cell from '../cell';
-import type { Tooltipable } from './types/tooltipable';
-import type { Value } from './types/value';
-import type { ColDef } from './defs/base';
+import { ColumnFunctions } from './column-functions';
 
-export interface SparklineCell extends Value<number[]>, Tooltipable {
-  color?: string;
-  heigth?: number;
-  width?: number;
-}
-
-function renderSparklineCell(cell: SparklineCell, columnDef: ColDef<number[]>) {
+function renderSparklineCell(cell: SparklineCell, columnOptions: ColumnOptions) {
   const theme = useTheme();
   return (
     <React.Fragment>
-      <Cell align={columnDef.align} tooltip={cell.tooltip}>
+      <Cell align={columnOptions.align} tooltip={cell.tooltip}>
         <Sparklines height={cell.heigth} width={cell.width} data={cell.value}>
           <SparklinesLine color={cell.color ?? theme.palette.text.primary} />
         </Sparklines>
@@ -41,9 +35,11 @@ function sparklineComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-export const SparklineColDef: ColDef<number[]> = {
+const sparklineColumnDefaults: ColumnOptions & ColumnFunctions = {
   sortable: true,
   align: 'center',
   render: renderSparklineCell,
   comparator: sparklineComparator
 };
+
+export { sparklineColumnDefaults };

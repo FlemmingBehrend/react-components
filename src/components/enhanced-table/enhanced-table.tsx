@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Box, Grid, Paper, Table, TableContainer, useTheme } from '@mui/material';
 import FilterComponent from './table/filter-field';
-import { SortDirection, EnhancedTableHeader } from './table/header-definitions';
-import { Identible } from './table/cells/types/identible';
+import { Identible } from './table/cell/types/identible';
 import NumberOfRowsComponent from './table/number-of-rows';
 import TableHeaders from './table/table-headers';
 import TableContent from './table/table-content';
@@ -18,6 +17,7 @@ import {
 } from './default-values';
 import { EnhancedTableTheme } from './themes';
 import { getHeaderCells } from './helpers';
+import { EnhancedTableHeader, SortDirection } from './table/header/header-options';
 
 declare module '@mui/material/styles' {
   interface Theme {

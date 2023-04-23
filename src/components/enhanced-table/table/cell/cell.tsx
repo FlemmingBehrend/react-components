@@ -1,5 +1,9 @@
 import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { Identible } from './types/identible';
+import { Tooltipable } from './types/tooltipable';
+import { Linkable } from './types/linkable';
+import { Value } from './types/value';
 
 type LinkType = {
   href: string;
@@ -12,6 +16,8 @@ type CellProps = {
   link?: LinkType;
   children: React.ReactNode;
 };
+
+type CellOptions<DataDef> = Identible & Tooltipable & Linkable & Value<DataDef>;
 
 function Cell(props: CellProps) {
   const theme = useTheme();

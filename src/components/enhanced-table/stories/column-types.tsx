@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { faker } from '@faker-js/faker';
-import { Identible } from '../table/cells/types/identible';
-import { StringCell, StringColDef } from '../table/cells/string-cell';
-import { NumberCell, NumberColDef } from '../table/cells/number-cell';
-import { DateCell, DateColDef } from '../table/cells/date-cell';
-import { SparklineCell, SparklineColDef } from '../table/cells/sparkeline-cell';
-import { BooleanCell, BooleanColDef } from '../table/cells/boolean-cell';
+import { Identible } from '../table/cell/types/identible';
+import { StringCell, StringColDef } from '../table/cell/string-cell';
+import { NumberCell, NumberColDef } from '../table/cell/number-cell';
+import { DateCell, DateColDef } from '../table/cell/date-cell';
+import { SparklineCell, SparklineColDef } from '../table/cell/sparkeline-cell';
+import { BooleanCell, BooleanColDef } from '../table/cell/boolean-cell';
 import { EnhancedTableHeader } from '../table/header-definitions';
 import { ThemeProvider } from '@mui/material';
 import EnhancedTable from '../enhanced-table';

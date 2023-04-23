@@ -1,16 +1,12 @@
-import React from 'react';
+import * as React from 'react';
 import moment from 'moment';
-import Cell from '../cell';
-import type { Tooltipable } from './types/tooltipable';
-import type { Value } from './types/value';
-import type { Suffixable } from './types/suffixable';
-import type { ColDef } from './defs/base';
+import { Value } from '../cell/types/value';
+import type { ColumnOptions } from './column-options';
+import Cell from '../cell/cell';
+import { DateCell } from '../cell/date-cell';
+import { ColumnFunctions } from './column-functions';
 
-export interface DateCell extends Value<Date>, Tooltipable, Suffixable {
-  display?: 'date' | 'time' | 'datetime' | 'relative';
-}
-
-function renderDateCell(cell: DateCell, columnDef: ColDef<Date>) {
+function renderDateCell(cell: DateCell, columnOptions: ColumnOptions) {
   let date = '';
   switch (cell.display) {
     case 'date':
@@ -29,8 +25,8 @@ function renderDateCell(cell: DateCell, columnDef: ColDef<Date>) {
   }
   return (
     <React.Fragment>
-      <Cell align={columnDef.align} tooltip={cell.tooltip}>
-        {cell.suffix ? `${date}${cell.suffix}` : date}
+      <Cell align={columnOptions.align} tooltip={cell.tooltip}>
+        {columnOptions.suffix ? `${date}${columnOptions.suffix}` : date}
       </Cell>
     </React.Fragment>
   );
@@ -62,16 +58,16 @@ function dateComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function dateFilterFn(cell: Value<unknown>) {
+function dateFilterFn(cell: Value<Date>, columnOptions: ColumnOptions) {
   return (filterValue: string): boolean => {
-    const dateCell = cell as DateCell;
+    const dateCell = cell;
     const from = moment(dateCell.value).fromNow();
-    const searchString = dateCell.suffix ? `${from}${dateCell.suffix}` : from;
+    const searchString = columnOptions.suffix ? `${from}${columnOptions.suffix}` : from;
     return searchString.toLowerCase().includes(filterValue.toLowerCase());
   };
 }
 
-export const DateColDef: ColDef<Date> = {
+const dateColumnDefaults: ColumnOptions & ColumnFunctions = {
   sortable: true,
   suffix: '',
   align: 'left',
@@ -79,3 +75,5 @@ export const DateColDef: ColDef<Date> = {
   comparator: dateComparator,
   filterFn: dateFilterFn
 };
+
+export { dateColumnDefaults };

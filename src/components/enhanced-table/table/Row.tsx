@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { EnhancedTableHeader } from './header-definitions';
-import { Identible } from './cells/types/identible';
 import { IconButton, TableCell, TableRow, styled, useTheme } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { EnhancedTableHeader } from './header/header-options';
+import { columnHasFunctions } from '../helpers';
 
 const StyledRow = styled(TableRow)(() => ({
   // hide last border
@@ -47,16 +47,24 @@ function Row<DataDef>(props: RowProps<DataDef>) {
       );
     }
   }
+
+  function renderCell(header: EnhancedTableHeader<DataDef>) {
+    const options = header.columnOptions;
+    if (columnHasFunctions(options)) {
+      return (
+        <React.Fragment key={crypto.randomUUID()}>
+          {options?.render(props.row[header.dataType], header.columnOptions!)}
+        </React.Fragment>
+      );
+    }
+  }
+
   return (
     <React.Fragment>
       <StyledRow sx={{ backgroundColor: props.rowColor }}>
         {props.expandable && renderExpandCell()}
         {props.headers.map((header) => {
-          return (
-            <React.Fragment key={crypto.randomUUID()}>
-              {header.colDef?.render(props.row[header.dataType], header.colDef)}
-            </React.Fragment>
-          );
+          return <React.Fragment key={crypto.randomUUID()}>{renderCell(header)}</React.Fragment>;
         })}
       </StyledRow>
       {renderExpandedElement()}

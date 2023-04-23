@@ -1,6 +1,6 @@
-import { ColDef } from './cells/defs/base';
+import { ColumnOptions } from '../column/column-options';
 
-type CommonHeaderOptions = {
+interface HeaderOptions {
   /**
    * The displayed text value of the header.
    */
@@ -25,9 +25,9 @@ type CommonHeaderOptions = {
    * @default 1
    */
   colspan?: number;
-};
+}
 
-type EnhancedHeader<DataDef> = {
+interface EnhancedHeader<DataDef> extends HeaderOptions {
   /**
    * A Header on the lowest level of the table can never have subHeaders.
    */
@@ -43,10 +43,10 @@ type EnhancedHeader<DataDef> = {
    * The definition of the column.
    * The is used for common column options.
    */
-  colDef: ColDef<any>;
-};
+  columnOptions: ColumnOptions;
+}
 
-type EnhancedHeaderGroup<DataDef> = {
+interface EnhancedHeaderGroup<DataDef> extends HeaderOptions {
   /**
    * A HeaderGroup can have subHeaders.
    *
@@ -56,7 +56,7 @@ type EnhancedHeaderGroup<DataDef> = {
    * Subheaders can be either a Header or a new HeaderGroup but the last
    * header rows can only contain EnhancedHeader types.
    */
-  subHeaders: EnhancedTableHeader<DataDef>[];
+  subHeaders: EnhancedHeader<DataDef>[];
 
   /**
    * A HeaderGroup can never have a dataType.
@@ -66,11 +66,11 @@ type EnhancedHeaderGroup<DataDef> = {
   /**
    * A HeaderGroup can never have a definition.
    */
-  colDef?: never;
-};
+  columnOptions?: never;
+}
 
-type EnhancedTableHeader<DataDef> = CommonHeaderOptions & (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);
+type EnhancedTableHeader<DataDef> = EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>;
 
 type SortDirection = 'asc' | 'desc';
 
-export type { EnhancedTableHeader, SortDirection, EnhancedHeader, EnhancedHeaderGroup };
+export type { EnhancedTableHeader, SortDirection };

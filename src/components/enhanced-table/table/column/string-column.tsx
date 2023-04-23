@@ -1,21 +1,18 @@
 import * as React from 'react';
-import Cell from '../cell';
-import type { Value } from './types/value';
-import type { Tooltipable } from './types/tooltipable';
-import type { Linkable } from './types/linkable';
-import type { ColDef } from './defs/base';
+import { ColumnOptions } from './column-options';
+import { StringCell } from '../cell/string-cell';
+import Cell from '../cell/cell';
+import { ColumnFunctions } from './column-functions';
 
-export interface StringCell extends Value<string>, Tooltipable, Linkable {}
-
-function renderStringCell(cell: StringCell, columnDef: ColDef<string>) {
+function renderStringCell(cell: StringCell, columnOptions: ColumnOptions) {
   return (
     <React.Fragment>
       <Cell
-        align={columnDef.align}
+        align={columnOptions.align}
         tooltip={cell.tooltip}
         link={cell.href ? { href: cell.href, target: cell.target } : undefined}
       >
-        {`${cell.value}${columnDef.suffix}`}
+        {`${cell.value}${columnOptions.suffix}`}
       </Cell>
     </React.Fragment>
   );
@@ -35,16 +32,14 @@ function stringComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function stringFilterFn(cell: Value<string>, columnDef: ColDef<string>) {
-  const stringCell = cell as unknown as Value<string>;
-  const stringColumnDef = columnDef as unknown as ColDef<string>;
+function stringFilterFn(cell: StringCell, columnOptions: ColumnOptions) {
   return (filterValue: string): boolean => {
-    const searchString = stringColumnDef.suffix ? `${stringCell.value}${stringColumnDef.suffix}` : stringCell.value;
+    const searchString = columnOptions.suffix ? `${cell.value}${columnOptions.suffix}` : cell.value;
     return searchString.toLowerCase().includes(filterValue.toLowerCase());
   };
 }
 
-export const StringColDef: ColDef<string> = {
+const stringColumnDefaults: ColumnOptions & ColumnFunctions = {
   align: 'left',
   sortable: true,
   suffix: '',
@@ -52,3 +47,5 @@ export const StringColDef: ColDef<string> = {
   comparator: stringComparator,
   filterFn: stringFilterFn
 };
+
+export { stringColumnDefaults };

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { faker } from '@faker-js/faker';
-import { Identible } from '../table/cells/types/identible';
-import { StringCell, StringColDef } from '../table/cells/string-cell';
-import { NumberCell, NumberColDef } from '../table/cells/number-cell';
-import { BooleanCell, BooleanColDef } from '../table/cells/boolean-cell';
-import { DateCell, DateColDef } from '../table/cells/date-cell';
+import { Identible } from '../table/cell/types/identible';
+import { StringCell, StringColDef } from '../table/cell/string-cell';
+import { NumberCell, NumberColDef } from '../table/cell/number-cell';
+import { BooleanCell, BooleanColDef } from '../table/cell/boolean-cell';
+import { DateCell, DateColDef } from '../table/cell/date-cell';
 import { EnhancedTableHeader } from '../table/header-definitions';
 import { chooseMode } from './mode-helper';
 import { ThemeProvider } from '@mui/material';

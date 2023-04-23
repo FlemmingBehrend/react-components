@@ -1,4 +1,5 @@
-import { EnhancedHeader, EnhancedHeaderGroup, EnhancedTableHeader } from './table/header-definitions';
+import { ColumnFunctions } from './table/column/column-functions';
+import { EnhancedTableHeader } from './table/header/header-options';
 
 export function getDarkerColor(hex: string, percent: number): string {
   let r = parseInt(hex.substring(1, 3), 16);
@@ -48,10 +49,6 @@ export function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[])
   return headerCells;
 }
 
-export function instanceOfEnhancedHeader<DataDef>(object: any): object is EnhancedHeader<DataDef> {
-  return 'dataType' in object;
-}
-
-export function instanceOfEnhancedHeaderGroup<DataDef>(object: any): object is EnhancedHeaderGroup<DataDef> {
-  return 'subHeaders' in object;
+export function columnHasFunctions(object: any): object is ColumnFunctions {
+  return 'filterFn' in object || 'comparator' in object || 'render' in object;
 }

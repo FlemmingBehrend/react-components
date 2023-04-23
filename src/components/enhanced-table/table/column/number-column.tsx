@@ -1,21 +1,19 @@
 import * as React from 'react';
-import Cell from '../cell';
-import type { Tooltipable } from './types/tooltipable';
-import type { Value } from './types/value';
-import type { Linkable } from './types/linkable';
-import type { ColDef } from './defs/base';
+import { Value } from '../cell/types/value';
+import { ColumnOptions } from './column-options';
+import { NumberCell } from '../cell/number-cell';
+import Cell from '../cell/cell';
+import { ColumnFunctions } from './column-functions';
 
-export interface NumberCell extends Value<number>, Tooltipable, Linkable {}
-
-function renderNumberCell(cell: NumberCell, columnDef: ColDef<number>) {
+function renderNumberCell(cell: NumberCell, columnOptions: ColumnOptions) {
   return (
     <React.Fragment>
       <Cell
-        align={columnDef.align}
+        align={columnOptions.align}
         tooltip={cell.tooltip}
         link={cell.href ? { href: cell.href, target: cell.target } : undefined}
       >
-        {`${cell.value}${columnDef.suffix}`}
+        {`${cell.value}${columnOptions.suffix}`}
       </Cell>
     </React.Fragment>
   );
@@ -35,18 +33,14 @@ function numberComparator<DataDef>(sortColumn: keyof DataDef) {
   };
 }
 
-function numberFilterFn(cell: Value<number>, columnDef: ColDef<number>) {
-  const numberCell = cell as unknown as Value<number>;
-  const numberColumnDef = columnDef as unknown as ColDef<number>;
+function numberFilterFn(cell: Value<number>, columnOptions: ColumnOptions) {
   return (filterValue: string): boolean => {
-    const searchString = numberColumnDef.suffix
-      ? `${numberCell.value}${numberColumnDef.suffix}`
-      : numberCell.value.toString();
+    const searchString = columnOptions.suffix ? `${cell.value}${columnOptions.suffix}` : cell.value.toString();
     return searchString.includes(filterValue);
   };
 }
 
-export const NumberColDef: ColDef<number> = {
+const numberColumnDefaults: ColumnOptions & ColumnFunctions = {
   align: 'right',
   sortable: true,
   suffix: '',
@@ -54,3 +48,5 @@ export const NumberColDef: ColDef<number> = {
   comparator: numberComparator,
   filterFn: numberFilterFn
 };
+
+export { numberColumnDefaults };

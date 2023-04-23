@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { TableCell, TableSortLabel, Tooltip, Typography, SxProps } from '@mui/material';
-import { HeaderCellContext } from '../context/header-cell-context-provider';
+import { HeaderCellContext } from '../../context/header-cell-context-provider';
 
 const LabelCell = function LabelCell() {
   const { label } = React.useContext(HeaderCellContext);
@@ -39,7 +39,6 @@ const TooltipCell = React.memo(function TooltipCell() {
     fontWeight: fontWeight,
     textAlign: alignment
   };
-  console.log(alignment);
   return tooltip ? (
     <Tooltip title={tooltip} followCursor>
       <TableCell colSpan={colspan} sx={sx} align={alignment}>

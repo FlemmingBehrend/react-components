@@ -1,23 +1,20 @@
 import * as React from 'react';
-import Cell from '../cell';
+import { ColumnOptions, ImagableColumnOptions } from './column-options';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
-import type { Value } from './types/value';
-import type { Tooltipable } from './types/tooltipable';
-import type { Linkable } from './types/linkable';
-import type { ImagableColDef } from './defs/imagable';
+import { BooleanCell } from '../cell/boolean-cell';
+import Cell from '../cell/cell';
+import { ColumnFunctions } from './column-functions';
 
-export interface BooleanCell extends Value<Boolean>, Tooltipable, Linkable {}
-
-function renderBooleanCell(cell: BooleanCell, columnDef: ImagableColDef<boolean>) {
+function renderBooleanCell(cell: BooleanCell, columnOptions: ImagableColumnOptions) {
   return (
     <React.Fragment>
       <Cell
-        align={columnDef.align}
+        align={columnOptions.align}
         tooltip={cell.tooltip}
         link={cell.href ? { href: cell.href, target: cell.target } : undefined}
       >
-        {columnDef.imageMap[`${cell.value}`]}
+        {columnOptions.imageMap[`${cell.value}`]}
       </Cell>
     </React.Fragment>
   );
@@ -25,8 +22,8 @@ function renderBooleanCell(cell: BooleanCell, columnDef: ImagableColDef<boolean>
 
 function booleanComparator<DataDef>(sortBy: keyof DataDef) {
   return (a: DataDef, b: DataDef) => {
-    const aObj = a[sortBy] as unknown as { value: boolean };
-    const bObj = b[sortBy] as unknown as { value: boolean };
+    const aObj = a[sortBy] as unknown as BooleanCell;
+    const bObj = b[sortBy] as unknown as BooleanCell;
     if (aObj.value && bObj.value) {
       const aNumber = aObj.value ? 1 : 0;
       const bNumber = bObj.value ? 1 : 0;
@@ -49,13 +46,17 @@ function booleanComparator<DataDef>(sortBy: keyof DataDef) {
   };
 }
 
-export const BooleanColDef: ImagableColDef<boolean> = {
+const booleanColumnDefaults: ImagableColumnOptions & ColumnFunctions = {
   sortable: true,
   align: 'center',
-  render: (rows, columnDefinition) => renderBooleanCell(rows, columnDefinition as ImagableColDef<boolean>),
-  comparator: booleanComparator,
   imageMap: {
     true: <CheckIcon />,
     false: <ClearIcon />
-  }
+  },
+  render(cell: BooleanCell, columnOptions: ColumnOptions) {
+    return renderBooleanCell(cell, columnOptions as ImagableColumnOptions);
+  },
+  comparator: booleanComparator
 };
+
+export { booleanColumnDefaults };
