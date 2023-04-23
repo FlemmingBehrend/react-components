@@ -17,12 +17,12 @@ interface Data extends Identible {
 
 const rows: Data[] = [
   {
-    id: '1',
+    id: crypto.randomUUID(),
     animal: { value: 'Dog' },
     age: { value: 5 }
   },
   {
-    id: '2',
+    id: crypto.randomUUID(),
     animal: { value: 'Cat' },
     age: { value: 3 }
   }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TableBody, useTheme } from '@mui/material';
 import Row from './row';
-import { getHeaderCells, columnHasFunctions } from '../helpers';
+import { getHeaderCells, columnIsFilterable, columnIsSortable } from '../helpers';
 import type { Identible } from './cell/types/identible';
 import { EnhancedTableHeader } from './header/header-options';
 
@@ -40,7 +40,7 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
         for (const [key, cell] of Object.entries(row)) {
           const header = headers.find((header) => header.dataType === key);
           const options = header?.columnOptions;
-          if (columnHasFunctions(options)) {
+          if (columnIsFilterable(options)) {
             const fn = options.filterFn!(cell, options);
             filters.push(fn(fValue));
           }
@@ -61,7 +61,7 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
         return;
       }
       const options = sortHeader.columnOptions;
-      if (columnHasFunctions(options)) {
+      if (columnIsSortable(options)) {
         const comparator = options.comparator!(sortHeader.dataType!);
         if (props.sortDirection === 'asc') {
           const sortedRows = displayedRows.sort(comparator);
@@ -90,7 +90,7 @@ function TableContent<DataDef extends Identible>(props: TableContentProps<DataDe
       {displayedRows.map((row, index) => {
         return (
           <Row
-            key={crypto.randomUUID()}
+            key={row.id}
             row={row}
             headers={headers}
             stripedRows={props.stripedRows}

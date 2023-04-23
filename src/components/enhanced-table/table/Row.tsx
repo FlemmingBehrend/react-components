@@ -3,7 +3,7 @@ import { IconButton, TableCell, TableRow, styled, useTheme } from '@mui/material
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { EnhancedTableHeader } from './header/header-options';
-import { columnHasFunctions } from '../helpers';
+import { columnIsRenderable } from '../helpers';
 
 const StyledRow = styled(TableRow)(() => ({
   // hide last border
@@ -50,12 +50,8 @@ function Row<DataDef>(props: RowProps<DataDef>) {
 
   function renderCell(header: EnhancedTableHeader<DataDef>) {
     const options = header.columnOptions;
-    if (columnHasFunctions(options)) {
-      return (
-        <React.Fragment key={crypto.randomUUID()}>
-          {options?.render(props.row[header.dataType], header.columnOptions!)}
-        </React.Fragment>
-      );
+    if (columnIsRenderable(options)) {
+      return options?.render(props.row[header.dataType], header.columnOptions!);
     }
   }
 
@@ -64,7 +60,7 @@ function Row<DataDef>(props: RowProps<DataDef>) {
       <StyledRow sx={{ backgroundColor: props.rowColor }}>
         {props.expandable && renderExpandCell()}
         {props.headers.map((header) => {
-          return <React.Fragment key={crypto.randomUUID()}>{renderCell(header)}</React.Fragment>;
+          return renderCell(header);
         })}
       </StyledRow>
       {renderExpandedElement()}

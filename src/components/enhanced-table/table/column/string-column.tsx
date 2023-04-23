@@ -3,18 +3,18 @@ import { ColumnOptions } from './column-options';
 import { StringCell } from '../cell/string-cell';
 import Cell from '../cell/cell';
 import { ColumnFunctions } from './column-functions';
+import { hash } from '../../../../hashing';
 
 function renderStringCell(cell: StringCell, columnOptions: ColumnOptions) {
   return (
-    <React.Fragment>
-      <Cell
-        align={columnOptions.align}
-        tooltip={cell.tooltip}
-        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
-      >
-        {`${cell.value}${columnOptions.suffix}`}
-      </Cell>
-    </React.Fragment>
+    <Cell
+      key={hash(`${cell.value}${cell.tooltip}${cell.href}${cell.target}`)}
+      align={columnOptions.align}
+      tooltip={cell.tooltip}
+      link={cell.href ? { href: cell.href, target: cell.target } : undefined}
+    >
+      {`${cell.value}${columnOptions.suffix}`}
+    </Cell>
   );
 }
 

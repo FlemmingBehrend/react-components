@@ -32,7 +32,7 @@ const headers: EnhancedTableHeader<Data>[] = [
 ```
 
 The table can take a number of props to customize the table. The following table shows the props that can be passed to the table.
-All props except for `headers` and `rows` are optional.
+All props except for `headers` and `rows` are optional and have a default value.
 
 | Prop                   | Type                         | Default   | Description                                               |
 | ---------------------- | ---------------------------- | --------- | --------------------------------------------------------- |

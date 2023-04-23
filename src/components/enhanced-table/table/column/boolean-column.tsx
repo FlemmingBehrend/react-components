@@ -8,15 +8,14 @@ import { ColumnFunctions } from './column-functions';
 
 function renderBooleanCell(cell: BooleanCell, columnOptions: ImagableColumnOptions) {
   return (
-    <React.Fragment>
-      <Cell
-        align={columnOptions.align}
-        tooltip={cell.tooltip}
-        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
-      >
-        {columnOptions.imageMap[`${cell.value}`]}
-      </Cell>
-    </React.Fragment>
+    <Cell
+      key={crypto.randomUUID()}
+      align={columnOptions.align}
+      tooltip={cell.tooltip}
+      link={cell.href ? { href: cell.href, target: cell.target } : undefined}
+    >
+      {columnOptions.imageMap[`${cell.value}`]}
+    </Cell>
   );
 }
 

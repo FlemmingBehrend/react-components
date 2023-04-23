@@ -4,18 +4,18 @@ import { ColumnOptions } from './column-options';
 import { NumberCell } from '../cell/number-cell';
 import Cell from '../cell/cell';
 import { ColumnFunctions } from './column-functions';
+import { hash } from '../../../../hashing';
 
 function renderNumberCell(cell: NumberCell, columnOptions: ColumnOptions) {
   return (
-    <React.Fragment>
-      <Cell
-        align={columnOptions.align}
-        tooltip={cell.tooltip}
-        link={cell.href ? { href: cell.href, target: cell.target } : undefined}
-      >
-        {`${cell.value}${columnOptions.suffix}`}
-      </Cell>
-    </React.Fragment>
+    <Cell
+      key={crypto.randomUUID()}
+      align={columnOptions.align}
+      tooltip={cell.tooltip}
+      link={cell.href ? { href: cell.href, target: cell.target } : undefined}
+    >
+      {`${cell.value}${columnOptions.suffix}`}
+    </Cell>
   );
 }
 

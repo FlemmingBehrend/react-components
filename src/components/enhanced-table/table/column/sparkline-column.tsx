@@ -9,13 +9,11 @@ import { ColumnFunctions } from './column-functions';
 function renderSparklineCell(cell: SparklineCell, columnOptions: ColumnOptions) {
   const theme = useTheme();
   return (
-    <React.Fragment>
-      <Cell align={columnOptions.align} tooltip={cell.tooltip}>
-        <Sparklines height={cell.heigth} width={cell.width} data={cell.value}>
-          <SparklinesLine color={cell.color ?? theme.palette.text.primary} />
-        </Sparklines>
-      </Cell>
-    </React.Fragment>
+    <Cell key={crypto.randomUUID()} align={columnOptions.align} tooltip={cell.tooltip}>
+      <Sparklines height={cell.heigth} width={cell.width} data={cell.value}>
+        <SparklinesLine color={cell.color ?? theme.palette.text.primary} />
+      </Sparklines>
+    </Cell>
   );
 }
 

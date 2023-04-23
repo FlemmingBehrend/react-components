@@ -46,9 +46,9 @@ function createRandomUser(): User {
   };
 }
 
-const USER: User[] = faker.helpers.arrayElements(
-  Array.from({ length: 10 }, () => createRandomUser()),
-  10
+const user: User[] = faker.helpers.arrayElements(
+  Array.from({ length: 200 }, () => createRandomUser()),
+  200
 );
 
 interface RowData extends Identible {
@@ -97,15 +97,14 @@ const headers: EnhancedTableHeader<RowData>[] = [
   }
 ];
 
-const simpleRows: RowData[] = USER.map((user) => {
+const simpleRows: RowData[] = user.map((user) => {
   const id = crypto.randomUUID();
   return {
     id,
-    name: { id, value: user.name },
-    age: { id, value: user.age },
-    birthDate: { id, value: user.birthDate, display: 'date' },
+    name: { value: user.name },
+    age: { value: user.age },
+    birthDate: { value: user.birthDate, display: 'date' },
     interval: {
-      id,
       value: user.interval,
       heigth: 15,
       width: 100,
@@ -124,7 +123,6 @@ const simpleRows: RowData[] = USER.map((user) => {
       )
     },
     working: {
-      id,
       value: user.working,
       tooltip: user.working ? 'The user is working' : 'The user is to old to work',
       href: 'https://www.google.com',
@@ -141,9 +139,9 @@ export const ColumnTypes = (args: any) => (
 ColumnTypes.args = {
   headers: headers,
   rows: simpleRows,
-  displayNumberOfRows: false,
+  displayNumberOfRows: true,
   expandable: false,
-  filterable: false,
+  filterable: true,
   stripedRows: true,
   showHeaders: true
 };

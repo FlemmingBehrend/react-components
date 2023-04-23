@@ -49,6 +49,32 @@ export function getHeaderCells<DataDef>(headers: EnhancedTableHeader<DataDef>[])
   return headerCells;
 }
 
-export function columnHasFunctions(object: any): object is ColumnFunctions {
-  return 'filterFn' in object || 'comparator' in object || 'render' in object;
+export function columnIsFilterable(object: any): object is ColumnFunctions {
+  if (!object) {
+    return false;
+  }
+  if (typeof object !== 'object') {
+    return false;
+  }
+  return 'filterFn' in object;
+}
+
+export function columnIsSortable(object: any): object is ColumnFunctions {
+  if (!object) {
+    return false;
+  }
+  if (typeof object !== 'object') {
+    return false;
+  }
+  return 'comparator' in object;
+}
+
+export function columnIsRenderable(object: any): object is ColumnFunctions {
+  if (!object) {
+    return false;
+  }
+  if (typeof object !== 'object') {
+    return false;
+  }
+  return 'render' in object;
 }

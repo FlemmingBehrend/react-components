@@ -6,6 +6,9 @@ export const parameters = {
       date: /Date$/
     }
   },
+  react: {
+    mode: 'strict'
+  },
   backgrounds: {
     values: [
       {

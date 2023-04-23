@@ -24,11 +24,9 @@ function renderDateCell(cell: DateCell, columnOptions: ColumnOptions) {
       break;
   }
   return (
-    <React.Fragment>
-      <Cell align={columnOptions.align} tooltip={cell.tooltip}>
-        {columnOptions.suffix ? `${date}${columnOptions.suffix}` : date}
-      </Cell>
-    </React.Fragment>
+    <Cell key={crypto.randomUUID()} align={columnOptions.align} tooltip={cell.tooltip}>
+      {columnOptions.suffix ? `${date}${columnOptions.suffix}` : date}
+    </Cell>
   );
 }
 
