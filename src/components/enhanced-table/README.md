@@ -30,3 +30,24 @@ const headers: EnhancedTableHeader<Data>[] = [
 // Render the table.
 <EnhancedTable headers={headers} rows={rows} />;
 ```
+
+The table can take a number of props to customize the table. The following table shows the props that can be passed to the table.
+All props except for `headers` and `rows` are optional.
+
+| Prop                   | Type                         | Default   | Description                                               |
+| ---------------------- | ---------------------------- | --------- | --------------------------------------------------------- |
+| `headers`              | EnhancedTableHeader[]        | N/A       | The headers for the table.                                |
+| `rows`                 | Data[]                       | N/A       | The rows for the table.                                   |
+| `columnWidths`         | number[] \| string[]         | `auto`    | The widths of the columns.                                |
+| `showHeaders`          | boolean                      | `true`    | Show the table headers.                                   |
+| `initialSortColumn`    | keyof Data                   | undefined | The column to sort on initially.                          |
+| `initialSortDirection` | 'asc' \| 'desc' \| undefined | undefined | The direction to sort initially.                          |
+| `filterable`           | boolean                      | `true`    | Enable filtering.                                         |
+| `stripedRows`          | boolean                      | `false`   | Enable striped rows.                                      |
+| `tableSize`            | 'small' \| 'medium'          | `medium`  | The size of the table.                                    |
+| `displayNumberOfRows`  | boolean                      | `true`    | Display the number of rows currently visible in the table |
+| `expandable`           | boolean                      | `false`   | Enable expandable rows.                                   |
+
+## Features
+
+### Sorting
