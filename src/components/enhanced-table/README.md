@@ -6,15 +6,9 @@ The enhanced table is a wrapper around the [Material UI Table](https://material-
 
 This is the basic usage of the enhanced table. It shows a table with two columns and two rows.
 
-```typescript
-import {
-  EnhancedTable,
-  EnhancedTableHeader,
-  Identible,
-  stringColumnDefaults,
-  numberColumnDefaults
-} from '@flemmingbehrend/react-components/enhanced-table';
+Import are left out of the example for brevity.
 
+```typescript
 // Create an interface that extends Idenfible with the data types for the table.
 interface Data extends Identible {
   animal: StringCell;
