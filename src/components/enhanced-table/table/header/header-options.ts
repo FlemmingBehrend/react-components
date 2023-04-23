@@ -1,6 +1,6 @@
 import { ColumnOptions } from '../column/column-options';
 
-interface HeaderOptions {
+type HeaderOptions = {
   /**
    * The displayed text value of the header.
    */
@@ -25,9 +25,9 @@ interface HeaderOptions {
    * @default 1
    */
   colspan?: number;
-}
+};
 
-interface EnhancedHeader<DataDef> extends HeaderOptions {
+type EnhancedHeader<DataDef> = {
   /**
    * A Header on the lowest level of the table can never have subHeaders.
    */
@@ -44,9 +44,9 @@ interface EnhancedHeader<DataDef> extends HeaderOptions {
    * The is used for common column options.
    */
   columnOptions: ColumnOptions;
-}
+};
 
-interface EnhancedHeaderGroup<DataDef> extends HeaderOptions {
+type EnhancedHeaderGroup<DataDef> = {
   /**
    * A HeaderGroup can have subHeaders.
    *
@@ -56,7 +56,7 @@ interface EnhancedHeaderGroup<DataDef> extends HeaderOptions {
    * Subheaders can be either a Header or a new HeaderGroup but the last
    * header rows can only contain EnhancedHeader types.
    */
-  subHeaders: EnhancedHeader<DataDef>[];
+  subHeaders: EnhancedTableHeader<DataDef>[];
 
   /**
    * A HeaderGroup can never have a dataType.
@@ -67,9 +67,9 @@ interface EnhancedHeaderGroup<DataDef> extends HeaderOptions {
    * A HeaderGroup can never have a definition.
    */
   columnOptions?: never;
-}
+};
 
-type EnhancedTableHeader<DataDef> = EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>;
+type EnhancedTableHeader<DataDef> = HeaderOptions & (EnhancedHeader<DataDef> | EnhancedHeaderGroup<DataDef>);
 
 type SortDirection = 'asc' | 'desc';
 

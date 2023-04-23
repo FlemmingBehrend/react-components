@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { faker } from '@faker-js/faker';
 import { Identible } from '../table/cell/types/identible';
-import { StringCell, StringColDef } from '../table/cell/string-cell';
-import { NumberCell, NumberColDef } from '../table/cell/number-cell';
-import { BooleanCell, BooleanColDef } from '../table/cell/boolean-cell';
-import { DateCell, DateColDef } from '../table/cell/date-cell';
-import { EnhancedTableHeader } from '../table/header-definitions';
+import { StringCell } from '../table/cell/string-cell';
+import { NumberCell } from '../table/cell/number-cell';
+import { BooleanCell } from '../table/cell/boolean-cell';
+import { DateCell } from '../table/cell/date-cell';
 import { chooseMode } from './mode-helper';
 import { ThemeProvider } from '@mui/material';
 import EnhancedTable from '../enhanced-table';
+import { EnhancedTableHeader } from '../table/header/header-options';
+import { stringColumnDefaults } from '../table/column/string-column';
+import { numberColumnDefaults } from '../table/column/number-column';
+import { booleanColumnDefaults } from '../table/column/boolean-column';
+import { dateColumnDefaults } from '../table/column/date-column';
 
 interface Factory {
   companyName: string;
@@ -75,14 +79,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Name',
                 tooltip: 'Name of the company',
-                colDef: StringColDef,
+                columnOptions: stringColumnDefaults,
                 dataType: 'companyName',
                 colspan: 1
               },
               {
                 label: 'Suffix',
                 tooltip: 'Suffix of the company',
-                colDef: { ...StringColDef, suffix: ' Inc.' },
+                columnOptions: stringColumnDefaults,
                 dataType: 'companySuffix',
                 colspan: 1
               }
@@ -97,14 +101,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Street address',
                 tooltip: 'Street address of the factory',
-                colDef: StringColDef,
+                columnOptions: stringColumnDefaults,
                 dataType: 'streetAddress',
                 colspan: 1
               },
               {
                 label: 'No.',
                 tooltip: 'Building number of the factory',
-                colDef: NumberColDef,
+                columnOptions: numberColumnDefaults,
                 dataType: 'buildingNumber',
                 align: 'right',
                 colspan: 1
@@ -112,7 +116,7 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Country',
                 tooltip: 'Country of the factory',
-                colDef: StringColDef,
+                columnOptions: stringColumnDefaults,
                 dataType: 'country',
                 colspan: 1
               }
@@ -135,14 +139,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Phone no.',
                 tooltip: 'Phone number of the factory',
-                colDef: StringColDef,
+                columnOptions: stringColumnDefaults,
                 dataType: 'phoneNo',
                 colspan: 1
               },
               {
                 label: 'Valid',
                 tooltip: 'Validity of the factory',
-                colDef: BooleanColDef,
+                columnOptions: booleanColumnDefaults,
                 dataType: 'valid',
                 colspan: 1
               }
@@ -157,14 +161,14 @@ const headers: EnhancedTableHeader<RowDef>[] = [
               {
                 label: 'Name',
                 tooltip: 'Name of the factory',
-                colDef: StringColDef,
+                columnOptions: stringColumnDefaults,
                 dataType: 'department',
                 colspan: 1
               },
               {
                 label: 'Build date',
                 tooltip: 'Build date of the factory',
-                colDef: DateColDef,
+                columnOptions: dateColumnDefaults,
                 dataType: 'buildDate',
                 colspan: 1
               }

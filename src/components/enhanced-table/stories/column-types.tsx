@@ -1,15 +1,20 @@
 import * as React from 'react';
 import { faker } from '@faker-js/faker';
 import { Identible } from '../table/cell/types/identible';
-import { StringCell, StringColDef } from '../table/cell/string-cell';
-import { NumberCell, NumberColDef } from '../table/cell/number-cell';
-import { DateCell, DateColDef } from '../table/cell/date-cell';
-import { SparklineCell, SparklineColDef } from '../table/cell/sparkeline-cell';
-import { BooleanCell, BooleanColDef } from '../table/cell/boolean-cell';
-import { EnhancedTableHeader } from '../table/header-definitions';
+import { StringCell } from '../table/cell/string-cell';
+import { NumberCell } from '../table/cell/number-cell';
+import { DateCell } from '../table/cell/date-cell';
+import { SparklineCell } from '../table/cell/sparkeline-cell';
+import { BooleanCell } from '../table/cell/boolean-cell';
 import { ThemeProvider } from '@mui/material';
 import EnhancedTable from '../enhanced-table';
 import { chooseMode } from './mode-helper';
+import { EnhancedTableHeader } from '../table/header/header-options';
+import { stringColumnDefaults } from '../table/column/string-column';
+import { numberColumnDefaults } from '../table/column/number-column';
+import { dateColumnDefaults } from '../table/column/date-column';
+import { sparklineColumnDefaults } from '../table/column/sparkline-column';
+import { booleanColumnDefaults } from '../table/column/boolean-column';
 
 interface User {
   name: string;
@@ -58,35 +63,35 @@ const headers: EnhancedTableHeader<RowData>[] = [
   {
     label: 'Name',
     tooltip: 'This is an example of a string cell',
-    colDef: StringColDef,
+    columnOptions: stringColumnDefaults,
     dataType: 'name',
     colspan: 1
   },
   {
     label: 'Age',
     tooltip: 'This is an example of a number cell',
-    colDef: NumberColDef,
+    columnOptions: numberColumnDefaults,
     dataType: 'age',
     colspan: 1
   },
   {
     label: 'Birth date',
     tooltip: 'This is an example of a date cell',
-    colDef: DateColDef,
+    columnOptions: dateColumnDefaults,
     dataType: 'birthDate',
     colspan: 1
   },
   {
     label: 'Interval',
     tooltip: 'This is an example of a sparkline cell',
-    colDef: SparklineColDef,
+    columnOptions: sparklineColumnDefaults,
     dataType: 'interval',
     colspan: 1
   },
   {
     label: 'Working',
     tooltip: 'This is an example of a boolean cell',
-    colDef: BooleanColDef,
+    columnOptions: booleanColumnDefaults,
     dataType: 'working',
     colspan: 1
   }

@@ -21,4 +21,4 @@ export default {
   }
 } as Meta<typeof EnhancedTable>;
 
-export { Minimal };
+export { Minimal, ColumnTypes, MultiHeader };
