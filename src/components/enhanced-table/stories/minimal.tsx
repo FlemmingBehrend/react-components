@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Theme, ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
 import EnhancedTable from '../enhanced-table';
 import { Identible } from '../table/cell/types/identible';
 import { StringCell } from '../table/cell/string-cell';
@@ -38,7 +38,7 @@ const headers: EnhancedTableHeader<Data>[] = [
     dataType: 'age',
     label: 'Age',
     align: 'right',
-    columnOptions: { ...numberColumnDefaults, align: 'left', sortable: false, suffix: ' years' }
+    columnOptions: numberColumnDefaults
   }
 ];
 
