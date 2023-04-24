@@ -10,5 +10,5 @@ const Template = (args) => <TestComponent {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  label: 'Default'
+  label: 'Default Button'
 };
