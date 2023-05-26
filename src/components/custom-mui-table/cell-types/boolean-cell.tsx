@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext, Row } from '@tanstack/react-table';
 import CheckIcon from '@mui/icons-material/Check';
 import ClearIcon from '@mui/icons-material/Clear';
+import { Cell } from './cell';
+import { TableCell } from '@mui/material';
+import { renderLink, renderTooltip } from './common-render';
 
 interface BooleanCellOptions {
   imageMap: {
@@ -15,10 +18,38 @@ const defaultImageMap: BooleanCellOptions['imageMap'] = {
   false: <ClearIcon />
 };
 
-function BooleanCell<T>(info: CellContext<T, any>, options?: BooleanCellOptions) {
-  const value = info.getValue() as boolean;
+function BooleanCell<T>(ctx: CellContext<T, Cell<boolean>>, options?: BooleanCellOptions) {
+  const cellObj = ctx.getValue();
   const imageMap = options?.imageMap || defaultImageMap;
-  return value ? imageMap.true : imageMap.false;
+  let render = <>{cellObj.value ? imageMap.true : imageMap.false}</>;
+  render = renderLink(render, cellObj);
+  render = <TableCell align="center">{render}</TableCell>;
+  render = renderTooltip(render, cellObj, false);
+  return render;
 }
 
-export { BooleanCell };
+function booleanComparator<T>(rowA: Row<T>, rowB: Row<T>, columnId: string): number {
+  const cellA = rowA.getValue(columnId) as Cell<boolean>;
+  const cellB = rowB.getValue(columnId) as Cell<boolean>;
+  if (cellA.value && cellB.value) {
+    const aNumber = cellA.value ? 1 : 0;
+    const bNumber = cellB.value ? 1 : 0;
+    if (aNumber < bNumber) {
+      return -1;
+    }
+    if (aNumber > bNumber) {
+      return 1;
+    }
+    return 0;
+  } else {
+    if (!cellA.value) {
+      return -1;
+    }
+    if (!cellB.value) {
+      return 1;
+    }
+    return 0;
+  }
+}
+
+export { BooleanCell, booleanComparator };

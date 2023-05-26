@@ -26,30 +26,40 @@ import NumberOfRowsComponent from './number-of-rows';
 import { getBackgroundColor } from '../enhanced-table/helpers';
 import { blue } from '@mui/material/colors';
 import CustomMuiHeader from './custom-mui-header';
+import CustomMuiCell from './custom-mui-cell';
 
 const DEFAULT_TABLE_SEACHABLE = true;
 const DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS = true;
 const DEFAULT_TABLE_SORTABLE = false;
+const DEFAULT_TABLE_HEADER_FONT_SIZE = '0.875rem';
+const DEFAULT_TABLE_COLUMN_FONT_SIZE = '0.875rem';
 
 interface CustomMuiTableProps {
   columns: any[];
+  columnsWidth?: Array<number | string>;
   data: any[];
   searchable?: boolean;
   sortable?: boolean;
+  size?: 'small' | 'medium';
+  width?: string | number;
   displayNumberOfRows?: boolean;
   initialSort?: { id: string; desc: boolean };
   initialSearch?: string;
+  headerFontSize?: string | number;
+  columnFontSize?: string | number;
 }
 
 const searchFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   return filterFns.includesString(row, columnId, value, addMeta);
 };
 
-function MuiCustomTable(props: CustomMuiTableProps) {
+export function CustomMuiTable(props: CustomMuiTableProps) {
   // Add default values for props that are not specified
   const searchable = props.searchable ?? DEFAULT_TABLE_SEACHABLE;
   const displayNumberOfRows = props.displayNumberOfRows ?? DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS;
   const sortable = props.sortable ?? DEFAULT_TABLE_SORTABLE;
+  const headerFontSize = props.headerFontSize ?? DEFAULT_TABLE_HEADER_FONT_SIZE;
+  const columnFontSize = props.columnFontSize ?? DEFAULT_TABLE_COLUMN_FONT_SIZE;
 
   const [searchValue, setSearchValue] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -71,7 +81,7 @@ function MuiCustomTable(props: CustomMuiTableProps) {
   });
 
   React.useEffect(() => {
-    // setSearchValue('');
+    setSearchValue('');
   }, [props.searchable]);
 
   React.useEffect(() => {
@@ -81,6 +91,21 @@ function MuiCustomTable(props: CustomMuiTableProps) {
   React.useEffect(() => {
     props.initialSearch && setSearchValue(props.initialSearch);
   }, []);
+
+  function renderColGroup(columnWidths: Array<number | string>) {
+    const numberOfHeaders = getHeaderGroups()[0].headers.length;
+    if (columnWidths.length < numberOfHeaders) {
+      const lastWidth = columnWidths[columnWidths.length - 1];
+      for (let i = columnWidths.length; i < numberOfHeaders; i++) {
+        columnWidths.push(lastWidth);
+      }
+    } else if (columnWidths.length > numberOfHeaders) {
+      columnWidths = columnWidths.slice(0, numberOfHeaders);
+    }
+    return columnWidths.map((width, index) => {
+      return <col key={index} style={{ width }} />;
+    });
+  }
 
   return (
     <Box sx={{ mt: 2, width: '100%' }}>
@@ -94,24 +119,36 @@ function MuiCustomTable(props: CustomMuiTableProps) {
       </Grid>
       <Grid container justifyContent="space-between" alignItems="flex-end">
         <TableContainer component={Paper}>
-          <Table>
+          <Table
+            size={props.size ?? 'small'}
+            sx={{ width: props.width ?? '100%', tableLayout: props.columnsWidth ? 'fixed' : 'auto' }}
+          >
+            {props.columnsWidth && props.columnsWidth.length > 0 && (
+              <colgroup>{renderColGroup(props.columnsWidth)}</colgroup>
+            )}
+
             <TableHead>
               {getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <CustomMuiHeader key={header.id} header={header} />
+                    <CustomMuiHeader key={header.id} header={header} fontSize={headerFontSize} />
                   ))}
                 </TableRow>
               ))}
             </TableHead>
             <TableBody>
-              {getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
+              {getRowModel().rows.map((row) => {
+                return (
+                  <TableRow key={row.id}>
+                    {row.getVisibleCells().map((cell) => {
+                      cell.column.columnDef.meta = {
+                        fontSize: columnFontSize
+                      };
+                      return flexRender(cell.column.columnDef.cell, cell.getContext());
+                    })}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -121,5 +158,3 @@ function MuiCustomTable(props: CustomMuiTableProps) {
     </Box>
   );
 }
-
-export default MuiCustomTable;

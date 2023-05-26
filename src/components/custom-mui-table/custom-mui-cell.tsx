@@ -1,13 +1,13 @@
-import { TableCell, Tooltip, Typography, useTheme } from '@mui/material';
+import { Tooltip, Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { isTooltip } from './cell-types/cell';
 
-type CellProps = {
+interface CellProps {
   tooltip?: string | React.ReactNode;
-  href: string;
+  href?: string;
   target?: string;
-  value: string;
   children: React.ReactNode;
-};
+}
 
 function CustomMuiCell(props: CellProps) {
   const theme = useTheme();
@@ -43,7 +43,7 @@ function CustomMuiCell(props: CellProps) {
   function renderLink() {
     if (props.href) {
       return (
-        <a href={props.href} target={props.target ?? '_blank'} style={{ color: theme.palette.text.secondary }}>
+        <a href={props.href} target={props.target ?? '_blank'} style={{ color: theme.palette.text.primary }}>
           {props.children}
         </a>
       );

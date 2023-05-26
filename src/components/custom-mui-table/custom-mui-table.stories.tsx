@@ -1,8 +1,7 @@
 import * as React from 'react';
-import CustomMuiTable from './custom-mui-table';
-import { ColumnDef, createColumnHelper, filterFns } from '@tanstack/react-table';
-import { BooleanCell } from './cell-types/boolean-cell';
-import { StringCell } from './cell-types/string-cell';
+import { CustomMuiTable, Cell, StringCell, stringComparator, BooleanCell, booleanComparator, NumberCell } from './';
+import { ColumnDef, Row, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
+import { numberComparator } from './cell-types/number-cell';
 
 export default {
   component: CustomMuiTable,
@@ -13,47 +12,55 @@ const Template = (args) => <CustomMuiTable {...args} />;
 
 //#region Default
 type Person = {
-  name: { href: string; target?: string; tooltip?: string; value: string };
-  age: number;
-  married?: boolean;
+  name: Cell<string>;
+  age: Cell<number>;
+  married?: Cell<boolean>;
 };
+
 const defaultData: Person[] = [
   {
-    name: { href: 'https://www.google.com', target: '_blank', tooltip: 'Google', value: 'John' },
-    age: 24,
-    married: true
+    name: {
+      tooltip: 'John',
+      value: 'John fdsfdsfds f dsf dsfdsf fds fsd fds fds fdssdf dsf '
+    },
+    age: { value: 24 },
+    married: { value: true, tooltip: 'Married', href: 'https://www.google.com', target: '_blank' }
   },
   {
-    name: { href: 'https://www.google.com', target: '_blank', tooltip: 'Google', value: 'Jane' },
-    age: 40,
-    married: false
+    name: { href: 'https://www.google.com', target: '_blank', tooltip: 'Google', value: 'Charlie' },
+    age: { value: 40, tooltip: '40 years old' },
+    married: { value: false, tooltip: 'Not Married' }
   },
   {
     name: { href: 'https://www.google.com', target: '_blank', tooltip: 'Google', value: 'Sam' },
-    age: 45,
-    married: true
+    age: { value: 45 },
+    married: { value: true, tooltip: 'Married' }
   }
 ];
 const columnHelper = createColumnHelper<Person>();
+
 const columns = [
   columnHelper.group({
     id: 'persons',
-    header: 'Persons',
+    header: (h) => {
+      return 'Persons';
+    },
     columns: [
       columnHelper.accessor('name', {
         header: () => 'Name',
         cell: StringCell,
-        enableSorting: false,
-        enableGlobalFilter: true
+        sortingFn: stringComparator
       }),
       columnHelper.accessor('age', {
         header: () => 'Age',
-        cell: (info) => info.renderValue()
+        cell: NumberCell,
+        sortingFn: numberComparator
       }),
       columnHelper.accessor('married', {
         header: () => 'Married',
-        // cell: (info) => BooleanCell(info, { imageMap: { true: 'Yes', false: 'No' } })
-        cell: BooleanCell
+        // cell: (info) => booleanCell(info, { imageMap: { true: 'Yes', false: 'No' } }),
+        cell: BooleanCell,
+        sortingFn: booleanComparator
       })
     ]
   })
@@ -61,11 +68,15 @@ const columns = [
 export const Default = Template.bind({});
 Default.args = {
   columns,
+  columnsWidth: ['300px', 100],
   data: defaultData,
   searchable: true,
   sortable: true,
   displayNumberOfRows: true,
   initialSort: { id: 'age', desc: false },
-  initialSearch: ''
+  initialSearch: '',
+  size: 'small',
+  headerFontSize: 12,
+  columnFontSize: '0.875rem'
 };
 //#endregion
