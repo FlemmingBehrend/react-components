@@ -1,10 +1,11 @@
 export { default as TestComponent } from './test-component';
+import { EnhancedTable } from './enhanced-table';
+import { StringCell } from './enhanced-table/table/cell/string-cell';
+
 export {
-  default as EnhancedTable,
+  EnhancedTable as default,
   StringCell,
-  StringColDef,
   NumberCell,
-  NumberColDef,
   Identible,
   EnhancedTableHeader,
   SortDirection
