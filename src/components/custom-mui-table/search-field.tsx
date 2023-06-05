@@ -2,7 +2,7 @@ import * as React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { styled, useTheme } from '@mui/material';
+import { styled } from '@mui/material';
 
 const StyledFilterField = styled(TextField)(({ theme }) => ({
   '& .MuiInputBase-input': {
@@ -34,7 +34,7 @@ const SearchComponent = React.memo(function SearchComponent(props: SearchCompone
       <SearchIcon sx={{ mr: 0.5, my: 0.5 }} />
       <StyledFilterField
         id="filterField"
-        placeholder="filter value"
+        placeholder="search value"
         type="search"
         variant="standard"
         size="small"

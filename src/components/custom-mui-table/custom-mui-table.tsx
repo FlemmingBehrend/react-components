@@ -27,6 +27,7 @@ import { getBackgroundColor } from '../enhanced-table/helpers';
 import { blue } from '@mui/material/colors';
 import CustomMuiHeader from './custom-mui-header';
 import CustomMuiCell from './custom-mui-cell';
+import { isNumberCell, isStringCell } from './cell-types/cell';
 
 const DEFAULT_TABLE_SEACHABLE = true;
 const DEFAULT_TABLE_DISPLAY_NUMBER_OF_ROWS = true;
@@ -50,7 +51,17 @@ interface CustomMuiTableProps {
 }
 
 const searchFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
-  return filterFns.includesString(row, columnId, value, addMeta);
+  console.log('searchFilter', value, columnId);
+  const obj = row.getValue(columnId);
+  if (typeof obj === 'object') {
+    if (isStringCell(obj)) {
+      return obj.value.toLowerCase().includes(value.toLowerCase());
+    } else if (isNumberCell(obj)) {
+      return obj.value === value;
+    }
+  }
+
+  return false;
 };
 
 export function CustomMuiTable(props: CustomMuiTableProps) {
@@ -63,21 +74,22 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
 
   const [searchValue, setSearchValue] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const { getHeaderGroups, getRowModel } = useReactTable({
+  const table = useReactTable({
     data: props.data,
     columns: props.columns,
     state: {
-      globalFilter: searchValue,
-      sorting: sorting
+      sorting: sorting,
+      globalFilter: searchValue
     },
     onGlobalFilterChange: setSearchValue,
     onSortingChange: setSorting,
     enableGlobalFilter: searchable,
     enableSorting: sortable,
-    globalFilterFn: searchFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel()
+    getSortedRowModel: getSortedRowModel(),
+    globalFilterFn: searchFilter,
+    debugAll: false
   });
 
   React.useEffect(() => {
@@ -93,7 +105,7 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
   }, []);
 
   function renderColGroup(columnWidths: Array<number | string>) {
-    const numberOfHeaders = getHeaderGroups()[0].headers.length;
+    const numberOfHeaders = table.getHeaderGroups()[0].headers.length;
     if (columnWidths.length < numberOfHeaders) {
       const lastWidth = columnWidths[columnWidths.length - 1];
       for (let i = columnWidths.length; i < numberOfHeaders; i++) {
@@ -115,7 +127,7 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
         ) : (
           <React.Fragment>&nbsp;</React.Fragment>
         )}
-        {displayNumberOfRows && <NumberOfRowsComponent totalRows={getRowModel().rows.length} />}
+        {displayNumberOfRows && <NumberOfRowsComponent totalRows={table.getRowModel().rows.length} />}
       </Grid>
       <Grid container justifyContent="space-between" alignItems="flex-end">
         <TableContainer component={Paper}>
@@ -128,7 +140,7 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
             )}
 
             <TableHead>
-              {getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <CustomMuiHeader key={header.id} header={header} fontSize={headerFontSize} />
@@ -137,14 +149,16 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
               ))}
             </TableHead>
             <TableBody>
-              {getRowModel().rows.map((row) => {
+              {table.getRowModel().rows.map((row) => {
                 return (
                   <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => {
+                      console.log(row.getVisibleCells().length);
                       cell.column.columnDef.meta = {
                         fontSize: columnFontSize
                       };
-                      return flexRender(cell.column.columnDef.cell, cell.getContext());
+                      const props = { ...cell.getContext(), key: crypto.randomUUID() };
+                      return flexRender(cell.column.columnDef.cell, props);
                     })}
                   </TableRow>
                 );
@@ -152,8 +166,7 @@ export function CustomMuiTable(props: CustomMuiTableProps) {
             </TableBody>
           </Table>
         </TableContainer>
-        <pre>{JSON.stringify(sorting, null, 2)}</pre>
-        <pre>{JSON.stringify(searchValue, null, 2)}</pre>
+        <pre>{JSON.stringify(table.getState(), null, 2)}</pre>
       </Grid>
     </Box>
   );

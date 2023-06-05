@@ -1,5 +1,5 @@
 import React, { createContext, FC } from 'react';
-import { SortDirection } from '../table/header-definitions';
+import { SortDirection } from '../table/header/header-options';
 
 export interface HeaderCellContextProps {
   label: string;

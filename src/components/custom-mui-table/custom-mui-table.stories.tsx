@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { CustomMuiTable, Cell, StringCell, stringComparator, BooleanCell, booleanComparator, NumberCell } from './';
+import {
+  CustomMuiTable,
+  Cell,
+  StringCell,
+  stringComparator,
+  BooleanCell,
+  booleanComparator,
+  NumberCell,
+  stringFilter
+} from './';
 import { ColumnDef, Row, createColumnHelper, filterFns, sortingFns } from '@tanstack/react-table';
 import { numberComparator } from './cell-types/number-cell';
 
@@ -38,7 +47,6 @@ const defaultData: Person[] = [
   }
 ];
 const columnHelper = createColumnHelper<Person>();
-
 const columns = [
   columnHelper.group({
     id: 'persons',
@@ -46,11 +54,12 @@ const columns = [
       return 'Persons';
     },
     columns: [
-      columnHelper.accessor('name', {
-        header: () => 'Name',
+      {
+        accessorKey: 'name.value',
+        header: 'Name',
         cell: StringCell,
         sortingFn: stringComparator
-      }),
+      },
       columnHelper.accessor('age', {
         header: () => 'Age',
         cell: NumberCell,
